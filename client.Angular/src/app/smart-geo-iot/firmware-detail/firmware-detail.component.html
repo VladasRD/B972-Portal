@@ -1,0 +1,66 @@
+<form novalidate class="container" [formGroup]="form" autocomplete="off">
+
+  <div class="body-content-top">
+    <section class="body-wrapper">
+
+      <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="/sgi/dados-firmware">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1">{{pageTitle}}</div>
+      </div>
+
+      <div fxLayout="column" fxLayoutGap="16px">
+        
+        <mat-form-field appearance="outline">
+          <mat-label>Data da compilação</mat-label>
+          <input matInput autocomplete="off" formControlName="dataCompilacao">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Série do dispositivo</mat-label>
+          <input matInput autocomplete="off" formControlName="serieDispositivo">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Versão de Hardware</mat-label>
+          <input matInput autocomplete="off" formControlName="hardware">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Versão de Firmware</mat-label>
+          <input matInput autocomplete="off" formControlName="firmware">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Processador</mat-label>
+          <input matInput autocomplete="off" formControlName="proc">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Placa eletrônica</mat-label>
+          <input matInput autocomplete="off" formControlName="placa">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Versão do dispositivo</mat-label>
+          <input matInput autocomplete="off" formControlName="vPlaca">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nome do aplicativo embarcado</mat-label>
+          <input matInput autocomplete="off" formControlName="nAplic">
+        </mat-form-field>
+        
+      </div>
+
+    </section>
+  </div>
+
+  <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+    <svg class="mark">
+      <circle cx="16" cy="16" r="16" /></svg>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="/sgi/dados-firmware">voltar</button>
+  </section>
+
+</form>

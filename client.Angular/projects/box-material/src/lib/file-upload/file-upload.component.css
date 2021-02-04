@@ -1,0 +1,83 @@
+.fileList {
+    list-style-type: none;    
+    margin-left: -10px; margin-right: -10px; margin-bottom: -15px; margin-top: -21px;    
+    padding: 0px;
+    height: 51px;
+}
+.fileList li {
+    float: left;   
+    border: transparent solid 1px;
+    padding-right: 5px;
+    margin-left: 10px; margin-right: 10px; margin-top: 10px; margin-bottom: 0px;
+    position: relative;    
+}
+
+.fileList li.tile {
+    padding-right: 0px;
+}
+
+.fileList .fileName {
+    max-width: 300px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;    
+}
+.fileList .remove-icon.tile {
+    position: absolute;
+    right: 3px;
+    bottom: 1px;
+    color: black;
+}
+.fileList .fileName.tile {
+    position: absolute;
+    bottom: 0px;
+    padding: 0px;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 150px;
+}
+.fileList .fileName.tile a {
+    margin-left: 3px;
+}
+.fileList div {
+    float: left;
+    line-height: 24px;        
+}
+.fileList .thumb {
+    width: 24px; height: 24px;
+    margin-right: 5px;
+    
+}
+.fileList .thumb img {
+    width: 24px; height: 24px;
+}
+.fileList .thumb.tile {
+    width: 150px; height: 150px;
+    margin: 0px;   
+}
+.fileList .thumb.tile img {
+    width: 150px; height: 150px;
+}
+
+
+.fileList .mat-icon {
+    line-height: 24px;
+    vertical-align: bottom;
+}
+
+.fileList.isDragging {
+    background-color: gray;
+}
+
+.gallery-button {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+.gallery-button span {
+    margin-left: 8px;
+}
+@media screen and (max-width: 600px) {
+    .gallery-button span {
+        display: none!important;
+    }    
+}

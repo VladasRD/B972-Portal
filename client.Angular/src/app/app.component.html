@@ -1,0 +1,97 @@
+<div style="position:absolute;top:0;left:0;right:0;bottom:0;" class="mat-typography">
+
+
+    <mat-toolbar color="primary" >
+                
+            <button 
+                fxShow="true" fxHide.gt-sm="true"
+                mat-button class="top-button" (click)="sidenav.toggle()" style="margin-left:-16px;" >    
+                <mat-icon>menu</mat-icon>  
+            </button>
+            
+            <img src="./assets/logo.png" class="img-logo"/>
+
+            <span class="top-button app-name">{{appName}}</span>
+
+            <div>
+                <button 
+                    fxShow="false" fxHide.gt-sm="false"
+                    *ngFor="let link of menuService.getUserLinksFor('TOP-CONTENT')"
+                    mat-button class="top-button" (click)="redirect(link.route)">
+                    {{link.name}}
+                </button>    
+                <button 
+                    fxShow="false" fxHide.gt-sm="false"
+                    *ngFor="let link of menuService.getUserLinksFor('TOP')"
+                    mat-button class="top-button" (click)="redirect(link.route)">
+                    {{link.name}}
+                </button>    
+            </div>
+            
+    
+            <div class="body-wrapper" style="display: flex">
+            </div>
+
+            <button 
+                *ngIf="isSecurityMenuVisible" 
+                fxShow="false" fxHide.gt-sm="false"
+                mat-button [matMenuTriggerFor]="settingsMenu" class="top-button">
+                <mat-icon>settings</mat-icon>
+            </button>
+
+            <app-login></app-login>
+    
+    </mat-toolbar>
+
+    <mat-sidenav-container>
+
+        <mat-sidenav #sidenav fxLayout="column" [mode]="sideNavMode" opened="false">
+
+            <button 
+                *ngFor="let link of menuService.getUserLinksFor('TOP-CONTENT')"
+                mat-menu-item (click)="redirect(link.route)">
+                {{link.name}}
+            </button>    
+            <button 
+                *ngFor="let link of menuService.getUserLinksFor('TOP')"
+                mat-menu-item (click)="redirect(link.route)">
+                {{link.name}}
+            </button>    
+            
+            <div style="min-width: 180px"></div>
+            <button *ngIf="isSecurityMenuVisible" mat-menu-item [matMenuTriggerFor]="settingsMenu"                
+                style="position: absolute; bottom: 0px; width: 180px;">
+                <mat-icon>settings</mat-icon>
+                <span i18n="@@settings">settings</span>
+            </button>
+
+        </mat-sidenav>
+
+        <mat-menu #settingsMenu="matMenu" [overlapTrigger]="false" xPosition="after" style="margin-left: 75px;">
+            <button 
+                *ngFor="let link of menuService.getUserLinksFor('SECURITY')"
+                mat-menu-item (click)="redirect(link.route)">
+                {{link.name}}
+            </button>    
+        </mat-menu>
+
+        <mat-sidenav-content fxFlexFill>            
+            <router-outlet></router-outlet>
+        </mat-sidenav-content>
+
+    </mat-sidenav-container>
+
+    <mat-progress-bar *ngIf="isLoadingData" mode="indeterminate" color="accent"></mat-progress-bar>
+
+    <img src="assets/logo-bw.png" class="print-logo" />
+
+</div>
+
+
+<div *ngIf="isUIBlocked" class="block-ui-layer">
+    <div class="block-ui-message">
+        <mat-spinner color="accent" diameter="60"></mat-spinner>
+        <div i18n="@@Please_wait" class="text mat-accent-color">Please wait...</div>
+    </div>
+    
+</div>

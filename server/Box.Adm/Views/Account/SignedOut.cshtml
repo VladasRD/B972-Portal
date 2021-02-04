@@ -1,0 +1,10 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Box.Common.Strings> Strings
+@{
+    Layout = "~/Views/Shared/_CardLayout.cshtml";
+    ViewData["Title"] = Strings["Signed out"];
+}
+
+<p>
+    @Strings["You have successfully signed out."]
+</p>

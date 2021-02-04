@@ -1,0 +1,78 @@
+<div class="body-content">
+  <section class="body-wrapper">
+
+    <div class="headline" fxLayout>
+      <button mat-icon-button routerLink="/">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="mat-h1">Cadastros</div>
+    </div>
+
+    <div class="container resultsContainer" fxLayout="row wrap" fxLayout.xs="column" >
+        
+      <mat-card class="tile1x" routerLink="/sgi/clientes"  appRequiredRoles="SGI-CLIENT.WRITE">
+        <mat-card-header>
+            <div mat-card-avatar>
+                <mat-icon>business</mat-icon>
+            </div>
+            <mat-card-title>Empresas/Clientes</mat-card-title>
+            <mat-card-subtitle>Configure os clientes, seus dispositivos e seus usuários</mat-card-subtitle>
+        </mat-card-header>              
+      </mat-card>
+
+      <mat-card class="tile1x" routerLink="/sgi/projetos"  appRequiredRoles="SGI-PROJECT.WRITE">
+        <mat-card-header>
+            <div mat-card-avatar>
+                <mat-icon>collections</mat-icon>
+            </div>
+            <mat-card-title>Projetos</mat-card-title>
+            <mat-card-subtitle>Configure seu projetos</mat-card-subtitle>
+        </mat-card-header>              
+      </mat-card>
+
+      <mat-card class="tile1x" routerLink="/sgi/pacotes"  appRequiredRoles="SGI-PACKAGE.WRITE">
+        <mat-card-header>
+            <div mat-card-avatar>
+                <mat-icon>view_module</mat-icon>
+            </div>
+            <mat-card-title>Pacotes</mat-card-title>
+            <mat-card-subtitle>Configure seu pacotes de dispositivos</mat-card-subtitle>
+        </mat-card-header>              
+      </mat-card>
+
+      <mat-card class="tile1x" routerLink="/sgi/dispositivos"  appRequiredRoles="SGI-DEVICE.WRITE">
+        <mat-card-header>
+            <div mat-card-avatar>
+                <mat-icon>devices</mat-icon>
+            </div>
+            <mat-card-title>Dispositivos</mat-card-title>
+            <mat-card-subtitle>Configure seus dispositivos</mat-card-subtitle>
+        </mat-card-header>              
+      </mat-card>
+
+      <mat-card class="tile1x" routerLink="/sgi/dados-firmware"  appRequiredRoles="SGI.MASTER">
+        <mat-card-header>
+            <div mat-card-avatar>
+                <mat-icon>analytics</mat-icon>
+            </div>
+            <mat-card-title>Dados de Firmware</mat-card-title>
+            <mat-card-subtitle>Veja dados de firmware dos dispositivos</mat-card-subtitle>
+        </mat-card-header>              
+      </mat-card>
+
+      <mat-card class="tile1x" routerLink="/sgi/relatorio-comercial"  appRequiredRoles="SGI.MASTER-COMMERCIAL">
+        <mat-card-header>
+            <div mat-card-avatar>
+                <mat-icon>assessment</mat-icon>
+            </div>
+            <mat-card-title>Configuração comercial</mat-card-title>
+            <mat-card-subtitle>Configuração para geração de relatório comercial</mat-card-subtitle>
+        </mat-card-header>              
+      </mat-card>
+
+    </div>
+
+  </section>
+</div>
+
+

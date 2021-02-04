@@ -1,0 +1,21 @@
+.current-location {
+    margin-bottom: 20px;
+    display: flex;
+}
+
+.tag-list {
+    width: 100%;
+}
+
+.tag-list ::ng-deep .mat-form-field-underline {
+    height: 0px!important;
+}
+
+.not-published {
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+.unpublish-button {
+    width: 120px;
+}

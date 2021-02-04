@@ -1,0 +1,54 @@
+<div class="body-content">
+  <section class="body-wrapper">
+    
+    <div class="headline" fxLayout>
+      <button mat-icon-button routerLink="/security/logs">
+          <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="mat-h1" i18n="@@Log">Log</div>
+    </div>
+
+    
+
+    <form novalidate class="container" fxLayout="column" fxLayoutGap="16px">
+
+      <h2>{{log.actionDescription}}</h2> 
+
+      <mat-form-field >
+        <mat-label i18n="@@When">When</mat-label>
+        <input matInput disabled value="{{log.when | date: 'short'}}" >    
+      </mat-form-field>
+
+      <mat-form-field>
+          <mat-label i18n="@@Url">Url</mat-label>
+          <input matInput disabled value="{{log.url}}" >    
+        </mat-form-field>
+
+      <mat-form-field>
+        <mat-label i18n="@@User">User</mat-label>
+        <input matInput disabled value="{{log.signedUser}}" >    
+      </mat-form-field>
+
+      <mat-form-field >
+          <mat-label i18n="@@IP_address">IP address</mat-label>
+          <input matInput disabled value="{{log.userIp}}" >    
+      </mat-form-field>
+
+      <mat-form-field  floatLabel="always">
+          <mat-label i18n="@@Data">Data</mat-label>
+          <textarea matInput disabled cdkTextareaAutosize="true">{{log.parameters}}</textarea>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="log.errorDescription" floatLabel="always">
+          <mat-label i18n="@@Error"  class="mat-warn-color">Error</mat-label>
+          <textarea matInput disabled cdkTextareaAutosize="true" class="mat-warn-color">{{log.errorDescription}}</textarea>
+      </mat-form-field>
+
+    </form>
+
+    
+    
+    
+
+  </section>
+</div>

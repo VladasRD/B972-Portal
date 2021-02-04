@@ -1,0 +1,95 @@
+<div class="body-content">
+  <section class="body-wrapper">
+
+    <div class="headline" fxLayout>
+      <button mat-icon-button routerLink="/sgi/configuracoes">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="mat-h1">Configurações comerciais</div>
+
+      <div class="buttonBoxArea right">
+        <button mat-raised-button color="primary" routerLink="new">
+          <mat-icon>add</mat-icon>
+          <span>Novo</span>
+        </button>
+        <button mat-button color="primary" class="filterBoxAreaButton" title="filter"
+          (click)="showFilters = !showFilters;">
+          <mat-icon>tune</mat-icon>
+          <span>filter</span>
+        </button>
+      </div>
+    </div>
+
+    <form *ngIf="showFilters" [formGroup]="form" class="container filterBoxArea" fxLayout fxLayoutGap="10px"
+      fxLayout.xs="column">
+      <mat-form-field appearance="outline" fxFlex="1 1">
+        <mat-label>Pesquisar</mat-label>
+        <input matInput placeholder="Pesquisar por nome" #searchBox id="search-box"
+          (keyup)="filterIfNotMobile(searchBox.value)" (keyup.enter)="filter(searchBox.value)">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" fxFlexAlign.xs="stretch">
+        <mat-label>Mês</mat-label>
+        <mat-select formControlName="monthFilter">
+          <mat-option *ngFor="let m of listMonthsFilter" [value]="m.number">{{m.description}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" fxFlexAlign.xs="stretch">
+        <mat-label>Ano</mat-label>
+        <mat-select formControlName="yearFilter">
+          <mat-option *ngFor="let y of listYearsFilter" [value]="y">{{y}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </form>
+
+    <div *ngIf="results.length > 0" class="container">
+
+      <mat-table [dataSource]="results" class="mat-elevation-z4 with-hover" style="margin-bottom: 20px">
+
+        <ng-container matColumnDef="montYear">
+          <mat-header-cell *matHeaderCellDef fxFlex="15%" fxFlex.lt-sm="15%">Mês/Ano</mat-header-cell>
+          <mat-cell *matCellDef="let element" fxFlex="15%" fxFlex.lt-sm="15%">{{element.montYearDisplayName}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="description">
+          <mat-header-cell *matHeaderCellDef fxFlex="60%" fxFlex.lt-sm="60%">Descrição</mat-header-cell>
+          <mat-cell *matCellDef="let element" fxFlex="60%" fxFlex.lt-sm="60%">{{element.description}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="clientsLicenses">
+          <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.lt-sm="20%">Ativos</mat-header-cell>
+          <mat-cell *matCellDef="let element" fxFlex="20%" fxFlex.lt-sm="20%">{{element.clientsLicensesDisplayName}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="total">
+          <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.lt-sm="20%">Total despesas</mat-header-cell>
+          <mat-cell *matCellDef="let element" fxFlex="20%" fxFlex.lt-sm="20%">{{element.total | currency:'BRL':'R$ '}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="showReport">
+          <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.lt-sm="10%" fxLayoutAlign="center center">
+          </mat-header-cell>
+          <mat-cell *matCellDef="let element" fxFlex="10%" fxFlex.lt-sm="10%" fxLayoutAlign="center center"
+            class="no-hover">
+            <button mat-raised-button type="button" color="primary" (click)="showReport(element.outgoingUId, $event)">
+              <span>Ver relatório</span>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="{{row.outgoingUId}}"></mat-row>
+
+      </mat-table>
+
+    </div>
+
+    <h2 *ngIf="results.length==0 && !firstSearch">Nenhuma configuração encontrada. Tente alterar sua pesquisa.</h2>
+
+    <app-pagination [skip]="skip" [pageSize]="pageSize" [totalCount]="totalCount" (pageChanged)="pageChanged($event)">
+    </app-pagination>
+
+  </section>
+</div>

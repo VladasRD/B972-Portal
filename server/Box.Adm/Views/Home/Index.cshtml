@@ -1,0 +1,23 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Box.Common.Strings> Strings
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+@using Box.Security.Models
+@{
+    Layout = "~/Views/Shared/_CardLayout.cshtml";
+    ViewData["Title"] = Strings["Home"];
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <p>
+        <!-- <img src='@ViewData["UserGravatarUrl"]' class="img-profile" style="margin-right: 10px" /> -->
+        <img src="@Href("~/user-photo/" + ViewData["UserId"])" class="img-profile" style="margin-right: 10px" />
+        @String.Format(Strings["You are logeed in as {0}"], @ViewData["UserName"])
+    </p>
+    <form asp-area="" asp-controller="Account" asp-action="Logout2" method="post" id="logoutForm" style="margin-top: 30px"> 
+        <button type="submit" class="btn btn-raised btn-primary">@Strings["Sign in with a differnt account"]</button>        
+    </form>
+}
+    
+

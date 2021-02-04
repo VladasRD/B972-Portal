@@ -1,0 +1,28 @@
+.date-input {
+    width: 80px;
+}
+
+.hour-input {
+    width: 18px;
+}
+
+.min-input {
+    width: 18px;
+}
+
+.dots {
+    width: 6px;
+    padding-top: 0px;
+    line-height: 38px;
+    text-align: center;
+    color: gray!important;
+}
+
+.controls  {
+    margin-top: -12px;
+    margin-bottom: -13px;
+}
+
+.controls option {
+    padding: 4px;
+}

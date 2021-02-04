@@ -1,0 +1,43 @@
+<form fxLayout="column" [formGroup]="form" autocomplete="off" novalidate>
+
+  <mat-form-field class="big-field" style="font-size:30px; margin-top: -0.84375em" floatLabel="never">
+      <!-- <mat-label>Título</mat-label> -->
+      <input matInput required formControlName="name" placeholder="Título">
+      <mat-error style="font-size: 10.5px" *ngIf="form.controls.name.invalid">Esse campo é obrigatório</mat-error>
+  </mat-form-field>
+
+  <lib-quill-editor label="Conteúdo" [mediaGallery]="mediaGallery" imageFolder="images" formControlName="htmlContent"></lib-quill-editor>
+
+  <mat-form-field appearance="outline">
+      <mat-label>Escolha ou arraste um arquivo</mat-label>
+      <lib-file-upload folder="folderB" autoUpload="true" singleFile="true" formControlName="mainBanner"  mode="tile"
+      [uploadService]="cmsService" [mediaGallery]="mediaGallery" mediaGalleryPlaceHolder="usar galeria"></lib-file-upload>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Escolha ou arraste um arquivo</mat-label>
+    <lib-file-upload folder="images" autoUpload="true" singleFile="false" formControlName="images"
+    [uploadService]="cmsService" [mediaGallery]="mediaGallery"  mediaGalleryPlaceHolder="usar galeria"></lib-file-upload>
+  </mat-form-field>
+
+  
+  <mat-form-field appearance="outline">
+    <mat-label>Abstract</mat-label>
+    <input matInput required formControlName="abstract" >  
+  </mat-form-field>    
+  <mat-form-field appearance="outline">
+    <mat-label>Custom text 1</mat-label>
+    <input matInput required formControlName="text1" >  
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>CONTENT FIELD 1</mat-label>
+    <input matInput required formControlName="field1" >  
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>CONTENT FIELD 2</mat-label>
+    <input matInput required formControlName="field2" >  
+  </mat-form-field>
+
+  
+  
+</form>

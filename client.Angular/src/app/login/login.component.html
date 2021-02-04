@@ -1,0 +1,24 @@
+<div *ngIf="isSigning" class="top-button" style="padding-top:20px">
+    <mat-spinner color="accent" diameter="36"></mat-spinner>
+</div>
+
+<div *ngIf="!isSigning && !isSignedIn">
+    <button mat-button class="top-button" (click)="signIn()" i18n="@@sign_in_button">sign in</button>    
+</div>
+
+
+<button *ngIf="!isSigning && isSignedIn" mat-button [matMenuTriggerFor]="userMenu" class="top-button">    
+    <img [src]="signedUser.avatarImageUrl" class="img-profile"/>
+</button>
+
+
+<mat-menu #userMenu="matMenu" [overlapTrigger]="false">
+    <div *ngIf="isSignedIn" color="accent" class="mat-menu-text mat-primary-color" style="font-weight: bold; font-size: 12px; line-height: 26px; height: 26px;">{{signedUser.email}}</div>
+    <div *ngIf="isSignedIn && signedUser.givenName" class="mat-menu-text mat-primary-color">{{signedUser.givenName}}</div>
+    <mat-divider></mat-divider>
+    <button mat-menu-item i18n="@@change_password_button" routerLink="security/change-password" >change password</button>    
+    <button mat-menu-item (click)="signOut()" i18n="@@sign_out_button">sign out</button>    
+</mat-menu>
+
+      
+      

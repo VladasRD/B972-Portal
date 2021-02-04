@@ -1,0 +1,192 @@
+@import '~@angular/material/theming';
+@include mat-core();
+
+/* see https://material.io/design/color/#tools-for-picking-colors */
+
+/* MSD Color default */
+$mat-msd: (
+  100: #0088aa,
+  200: #0088aa,
+  300: #0088aa,
+  400: #0088aa,
+  500: #0088aa,
+  600: #0088aa,
+  900: #2a8aa1,
+  contrast: (
+    600: white,
+    900: $white-87-opacity,
+  )
+);
+
+
+
+$customTheme-primary: mat-palette($mat-msd, 600);
+$customTheme-accent:  mat-palette($mat-msd, 900);
+$customTheme-warn:    mat-palette($mat-deep-orange, 600);
+
+$customHover: mat-color($customTheme-primary, default, 0.05);
+
+$customTheme: mat-light-theme($customTheme-primary, $customTheme-accent, $customTheme-warn);
+
+.customTheme {
+    @include angular-material-theme($customTheme);  
+    margin: 0px 0px 60px 0px;
+}
+
+.customTheme .img-logo {
+  width: auto;
+  height: 36px;
+  margin-right: 16px;
+}
+
+.category-color {
+  width: 15px; height: 15px; border: gray solid 1px;
+  margin-right: 8px;
+}
+
+.alert-border {
+  border-left-width: 10px;
+  border-left-style: solid;
+  border-left-color: mat-color($customTheme-warn);
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
+  padding: 8px;  
+}
+
+.info-border {
+  border-left-color: gray;
+}
+
+.salePlan-status0 {
+  color: black;
+  border-color: black;  
+}
+.salePlan-status1 {
+  color: gray;
+  border-color: gray;
+}
+.salePlan-status2 {
+  color: #548235!important;
+  border-color:  #548235!important;
+}
+.salePlan-status3 {
+  color: #B23037;  
+  border-color:  #B23037!important;  
+}
+
+.period-status0 {
+  color: #548235!important;
+}
+.period-status1 {
+  color: mat-color($customTheme-warn)!important;
+}
+
+.category-level2 {
+  color: #B23037;  
+  background-color:#B23037;  
+}
+.category-level1 {
+  color: #E5A557;  
+  background-color:#E5A557;  
+}
+.category-level0 {
+  color: #517AE2;  
+  background-color: #517AE2;  
+}
+
+.category-tag {
+  padding: 3px;
+  background-color: transparent;  
+  font-size: 11px;
+  margin-top: 0px;
+  font-weight: normal;
+}
+
+.sale-plan-title {
+  align-self: center;
+  font-size: 18px;
+  line-height: 24px;  
+}
+
+.sale-plan-title span {
+  line-height: 24px;  
+  vertical-align: middle;
+}
+
+.loading-data-body-message {
+  text-align: center;
+  margin: 30px;
+  font-weight: bold;
+  color: gray;
+}
+
+.print-logo {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 1000;
+  display: none;
+}
+
+.print-filter {
+  display: none;
+  margin-bottom: 15px;
+}
+
+/* PRINT STYLE ----------------------------------------------------------------------------*/
+@media print {
+
+  * {
+    -webkit-print-color-adjust: exact !important; /*Chrome, Safari */
+    color-adjust: exact !important;  /*Firefox*/
+  }
+
+  .print-filter {
+    display: block;
+  }
+
+  .print-logo {
+    display: block;
+  }
+  .mat-toolbar {
+    display: none!important;
+  }
+  mat-sidenav-container {
+    top: 0px!important;
+  }
+  .mat-button {
+    display: none!important;
+  }
+  .headline button {
+    display: none!important;
+  }
+
+  .filterBoxArea {
+    display: none!important;
+  }
+
+  mat-table.mat-elevation-z4 {
+    box-shadow: none!important;
+  }
+
+  mat-cell {
+    border: solid 1px black!important;
+    box-sizing: border-box!important;
+  }
+  mat-row, mat-header-row {
+    border: none!important;
+  }
+  mat-header-row {
+    background-color: lightgray!important;
+    color: black!important;
+  }
+  mat-header-cell {
+    background-color: lightgray!important;
+    color: black!important;
+    border: solid 1px black!important;
+    box-sizing: border-box!important;
+    line-height: 15px!important;
+  }
+
+}

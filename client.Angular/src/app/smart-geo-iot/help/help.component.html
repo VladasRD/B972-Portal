@@ -1,0 +1,45 @@
+<div class="body-content">
+  <section class="body-wrapper">
+
+    <div class="headline" fxLayout>
+      <button mat-icon-button routerLink="/">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="mat-h1">Ajuda</div>      
+    </div>
+
+    <p>
+      Caso esteja com dúvidas na utilização do sistema recomendamos que você baixe e leia o manual do sistema.
+    </p>
+
+    <div class="container resultsContainer" fxLayout="row wrap" fxLayout.xs="column"  >
+        
+      <a href="{{getUrlManualCliente}}" target="_blank">
+        <mat-card class="tile1x">        
+          <mat-card-header>
+              <div mat-card-avatar>
+                  <mat-icon>menu_book</mat-icon>
+              </div>
+              <mat-card-title>Manual do cliente</mat-card-title>
+              <mat-card-subtitle>Informações de navegação do cliente</mat-card-subtitle>
+          </mat-card-header>              
+        </mat-card>
+      </a>    
+
+      <!-- <a href="{{getUrlManualAdministrador}}" target="_blank">
+        <mat-card class="tile1x" appRequiredRoles="SGI.MASTER">        
+          <mat-card-header>
+              <div mat-card-avatar>
+                <mat-icon>menu_book</mat-icon>
+              </div>
+              <mat-card-title>Manual do Administrador</mat-card-title>
+              <mat-card-subtitle>Informações de como configurar o sistema</mat-card-subtitle>
+          </mat-card-header>              
+        </mat-card>
+      </a>     -->
+
+    </div>
+
+  </section>
+
+</div>    

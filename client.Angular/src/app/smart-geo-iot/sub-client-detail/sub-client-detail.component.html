@@ -1,0 +1,337 @@
+<form novalidate class="container" [formGroup]="form" (ngSubmit)="saveClient()" autocomplete="off">
+
+  <div class="body-content-top">
+    <section class="body-wrapper">
+
+      <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="/sgi/sub-clientes">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1">{{pageTitle}}</div>
+      </div>
+
+      <!-- TABS-->
+      <mat-tab-group dynamicHeight="true">
+
+        <!-- Cliente -->
+        <mat-tab label="Cliente">
+
+          <div fxLayout fxLayoutGap="24px">
+            <div fxLayout="column" fxLayoutGap="16px" fxFlex="1 1 100%">
+
+              <div class="toggle-margin-top">
+                <mat-slide-toggle [checked]="isClientActive" (change)="changeClientStatus()" formControlName="active">
+                  {{isClientActive ? 'Ativo' : 'Inativo'}}
+                </mat-slide-toggle>
+              </div>
+
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left">
+                <mat-form-field appearance="outline" fxFlex="20%">
+                  <mat-label>CPF/CNPJ</mat-label>
+                  <mat-select formControlName="documentType" placeholder="Selecione CPF ou CNPJ" (selectionChange)="handleDocumentTypeChange($event)">
+                    <mat-option [value]="0">CPF</mat-option>
+                    <mat-option [value]="1">CNPJ</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="form.controls.documentType.invalid">Campo obrigatório</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="80%">
+                  <mat-label>Documento</mat-label>
+                  <input matInput [mask]="documentMask" autocomplete="off" required formControlName="document">
+                  <mat-error *ngIf="form.controls.document.invalid">Campo obrigatório</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left">
+                <mat-form-field appearance="outline" fxFlex="100%">
+                  <mat-label>Nome do cliente</mat-label>
+                  <input matInput autocomplete="off" required maxlength="250" formControlName="name">
+                  <mat-error *ngIf="form.controls.name.invalid">Campo obrigatório</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left">
+                <mat-form-field appearance="outline" fxFlex="70%">
+                  <mat-label>E-mail</mat-label>
+                  <input matInput autocomplete="off" maxlength="300" formControlName="email">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="30%">
+                  <mat-label>Telefone</mat-label>
+                  <input matInput [textMask]="{mask: cellphoneMask}" autocomplete="off" maxlength="100" formControlName="phone">
+                </mat-form-field>
+              </div>
+
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left">
+                <mat-form-field appearance="outline" fxFlex="25%">
+                  <mat-label>CEP</mat-label>
+                  <input matInput #postalCode autocomplete="off" placeholder="Ex. 94105090" required maxlength="8"
+                    formControlName="postalCode" (keyup)="changeZipCode()">
+                  <button type="button" matSuffix mat-icon-button aria-label="Clear" (click)="changeZipCode()">
+                    <mat-icon>search</mat-icon>
+                  </button>
+                  <mat-hint align="end">{{postalCode.value.length}} / 8</mat-hint>
+                  <mat-error *ngIf="form.controls.postalCode.invalid">Campo obrigatório</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="15%">
+                  <mat-label>Número</mat-label>
+                  <input type="number" matInput autocomplete="off" maxlength="10" formControlName="addressNumber">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="30%">
+                  <mat-label>Cidade</mat-label>
+                  <input matInput autocomplete="off" required maxlength="250" formControlName="city">
+                  <mat-error *ngIf="form.controls.city.invalid">Campo obrigatório</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="30%">
+                  <mat-label>Estado</mat-label>
+                  <input matInput autocomplete="off" required maxlength="250" formControlName="state">
+                  <mat-error *ngIf="form.controls.state.invalid">Campo obrigatório</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left">
+                <mat-form-field appearance="outline" fxFlex="70%">
+                  <mat-label>Endereço</mat-label>
+                  <input matInput autocomplete="off" maxlength="300" formControlName="address">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="30%">
+                  <mat-label>Bairro</mat-label>
+                  <input matInput autocomplete="off" maxlength="100" formControlName="neighborhood">
+                </mat-form-field>
+              </div>
+
+            </div>
+          </div>
+
+        </mat-tab>
+
+        <!-- NOTIFICAÇÕES -->
+        <mat-tab label="Notificação">
+          <h2>Selecione os canais de recebimento de notificação</h2>
+
+          <section class="notification-section">
+            <mat-checkbox class="notification-margin" [checked]="emailNotification"
+              (change)="changeNotification('emailNotification')">E-mail</mat-checkbox>
+            <mat-checkbox class="notification-margin" [checked]="smsNotification"
+              (change)="changeNotification('smsNotification')">SMS</mat-checkbox>
+            <mat-checkbox class="notification-margin" [checked]="whatsAppNotification"
+              (change)="changeNotification('whatsAppNotification')">WhatsApp</mat-checkbox>
+            <!-- <mat-checkbox class="notification-margin" [checked]="pushNotification">Push (notificação no próprio aplicativo)</mat-checkbox> -->
+          </section>
+
+        </mat-tab>
+
+        <!-- DISPOSITIVOS -->
+        <mat-tab label="Dispositivos">
+
+          <div fxLayout="column" fxLayoutGap="16px" fxFlex="1 1 100%">
+            <div class="container filterBoxArea" fxLayout fxLayoutGap="10px" fxLayout.xs="column">
+              <div fxFlex="1 1">
+                <app-device-auto-complete label="Dispositivo" [control]="form.controls.deviceToAdd">
+                </app-device-auto-complete>
+              </div>
+
+              <div fxFlexAlign="center">
+                <button type="button" class="secondary" mat-button (click)="addDevice()">Adicionar
+                  dispositivo</button>
+              </div>
+            </div>
+
+            <div *ngIf="client.devices!=null && client.devices.length==0">Cliente não possui dispositivos</div>
+
+            <mat-list>
+              <mat-list-item *ngFor="let device of client.devices" class="with-hover no-cursor">
+                <mat-icon matListIcon>settings_cell</mat-icon>
+                <span matLine>{{device.id + ' - ' + device.appDevice.name}}</span>
+                <mat-slide-toggle [checked]="device.active" (change)="changeDeviceStatus(device)">
+                  {{device.activable ? 'Ativo' : 'Inativo'}}</mat-slide-toggle>
+                <button mat-icon-button type="button">
+                  <mat-icon matListIcon color="warn" (click)="removeDevice(device)" class="visible-on-parent-hover">
+                    remove_circle</mat-icon>
+                </button>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </mat-tab>
+
+        <!-- USUÁRIOS -->
+        <mat-tab label="Usuários">
+
+          <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left">
+            <app-role-client-select [control]="form.controls.roleFilter" fxFlex="30%"></app-role-client-select>
+
+            <mat-form-field appearance="outline" fxFlex="70%">
+              <mat-label>E-mail</mat-label>
+              <input matInput autocomplete="off" maxlength="500" formControlName="emailNewUser">
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left">
+            <mat-form-field appearance="outline" fxFlex="50%">
+              <mat-label>Nome</mat-label>
+              <input matInput autocomplete="off" maxlength="500" formControlName="nameNewUser">
+            </mat-form-field>
+
+            <button type="button" class="secondary add-user" mat-button (click)="addUserClient()" fxFlexAlign="start"
+              [disabled]="!isAddNewUser">Adicionar novo usuário</button>
+          </div>
+
+          <div fxLayout="column" fxLayoutGap="16px">
+            <div *ngIf="client.users!=null && client.users.length==0">Cliente não possui usuários</div>
+            <mat-list>
+              <mat-list-item *ngFor="let user of client.users" class="with-hover no-cursor">
+                <div>
+                  <img [src]="user.appUser.avatarImageUrl" class="img-profile40" />
+                </div>
+                <div class="user-name">
+                  {{user.appUser.givenName}}
+                </div>
+                <div class="user-email">
+                  ({{user.appUser.userNameAndEmail}})
+                </div>
+                <div class="remove-user-button">
+                  <mat-icon matListIcon color="warn" (click)="removeUserClient(user)" class="visible-on-parent-hover">
+                    remove_circle</mat-icon>
+                </div>
+              </mat-list-item>
+            </mat-list>
+
+          </div>
+        </mat-tab>
+
+        <!-- FATURAMENTO -->
+        <!-- <mat-tab label="Faturamento">
+
+          <div fxLayout fxLayoutGap="24px">
+            <div fxLayout="column" fxLayoutGap="16px" fxFlex="1 1 100%">
+
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left">
+                <mat-form-field appearance="outline" fxFlex="85%">
+                  <mat-label>Item</mat-label>
+                  <input matInput autocomplete="off" maxlength="250" formControlName="item">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="15%">
+                  <mat-label>Tipo</mat-label>
+                  <mat-select formControlName="type">
+                    <mat-option *ngFor="let y of listTypes" [value]="y.id">{{y.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left">
+                <mat-form-field appearance="outline" fxFlex="85%">
+                  <mat-label>Cpf</mat-label>
+                  <input matInput autocomplete="off" maxlength="250" formControlName="cpf">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="15%">
+                  <mat-label>Dia do vencimento</mat-label>
+                  <input matInput maxlength="2" type="number" formControlName="dueDay" placeholder="Dia de vencimento">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="15%">
+                  <mat-label>R$</mat-label>
+                  <input matInput appNumeric numericType="decimal" autocomplete="off" formControlName="value">
+                </mat-form-field>
+              </div>
+
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left">
+                <mat-form-field appearance="outline" fxFlex="15%">
+                  <mat-label>Data de nascimento</mat-label>
+                  <mat-datepicker-toggle matPrefix [for]="birthPicker"></mat-datepicker-toggle>
+                  <input matInput [matDatepicker]="birthPicker" formControlName="birth"
+                    placeholder="Data de nascimento">
+                  <mat-datepicker #birthPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="15%">
+                  <mat-label>Início faturamento</mat-label>
+                  <mat-datepicker-toggle matPrefix [for]="startPicker"></mat-datepicker-toggle>
+                  <input matInput [matDatepicker]="startPicker" formControlName="startBilling"
+                    placeholder="Início faturamento">
+                  <mat-datepicker #startPicker></mat-datepicker>
+                </mat-form-field>
+              </div>
+
+            </div>
+          </div>
+
+          <br><br>
+
+
+          <h2 *ngIf="billings.length > 0">Faturamentos gerados</h2>
+          <h2 *ngIf="billings.length == 0">Nenhum faturamento gerado</h2>
+
+          <div class="container resultsContainer" *ngIf="billings.length > 0">
+            <mat-table [dataSource]="billings" class="mat-elevation-z4" fxFlex="100%" style="margin-bottom: 20px">
+
+              <ng-container matColumnDef="date">
+                <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.lt-sm="20%">Data</mat-header-cell>
+                <mat-cell *matCellDef="let element" fxFlex="20%" fxFlex.lt-sm="20%">
+                  {{element.create | date: 'shortDate'}}
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="paymentDueDate">
+                <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.lt-sm="20%">Vencimento</mat-header-cell>
+                <mat-cell *matCellDef="let element" fxFlex="20%" fxFlex.lt-sm="20%">
+                  {{element.paymentDueDate | date: 'shortDate'}}
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="paymentDate">
+                <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.lt-sm="20%">Pagamento</mat-header-cell>
+                <mat-cell *matCellDef="let element" fxFlex="20%" fxFlex.lt-sm="20%">
+                  {{element.paymentDate | date: 'shortDate'}}
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.lt-sm="20%">Status</mat-header-cell>
+                <mat-cell *matCellDef="let element" fxFlex="20%" fxFlex.lt-sm="20%">
+                  {{element.statusName}}
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="sended">
+                <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.lt-sm="10%" fxLayoutAlign="center center">
+                  Enviado</mat-header-cell>
+                <mat-cell *matCellDef="let element" fxFlex="10%" fxFlex.lt-sm="10%" fxLayoutAlign="center center">
+                  <mat-icon *ngIf="element.sended">check</mat-icon>
+                </mat-cell>
+              </ng-container>
+
+              <ng-container matColumnDef="pdf">
+                <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.lt-sm="10%" fxLayoutAlign="center center">
+                  PDF</mat-header-cell>
+                <mat-cell *matCellDef="let element" fxFlex="10%" fxFlex.lt-sm="10%" fxLayoutAlign="center center">
+                  <a href="{{element.linkPdf}}" target="_blank">
+                    <mat-icon *ngIf="element.linkPdf" class="icon-link-pdf">picture_as_pdf</mat-icon>
+                  </a>
+                </mat-cell>
+              </ng-container>
+
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+            </mat-table>
+          </div>
+
+        </mat-tab> -->
+
+      </mat-tab-group>
+
+    </section>
+  </div>
+
+  <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+    <svg class="mark">
+      <circle cx="16" cy="16" r="16" /></svg>
+    <button mat-raised-button color="primary" type="submit" fxFlexLayout="start">salvar</button>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="/sgi/sub-clientes">voltar</button>
+  </section>
+
+</form>

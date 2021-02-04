@@ -1,0 +1,93 @@
+<div class="body-content">
+    <section class="body-wrapper">
+    
+    <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="/">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1" i18n="@@logs_title">Logs</div>  
+
+        <div class="buttonBoxArea right">
+            <button mat-button color="primary" i18n-title="@@clearFilter" title="clear filter" (click)="clearFilter()">
+                <mat-icon>clear</mat-icon>
+                <span i18n="@@clearFilter">clear filter</span>
+            </button>
+            <button mat-button color="primary" i18n-title="@@refresh" title="refresh" (click)="updateResults()">
+                <mat-icon>refresh</mat-icon>
+                <span i18n="@@refresh">refresh</span>
+            </button>
+            <button mat-button color="primary" class="filterBoxAreaButton" i18n-title="@@filter" title="filter" (click)="showFilters = !showFilters;">
+                <mat-icon>tune</mat-icon>
+                <span i18n="@@filter">filter</span>
+            </button>
+        </div>  
+    </div>
+
+    
+        <form 
+            *ngIf="showFilters"
+            novalidate [formGroup]="form" class="container filterBoxArea" fxLayout fxLayoutGap="10px"  fxLayout.xs="column">
+    
+            <mat-form-field appearance="outline" fxFlex="1 1">
+                <mat-label i18n="@@search_label" >Search</mat-label>
+                <input matInput i18n-placeholder="@@log_search_placeholder" placeholder="Type a activity or a user"
+                    #searchBox id="search-box" (keyup)="filterIfNotMobile(searchBox.value)" (keyup.enter)="filter(searchBox.value)">
+                <mat-icon matSuffix>search</mat-icon>      
+            </mat-form-field>
+        
+                <mat-form-field floatLabel="never" class="no-border no-label" fxFlex="100px"  fxFlexAlign="end" fxFlexAlign.xs="stretch">
+                    <input matInput [matDatepicker]="fromPicker" formControlName="from" i18n-placeholder="@@from" placeholder="from">
+                    <mat-datepicker-toggle matPrefix [for]="fromPicker"></mat-datepicker-toggle>            
+                    <mat-datepicker #fromPicker></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field floatLabel="never" class="no-border no-label" fxFlex="100px" fxFlexAlign="end" fxFlexAlign.xs="stretch">
+                    <input matInput [matDatepicker]="toPicker" formControlName="to" i18n-placeholder="@@to" placeholder="to">
+                    <mat-datepicker-toggle matPrefix [for]="toPicker" color="accent"></mat-datepicker-toggle>
+                    <mat-datepicker #toPicker></mat-datepicker>
+                </mat-form-field>
+            
+        </form>
+    
+    
+
+        <div class="container resultsContainer">
+
+            <mat-table [dataSource]="results" class="mat-elevation-z4 with-hover" style="margin-bottom: 20px">
+
+                <ng-container matColumnDef="when">
+                    <mat-header-cell *matHeaderCellDef fxFlex="140px" fxFlex.lt-sm="80px"  i18n="@@When">When</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxFlex="140px" fxFlex.lt-sm="80px" [class.mat-warn-bgcolor]="element.logType == 1">{{element.when | date: 'short'}}</mat-cell>
+                </ng-container>
+            
+                <ng-container matColumnDef="signedUser">
+                    <mat-header-cell *matHeaderCellDef  fxFlex="200px" fxHide.lt-sm="true" i18n="@@User">User</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxFlex="200px" fxHide.lt-sm="true" [class.mat-warn-bgcolor]="element.logType == 1">{{element.signedUser}}</mat-cell>
+                </ng-container>
+            
+                <ng-container matColumnDef="actionDescription">
+                <mat-header-cell *matHeaderCellDef i18n="@@Action">Action</mat-header-cell>
+                <mat-cell *matCellDef="let element" [class.mat-warn-bgcolor]="element.logType == 1">{{element.actionDescription}}</mat-cell>
+                </ng-container>
+            
+                <ng-container matColumnDef="userIp">
+                    <mat-header-cell *matHeaderCellDef fxFlex="100px"  fxHide.lt-md="true"  i18n="@@IP_address">IP address</mat-header-cell>
+                    <mat-cell *matCellDef="let element" fxFlex="100px"  fxHide.lt-md="true" [class.mat-warn-bgcolor]="element.logType == 1">{{element.userIp}}</mat-cell>
+                </ng-container>
+            
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="{{row.logUId}}"></mat-row>
+                
+            </mat-table>
+            
+
+        </div>
+
+        <h2 *ngIf="results.length==0 && !firstSearch" i18n="@@could_not_find_any_result">Could not find any result. Try to change your search.</h2>
+
+        <app-pagination [skip]="skip" [pageSize]="pageSize" [totalCount]="totalCount" (pageChanged)="pageChanged($event)" ></app-pagination> 
+
+
+    
+    </section>
+</div>

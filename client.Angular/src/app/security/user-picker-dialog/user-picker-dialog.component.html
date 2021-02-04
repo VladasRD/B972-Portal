@@ -1,0 +1,45 @@
+<div fxLayoutGap="10px" fxLayout="column"  class="mat-typography">
+
+  <mat-form-field appearance="outline" fxFlex="1 1">
+      <mat-label i18n="@@search_label">Search</mat-label>
+      <input matInput i18n-placeholder="@@user_search_placeholder" placeholder="Type a user name or e-mail" #searchBox id="search-box"
+          (keyup)="filterIfNotMobile(searchBox.value)" (keyup.enter)="filter(searchBox.value)">
+      <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <h2 *ngIf="results.length==0 && !firstSearch" i18n="@@could_not_find_any_result">Could not find any result. Try to change your search.</h2>
+
+  <mat-table *ngIf="results.length > 0" [dataSource]="results" class="with-hover results">
+
+      <ng-container matColumnDef="thumb">            
+          <mat-cell *matCellDef="let element" fxFlex="80px">
+              <img [src]="element.avatarImageUrl" class="img-profile40"/>
+          </mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="name">            
+          <mat-cell *matCellDef="let element">
+            <div style="display: block">
+                <div class="given-name">{{element.givenName}}</div>
+                <div class="user-name">{{element.userNameAndEmail}}</div>                
+            </div>              
+          </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="check">            
+          <mat-cell *matCellDef="let element" fxFlex="60px">
+              <mat-checkbox [checked]="isSelected(element.id)" ></mat-checkbox>
+          </mat-cell>
+      </ng-container>
+
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectUser(row)"></mat-row>
+  
+      
+  </mat-table>
+
+  <div *ngIf="results.length >=7" i18n="@@for_more_results_refine_your_search">for more results refine your search</div>
+
+  <button *ngIf="isAddButtonVisible" class="add-button" type="button" mat-raised-button color="primary" i18n="@@Add"
+    (click)="addSelections()">Add</button>
+
+</div>

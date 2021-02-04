@@ -1,0 +1,168 @@
+<form novalidate class="container" [formGroup]="form" autocomplete="off">
+  <div class="body-content-top">
+    <section class="body-wrapper">
+
+      <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1">{{pageTitle}}</div>
+
+        <div class="buttonBoxArea right" *ngIf="dashboard.deviceId!=''">
+          <button mat-raised-button color="primary" (click)="updateData()">
+            <mat-icon>autorenew</mat-icon>
+            <span>Atualizar informações</span>
+          </button>
+        </div>
+      </div>
+
+      <div fxLayout="column">
+
+        <mat-card>
+          <mat-card-header fxFlex="75%">
+            <div class="title-page">
+              <span><strong>Informações de Estado</strong></span>
+            </div>
+          </mat-card-header>
+
+          <div class="position">
+            <div class="header">
+              <mat-icon>timelapse</mat-icon>
+              <span class="icon-text">{{dashboard.date | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+            </div>
+          </div>
+        </mat-card>
+
+        <div class="container resultsContainer info-block-a" fxLayout="row wrap" fxLayout.xs="column">
+          <mat-card class="card-info-last">
+            <mat-card-header style="overflow: hidden" fxFlex="75%">
+              <mat-card-title>
+                <h5 class="title-info">Vazão</h5>
+              </mat-card-title>
+              <mat-card-subtitle>
+                <strong class="value-info">{{dashboard.vazao}}</strong>
+                <span class="format-info">mA</span>
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/vazao.png" class="image-avatar" />
+                </div>
+              </div>
+            </div>
+          </mat-card>
+
+          <mat-card class="card-info-last">
+            <mat-card-header style="overflow: hidden" fxFlex="75%">
+              <mat-card-title>
+                <h5 class="title-info">Totalização Parcial</h5>
+              </mat-card-title>
+              <mat-card-subtitle>
+                <strong class="value-info">{{dashboard.totalizacaoParcial}}</strong>
+                <span class="format-info">Unid</span>
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/total.png" class="image-avatar" />
+                </div>
+              </div>
+            </div>
+          </mat-card>
+
+          <mat-card class="card-info-last">
+            <mat-card-header style="overflow: hidden" fxFlex="75%">
+              <mat-card-title>
+                <h5 class="title-info">Totalização</h5>
+              </mat-card-title>
+              <mat-card-subtitle>
+                <strong class="value-info">{{dashboard.totalizacao}}</strong>
+                <span class="format-info">Unid</span>
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/total.png" class="image-avatar" />
+                </div>
+              </div>
+            </div>
+          </mat-card>
+
+          <mat-card class="card-info-last card-info-final">
+            <mat-card-header style="overflow: hidden" fxFlex="75%">
+              <mat-card-title>
+                <h5 class="title-info">Tempo Parcial</h5>
+              </mat-card-title>
+              <mat-card-subtitle>
+                <strong class="value-info">{{dashboard.tempoParcial}}</strong>
+                <span class="format-info">seg</span>
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/relogio.png" class="image-avatar" />
+                </div>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+
+      </div>
+
+      <!-- <mat-slide-toggle class="change-device" [checked]="changeDevice" (change)="changeStatus()">
+        Alterar informações do dispositivo (número máximo de envios por dia, tempo de transmissão...)
+      </mat-slide-toggle>
+
+      <div *ngIf="changeDevice">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left"
+          class="top-changes">
+
+          <mat-form-field appearance="outline" fxFlex="15%">
+            <mat-label>Número máximo de envios por dia</mat-label>
+            <input matInput autocomplete="off" maxlength="3" type="number" min="1" max="140"
+              formControlName="numeroEnvios">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Tempo de transmissão</mat-label>
+            <input matInput autocomplete="off" type="number" min="11" formControlName="tempoTransmissao">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="15%">
+            <mat-label>Transmissão em</mat-label>
+            <mat-select formControlName="tipoEnvio">
+              <mat-option value="false">Segundos</mat-option>
+              <mat-option value="true">Minutos</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="buttonBoxArea right" *ngIf="dashboard.deviceId!=''">
+          <button mat-raised-button color="primary" (click)="openConfirmDeleteDialog()">
+            <mat-icon>send</mat-icon>
+            <span>Enviar alterações</span>
+          </button>
+        </div>
+      </div> -->
+
+    </section>
+
+  </div>
+
+  <h2 *ngIf="dashboard===null">Nenhuma informação encontrada para o disposivo selecionado.</h2>
+
+  <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+    <svg class="mark">
+      <circle cx="16" cy="16" r="16" />
+    </svg>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="">voltar</button>
+  </section>
+</form>

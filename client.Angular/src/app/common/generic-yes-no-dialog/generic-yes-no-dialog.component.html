@@ -1,0 +1,28 @@
+<h2 mat-dialog-title>{{data.title}}</h2>
+<mat-dialog-content>
+  <p>
+      {{data.message}}
+  </p>
+  <textarea *ngIf="data.hasTextMessage" [(ngModel)]="data.textMessage" 
+    class="customMessage" 
+    cdkFocusInitial="true" 
+    placeholder="Provide a message..." i18n-placeholder="@@InfoTextMessage">
+  </textarea>
+  <p *ngIf="data.subMessage">{{data.subMessage}}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>  
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+
+  <div *ngIf="!data.isWarn">
+      <button mat-raised-button color="primary" mat-dialog-close i18n="@@No" cdkFocusInitial="true">No</button>
+      <button mat-button [mat-dialog-close]="closeReturn" i18n="@@Yes">Yes</button>  
+  </div>
+
+  <div *ngIf="data.isWarn">
+    <button mat-button mat-dialog-close i18n="@@No" cdkFocusInitial="true">No</button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="closeReturn" i18n="@@Yes">Yes</button>  
+  </div>
+
+  
+</mat-dialog-actions>

@@ -1,0 +1,16 @@
+<mat-form-field appearance="outline" class="auto-complete-field">
+
+  <mat-label>{{label}}</mat-label>
+  <input type="text" placeholder="Digite o nome do Cliente" matInput [formControl]="control" [matAutocomplete]="auto">
+
+  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" class="client-auto-complete">
+    <mat-option *ngFor="let option of filteredOptions" [value]="option">
+      <div fxLayout="row" fxLayoutGap="16px">
+          <mat-icon class="client-icon">business</mat-icon>            
+          <div>{{option.name}}</div>            
+      </div>      
+    </mat-option>
+  </mat-autocomplete>
+  <mat-error *ngIf="control.invalid">Campo obrigatório</mat-error>
+
+</mat-form-field>

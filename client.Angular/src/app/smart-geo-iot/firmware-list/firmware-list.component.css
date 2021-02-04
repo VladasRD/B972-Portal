@@ -1,0 +1,17 @@
+p { margin: 0 0 20px; }
+p:last-child { margin: 0; }
+
+.float-right {
+    float: right;
+}
+.first-in-content {
+    padding-top: 15px;
+}
+.card-footer {
+    display: flex;
+    padding: 15px;
+}
+.more-details {
+    margin-left: 10px;
+    margin-top: 2px;
+}

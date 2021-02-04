@@ -1,0 +1,89 @@
+﻿@using System.Linq
+@using Box.Security.Models
+@using Microsoft.Extensions.Options
+@using Microsoft.Extensions.Localization
+
+@model LoginViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject IStringLocalizer<Box.Common.Strings> Strings
+@inject IOptions<Box.Common.BoxSettings> boxSettings
+
+
+@{
+    Layout = "~/Views/Shared/_CardLayout.cshtml";
+    ViewData["Title"] = Strings["Sign in"];
+    //ViewData["CARD-WIDTH"] = "max-width: 620px";
+    var loginProviders = (await SignInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+    var mds1 = "col-md-6";    
+    var hasProviders = false;//loginProviders.Count > 0;        
+    if(!hasProviders)
+    {
+        mds1 = "col-md-12";
+        ViewData["CARD-WIDTH"] = "max-width: 400px";
+    }
+}
+<div class="row">
+    <div class="@mds1">
+        <h5 class="card-title hide-on-small" style="text-align: center">@Strings["Provide your credentials"]</h5>
+        <form asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+
+            
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group bmd-form-group formgroup-withValidation">
+                <label asp-for="Email" class="bmd-label-floating">@Strings["Email"]</label>
+                <input asp-for="Email" type="email" class="form-control">
+                <span asp-validation-for="Email" class="text-danger form-field-error" ></span>
+            </div>
+
+            <div class="form-group bmd-form-group formgroup-withValidation">
+                <label asp-for="Password" class="bmd-label-floating">@Strings["Password"]</label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger form-field-error"></span>
+            </div>
+
+            <div class="form-group bmd-form-group" style="padding-top:0px;">
+                <div class="checkbox" style="float:left">
+                    <label asp-for="RememberMe">
+                        <input asp-for="RememberMe" type="checkbox" /> @Strings["Remember me?"]
+                    </label>
+                </div>
+                <div style="float: right">
+                    <a asp-action="ForgotPassword">@Strings["Forgot your password?"]</a>
+                </div>
+            </div>
+            
+
+            <div class="form-group bmd-form-group">
+                <button type="submit" class="btn btn-raised btn-primary">@Strings["Sign in"]</button>                
+            </div>
+
+        </form>
+
+    </div>
+
+    @if (hasProviders) {
+            <div class="col-md-6">
+
+                <h5 class="card-title" style="text-align:center">@Strings["...or use another service"]</h5>
+                <form asp-action="ExternalLogin" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal" style="margin-top: 20px">
+                    <div>
+                        
+                        @foreach (var provider in loginProviders)
+                        {
+                            <button type="submit" class="btn btn@(provider.Name)" style="display: block; margin: auto"
+                            name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"></button>
+                        }
+                        
+                    </div>
+                </form>
+            </div>
+      }
+    
+
+</div>
+
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

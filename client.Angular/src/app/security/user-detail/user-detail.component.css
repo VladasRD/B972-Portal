@@ -1,0 +1,7 @@
+.remove-role-button, .add-role-button {
+    position: absolute;
+    right: 16px;
+}
+.role-detail {
+    margin-left: 15px;
+}

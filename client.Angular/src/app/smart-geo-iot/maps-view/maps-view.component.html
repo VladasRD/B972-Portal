@@ -1,0 +1,23 @@
+<form novalidate class="container" autocomplete="off">
+    <div class="body-content-top" style="padding-top: 0px!important;">
+        <section class="body-wrapper">
+            <div class="headline" fxLayout>
+                <button mat-icon-button routerLink="/sgi/dashboard/djrf/{{_deviceId}}">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div class="mat-h1">Mapa com localização aproximada do dispositivo</div>
+            </div>
+            <iframe [src]="url"
+                height="900px"
+                width="100%"
+                style="border: transparent;">
+            </iframe>
+        </section>
+    </div>
+
+    <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+        <svg class="mark">
+            <circle cx="16" cy="16" r="16" /></svg>
+        <button mat-button fxFlexLayout="start" type="button" routerLink="/sgi/dashboard/djrf/{{_deviceId}}">voltar</button>
+    </section>
+</form>

@@ -1,0 +1,258 @@
+<form novalidate class="container" [formGroup]="form" autocomplete="off">
+  <div class="body-content-top">
+    <section class="body-wrapper">
+
+      <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1">{{pageTitle}}</div>
+
+        <div class="buttonBoxArea right" *ngIf="dashboard.deviceId!=''">
+          <button mat-raised-button color="primary" (click)="updateData()">
+            <mat-icon>autorenew</mat-icon>
+            <span>Atualizar informações</span>
+          </button>
+        </div>
+      </div>
+
+      <div *ngIf="dashboard!=null" class="container">
+
+        <mat-card>
+          <mat-card-header fxFlex="75%">
+            <div class="title-page">
+              <span><strong>Informações de Estado</strong></span>
+            </div>
+          </mat-card-header>
+
+          <div class="position">
+            <div class="header">
+              <mat-icon>timelapse</mat-icon>
+              <span class="icon-text">{{dashboard.date | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+            </div>
+          </div>
+        </mat-card>
+
+        <div style="width:100%">
+          <div class="card">
+            <div class="card-body border-top p-0">
+              <div class="table-responsive-sm">
+                <table class="table table-striped table-bordered first">
+                  <tbody>
+                    <tr>
+                      <td>Iluminação</td>
+                      <td width="120"><span
+                          class="badge badge-success">{{dashboard.bits.iluminacao ? 'Ligada' : 'Desligada'}}</span></td>
+
+                      <td>Sensor de Nível</td>
+                      <td width="120"><span
+                          class="badge badge-success">{{dashboard.bits.sensorNivelOperacional ? 'Operacional' : 'Inoperante'}}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Bomba de Circulação</td>
+                      <td><span
+                          class="badge badge-success">{{dashboard.bits.bombaCirculacao ? 'Ligada' : 'Desligada'}}</span>
+                      </td>
+                      <td>Nível Mínimo</td>
+                      <td><span
+                          class="badge badge-warning">{{dashboard.bits.alertaNivelMinimo ? 'Abaixo' : 'OK'}}</span></td>
+                    </tr>
+                    <tr>
+                      <td>Falha de Energia</td>
+                      <td><span class="badge badge-success">{{dashboard.bits.falhaEnergia ? 'Sim' : 'Não'}}</span></td>
+                      <td>Nível Máximo</td>
+                      <td><span class="badge badge-success">{{dashboard.bits.alertaNivelMaximo ? 'Acima' : 'OK'}}</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Modo</td>
+                      <td><span
+                          class="badge badge-success">{{dashboard.bits.automatico ? 'Automático' : 'Manual'}}</span>
+                      </td>
+                      <td>Bomba de Oxigenação</td>
+                      <td><span
+                          class="badge badge-danger">{{dashboard.bits.bombaOxigenacao ? 'Ligada' : 'Desligada'}}</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container resultsContainer info-block-a" fxLayout="row wrap" fxLayout.xs="column">
+          <mat-card class="card-info">
+            <mat-card-header style="overflow: hidden" fxFlex="75%">
+              <mat-card-title>
+                <h5 class="title-info">Oxigênio dissolvido</h5>
+              </mat-card-title>
+              <mat-card-subtitle>
+                <strong class="value-info">{{dashboard.oxigenioDissolvido}}</strong>
+                <span class="format-info">mg/L</span>
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/oxigenio-dissolvido.png" class="image-avatar" />
+                </div>
+              </div>
+            </div>
+          </mat-card>
+
+          <mat-card class="card-info">
+            <mat-card-header style="overflow: hidden" fxFlex="75%">
+              <mat-card-title>
+                <h5 class="title-info">pH</h5>
+              </mat-card-title>
+              <mat-card-subtitle>
+                <strong class="value-info">{{dashboard.ph}}</strong>
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/ph.png" class="image-avatar" />
+                </div>
+              </div>
+            </div>
+          </mat-card>
+
+          <mat-card class="card-info">
+            <mat-card-header style="overflow: hidden" fxFlex="75%">
+              <mat-card-title>
+                <h5 class="title-info">Transmissão</h5>
+              </mat-card-title>
+              <mat-card-subtitle>
+                <strong class="value-info">{{dashboard.periodoTransmissao}}</strong>
+                <span class="format-info">Min</span>
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/transmissao.png" class="image-avatar" />
+                </div>
+              </div>
+            </div>
+          </mat-card>
+
+          <mat-card class="card-info card-info-final">
+            <mat-card-header style="overflow: hidden" fxFlex="75%">
+              <mat-card-title>
+                <h5 class="title-info">Condutividade</h5>
+              </mat-card-title>
+              <mat-card-subtitle>
+                <strong class="value-info">{{dashboard.condutividade}}</strong>
+                <span class="format-info">μS</span>
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/condutividade.png" class="image-avatar" />
+                </div>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+
+
+        <div class="container resultsContainer" fxLayout="row wrap" fxLayout.xs="column">
+
+          <mat-card class="card-info-block-b">
+            <mat-card-header style="overflow: hidden">
+              <mat-card-title class="title-info">Temperatura</mat-card-title>
+            </mat-card-header>
+
+            <mat-divider></mat-divider>
+            <mat-card-content>
+              <div class="mat-card-avatar-2">
+                <img src="../../../assets/temperatura.png" class="image-avatar-2" />
+              </div>
+            </mat-card-content>
+
+            <mat-card-footer fxLayoutAlign="center center">
+              <div class="card-footer">
+                <span class="more-details">{{dashboard.temperature}}</span><span class="more-details-simbol">°C</span>
+              </div>
+            </mat-card-footer>
+          </mat-card>
+
+          <mat-card class="card-info-block-b">
+            <mat-card-header style="overflow: hidden">
+              <mat-card-title class="title-info">Umidade</mat-card-title>
+            </mat-card-header>
+
+            <mat-divider></mat-divider>
+            <mat-card-content>
+              <div class="mat-card-avatar-2">
+                <img src="../../../assets/umidade.png" class="image-avatar-2" />
+              </div>
+            </mat-card-content>
+
+            <mat-card-footer fxLayoutAlign="center center">
+              <div class="card-footer">
+                <span class="more-details">{{dashboard.moisture}}</span><span class="more-details-simbol">%</span>
+              </div>
+            </mat-card-footer>
+          </mat-card>
+
+          <mat-card class="card-info-block-b">
+            <mat-card-header style="overflow: hidden">
+              <mat-card-title class="title-info">Nível</mat-card-title>
+            </mat-card-header>
+
+            <mat-divider></mat-divider>
+            <mat-card-content>
+              <div class="mat-card-avatar-2">
+                <img src="../../../assets/nivel.png" class="image-avatar-2" />
+              </div>
+            </mat-card-content>
+
+            <mat-card-footer fxLayoutAlign="center center">
+              <div class="card-footer">
+                <span class="more-details">{{dashboard.level}}</span><span class="more-details-simbol">%</span>
+              </div>
+            </mat-card-footer>
+          </mat-card>
+
+          <mat-card class="card-info-block-b card-info-final">
+            <mat-card-header style="overflow: hidden">
+              <mat-card-title class="title-info">Luz</mat-card-title>
+            </mat-card-header>
+
+            <mat-divider></mat-divider>
+            <mat-card-content>
+              <div class="mat-card-avatar-2">
+                <img src="../../../assets/luz.png" class="image-avatar-2" />
+              </div>
+            </mat-card-content>
+
+            <mat-card-footer fxLayoutAlign="center center">
+              <div class="card-footer">
+                <span class="more-details">{{dashboard.light}}</span><span class="more-details-simbol">%</span>
+              </div>
+            </mat-card-footer>
+          </mat-card>
+        </div>
+
+      </div>
+
+    </section>
+  </div>
+
+  <h2 *ngIf="dashboard===null">Nenhuma informação encontrada para o disposivo selecionado.</h2>
+
+  <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+    <svg class="mark">
+      <circle cx="16" cy="16" r="16" /></svg>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="">voltar</button>
+  </section>
+</form>

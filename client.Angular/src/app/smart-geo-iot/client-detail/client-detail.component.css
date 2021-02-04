@@ -1,0 +1,60 @@
+.user-name {
+  margin-left: 15px;
+}
+.user-email {
+  margin-left: 8px;
+  color: gray;
+}
+.remove-user-button {
+  position: absolute;
+  right: 12px;
+  cursor: pointer !important;
+}
+.no-cursor {
+  cursor: default !important;
+}
+
+.category-option {
+  display: inline-block;
+  line-height: 42px;
+  vertical-align: middle;
+}
+
+.toggle-margin-top {
+  margin-top: 1%;
+}
+
+.add-billing {
+  cursor: pointer;
+  color: #00877c;
+  margin-left: 1%;
+}
+
+.remove-billing {
+  color: red;
+}
+
+.indicator-billings {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.add-new-item {
+  margin-bottom: 2rem;
+}
+
+.icon-link-pdf {
+  color: red;
+  font-size: 28px;
+}
+
+.notification-section {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: 60px;
+}
+
+.notification-margin {
+  margin: 0 10px;
+}

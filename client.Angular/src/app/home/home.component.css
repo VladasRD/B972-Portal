@@ -1,0 +1,39 @@
+p { margin: 0 0 20px; }
+p:last-child { margin: 0; }
+
+.float-right {
+    float: right;
+}
+.first-in-content {
+    padding-top: 15px;
+}
+.card-footer {
+    display: flex;
+    padding: 15px;
+}
+.more-details {
+    margin-left: 10px;
+    margin-top: 2px;
+}
+
+/*----------------------- Badge -------------------------*/
+.badge { display: inline-block; padding: 3px 7px; font-size: 14px; font-weight: 400; line-height: 1; text-align: center; white-space: nowrap; vertical-align: baseline; border-radius: 1rem; }
+.badge-primary { background-color: #08A; }
+.badge-primary[href]:focus, .badge-primary[href]:hover { color: #FFF; text-decoration: none; background-color: #4656e9; }
+.badge-brand { background-color: #ffb739; color: #2E2F39; }
+.badge-brand[href]:focus, .badge-brand[href]:hover { color: #2E2F39; background-color: #EFB63E; text-decoration: none; }
+.badge-secondary { background-color: #5969FF; }
+.badge-secondary[href]:focus, .badge-secondary[href]:hover { color: #FFF; background-color: #5969FF; text-decoration: none; }
+.badge-success { background-color: #21ae41; }
+.badge-success[href]:focus, .badge-success[href]:hover { color: #FFF; background-color: #21ae41; text-decoration: none; }
+.badge-danger { background-color: #da0419; }
+.badge-danger[href]:focus, .badge-danger[href]:hover { color: #FFF; background-color: #EF172C; text-decoration: none; }
+.badge-warning { background-color: #f3b600; color: #2E2F39; }
+.badge-warning[href]:focus, .badge-warning[href]:hover { color: #2E2F39; background-color: #f3b600; text-decoration: none; }
+.badge-info { background-color: #0998b0; }
+.badge-info[href]:focus, .badge-info[href]:hover { color: #FFF; background-color: #17c0dc; text-decoration: none; }
+.badge-light { background-color: #EFEFF6; color: #757691; }
+.badge-light[href]:focus, .badge-light[href]:hover { color: #2E2F39; background-color: #D7D7DF; text-decoration: none; }
+.badge-dark { background-color: #1f202b; }
+.badge-light[href]:focus, .badge-light[href]:hover { color: #2E2F39; background-color: #D7D7DF; text-decoration: none; }
+.badge-dot { border-radius: 100%; padding: 4px; display: inline-block; margin-right: 3px; }

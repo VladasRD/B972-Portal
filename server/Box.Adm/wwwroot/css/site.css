@@ -1,0 +1,134 @@
+﻿html, body {
+    height: 100%;
+}
+
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding: 50px;    
+}
+
+footer {
+    margin-top: 40px;
+}
+
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+.appLogoSmall {    
+    width: 48px; height: 48px;
+}
+
+.appLogoMedium {
+    width: 75px; height: 75px;
+}
+
+.img-profile {
+     border-radius: 50%;
+     width: 60px; height: 60px;
+}
+
+/* signs in button */
+.btnGoogle {
+    background-image: url(../images/signin-buttons/btn_google_signin_dark_normal_web@2x.png);
+    background-repeat: no-repeat;      
+    background-size: cover;
+    background-color: transparent;    
+    border: none;
+    width: 220px; height: 46px;
+}
+
+.btnMicrosoft {
+    background-image: url(../images/signin-buttons/ms-symbollockup_signin_dark.png);
+    background-repeat: no-repeat;      
+    background-size: cover;
+    background-color: transparent;    
+    border: none;
+    width: 220px; height: 46px;
+}
+
+.btnWindows {
+    background-image: url(../images/signin-buttons/windows-signin.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: transparent;
+    border: none;
+    width: 220px;
+    height: 46px;
+}
+
+.card {
+    border-radius: 0px;
+}
+
+.form-field-error {
+    display: block;
+    min-height: 25px;
+    font-size: 12px;
+    line-height: 25px;
+    vertical-align: middle;
+}
+
+.formgroup-withValidation {    
+    margin-top: -15px;
+    margin-bottom: 0px;
+}
+
+.validation-summary-errors ul {
+    padding: 0px;
+    list-style-type: none;
+}
+
+
+
+.flex-container {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    display: flex;    
+    align-items: center;
+    justify-content: center;    
+}
+
+.pageCard {
+    max-width: 620px;    
+    width: 100%;
+    margin-left: 12px; margin-right: 12px; margin-top: 12px;
+}
+@media screen and (max-width: 780px) {
+    .flex-container {
+        align-items: flex-start;
+        justify-content: center;    
+    }
+}
+@media screen and (max-width: 620px) {    
+    .flex-container {
+        align-items: stretch;
+        justify-content: stretch;    
+    }
+    .pageCard {    
+        margin: 0px;        
+    }    
+}
+
+.pageCardElement {
+    color:white;    
+    padding: 10px;
+    text-align: center;
+}
+
+@media screen and (max-width: 601px) {
+    .hide-on-small {
+        display: none;
+    }
+}
+
+
+.bmd-form-group .checkbox label,.bmd-form-group .radio label,.bmd-form-group label{
+    font-size:0.87rem;
+}

@@ -1,0 +1,44 @@
+<form novalidate class="container" [formGroup]="form" (ngSubmit)="saveProject()" autocomplete="off">
+
+  <div class="body-content-top">
+    <section class="body-wrapper">
+
+      <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="/sgi/projetos">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1">{{pageTitle}}</div>
+
+        <div class="buttonBoxArea right" *ngIf="!isNewProject">
+          <button mat-button type="button" color="primary" (click)="openConfirmDeleteDialog()">
+            <mat-icon>delete</mat-icon>
+            <span>Remover</span>
+          </button>
+        </div>
+      </div>
+
+      <div fxLayout="column" fxLayoutGap="16px">
+        <mat-form-field appearance="outline">
+          <mat-label>Nome</mat-label>
+          <input matInput autocomplete="off" required maxlength="500" formControlName="name">
+          <mat-error *ngIf="form.controls.name.invalid">Campo obrigatório</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Descrição</mat-label>
+          <input matInput autocomplete="off" required formControlName="description">
+          <mat-error *ngIf="form.controls.description.invalid">Campo obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+
+    </section>
+  </div>
+
+  <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+    <svg class="mark">
+      <circle cx="16" cy="16" r="16" /></svg>
+    <button mat-raised-button color="primary" type="submit" fxFlexLayout="start">salvar</button>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="/sgi/projetos">voltar</button>
+  </section>
+
+</form>

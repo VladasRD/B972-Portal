@@ -1,0 +1,23 @@
+.locationGroup {
+    border: none;
+    margin-top: -8px;
+}
+
+@media screen and (max-width: 600px) {
+    .locationGroup {        
+        margin-top: 0px!important;
+    }
+}
+
+.locationGroup .mat-button-toggle-checked {
+    background-color: transparent;
+    font-weight: bold;
+}
+
+.locationGroup .mat-button-toggle {
+    border: none!important;
+}
+
+.locationGroup button {
+    border-radius: 0px;
+}

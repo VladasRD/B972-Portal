@@ -1,0 +1,89 @@
+<form novalidate class="container" [formGroup]="form" (ngSubmit)="saveRole(form.value)" autocomplete="off">
+    <div class="body-content-top">
+
+        <section class="body-wrapper">
+
+        <div class="headline" fxLayout>
+                <button mat-icon-button routerLink="/security/roles">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div class="mat-h1">{{pageTitle}}</div>
+
+                <div class="buttonBoxArea right">
+                    <button mat-button type="button" color="primary" (click)="openConfirmDeleteDialog()"  appRequiredRoles="ROLE.WRITE" *ngIf="!isNewRole">
+                        <mat-icon>delete</mat-icon>
+                        <span i18n="@@delete_button">Remove</span>
+                    </button>            
+                </div>
+            </div>
+
+            <mat-tab-group dynamicHeight="true" (selectedTabChange)="tabChange($event)">
+                
+                <mat-tab i18n-label="@@Group" label="Group">
+
+                    <div fxLayout="column" fxLayoutGap="16px">
+
+                        <mat-form-field appearance="outline">
+                            <mat-label i18n="@@group_name">Name</mat-label>
+                            <input matInput autocomplete="off"                
+                                required formControlName="name">
+                            <mat-error *ngIf="form.controls.name.invalid" i18n="@@required_field">This field is required</mat-error>
+                        </mat-form-field>
+        
+                        <mat-form-field appearance="outline">
+                                <mat-label i18n="@@description">Description</mat-label>
+                                <input matInput autocomplete="off" required formControlName="description">
+                                <mat-error *ngIf="form.controls.description.invalid" i18n="@@required_field">This field is required</mat-error>
+                            </mat-form-field>
+
+                            <div class="toggle-margin-top">
+                                <mat-slide-toggle [checked]="isSystemRole" (change)="changeSystemRole()" formControlName="isSystemRole">
+                                  {{isSystemRole ? 'Visível ao Cliente' : 'Somente Administrador'}}
+                                </mat-slide-toggle>
+                              </div>
+        
+                        <h2 i18n="@@Permissions">Group permissions</h2>
+                        <app-claims-form [currentClaims]="this.role.roleClaims"></app-claims-form>
+                        
+        
+                    </div> 
+
+                </mat-tab>  
+
+                <mat-tab i18n-label="@@Members" label="Members" [disabled]="canEditMembers">
+                    <div fxLayout="column" fxLayoutGap="16px">                             
+                        <div *ngIf="members.length==0" i18n="@@This_group_has_no_members">This group has no members</div>
+                        <mat-list>
+                            <mat-list-item *ngFor="let member of members"  class="with-hover no-cursor">
+                                <div>
+                                    <img [src]="member.avatarImageUrl" class="img-profile40"/>                                
+                                </div>
+                                <div class="member-name">
+                                    {{member.givenName}}
+                                </div>
+                                <div class="member-email">
+                                    ({{member.userNameAndEmail}})                                    
+                                </div>
+                                <div class="remove-member-button">
+                                    <mat-icon matListIcon color="warn" (click)="removeMember(member)" class="visible-on-parent-hover">remove_circle</mat-icon>
+                                </div>
+                            </mat-list-item>
+                        </mat-list>                        
+                        <button type="button" class="secondary" mat-button (click)="addMember()" i18n="@@Add_member" fxFlexAlign="start">Add member</button>
+                    </div>  
+                </mat-tab>
+            </mat-tab-group>
+
+            
+
+        </section>
+    </div>
+
+    <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+        <svg class="mark"><circle cx="16" cy="16" r="16" /></svg>
+        <button mat-raised-button color="primary" i18n="@@save_button" type="submit" fxFlexLayout="start"  appRequiredRoles="ROLE.WRITE">apply</button>
+        <button mat-button i18n="@@back_button" fxFlexLayout="start" type="button" routerLink="/security/roles">back</button>          
+    </section>    
+
+</form>
+

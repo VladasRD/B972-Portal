@@ -1,0 +1,28 @@
+.block-ui-layer {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 100000;
+}
+
+.block-ui-message {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    width: 200px;
+    margin-left: -100px;
+}
+
+.block-ui-message mat-spinner {
+    margin: auto;
+}
+
+.block-ui-message .text {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    font-size: 20px;
+    margin-top: 15px;
+    text-align: center;
+}

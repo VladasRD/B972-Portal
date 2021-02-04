@@ -1,0 +1,101 @@
+<form novalidate class="container" autocomplete="off">
+  <div class="body-content-top">
+    <section class="body-wrapper">
+
+      <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="/sgi/relatorio-comercial">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="buttonBoxArea right">
+          <button mat-button color="primary" (click)="printReport()" [disabled]="!outgoing">
+            <mat-icon>print</mat-icon>
+            <span>Imprimir</span>
+          </button>
+          <!-- <button mat-button color="primary" class="filterBoxAreaButton" title="filter"
+            (click)="showFilters = !showFilters;">
+            <mat-icon>tune</mat-icon>
+            <span>filter</span>
+          </button> -->
+        </div>
+      </div>
+
+      <div fxLayout="column" fxLayoutGap="16px">
+        <div class="mat-h1" style="text-align: center;">{{pageTitle}}</div>
+        <div class="mat-h1" style="text-align: center;">{{pageSubTitle}}</div>
+      </div>
+
+      <div fxLayout="column" fxLayoutGap="16px">
+
+        <h3><strong>Data</strong></h3>
+        <label>{{pageData}}</label>
+
+        <h3><strong>Faturamento e Quantidades</strong></h3>
+        <label>Total faturamento: {{outgoing.totalBilling | currency:'BRL':'R$'}}</label>
+        <label>Clientes ativos: {{outgoing.clientsActive}}</label>
+        <label>Licenças ativas: {{outgoing.licensesActive}}</label>
+        <label>Média mensal de licenças ativas: {{outgoing.averageLicensesActived}}</label>
+
+
+        <h3><strong>Tickets</strong></h3>
+        <label>Valor médio de faturamento por cliente: {{outgoing.averageForClient | currency:'BRL':'R$'}}</label>
+        <label>Valor médio de faturamento por licença de uso: {{outgoing.averageForLicenseClient | currency:'BRL':'R$'}}</label>
+
+
+        <h3><strong>Vendas por Cliente (Totais)</strong></h3>
+        <!--foreach de clientes-->
+        <div *ngFor="let client of clients">
+          <label><strong>{{client.name}}:</strong> {{client.total | currency:'BRL':'R$'}}</label>
+        </div>
+
+
+
+        <h3><strong>Despesas</strong></h3>
+        <h2><strong>Despesas totais de Infraestrutura</strong></h2>
+        <label>Desenvolvimento de novas funcionalidades: {{outgoing.developmentValue | currency:'BRL':'R$'}}</label>
+
+        <h2><strong>Despesas totais de serviços de terceiros</strong></h2>
+        <label>Operadoras (WND): {{outgoing.operationsWNDValue | currency:'BRL':'R$'}}</label>
+        <label>Data Center: {{outgoing.dataCenterValue | currency:'BRL':'R$'}}</label>
+        <label>Operação do Portal: {{outgoing.operationValue | currency:'BRL':'R$'}}</label>
+        <label>Total: {{outgoing.totalCosts | currency:'BRL':'R$'}}</label>
+
+
+
+        <h3><strong>Resumo</strong></h3>
+        <h2><strong>Totais</strong></h2>
+        <label>Faturamento: {{outgoing.totalBilling | currency:'BRL':'R$'}}</label>
+        <label>Despesas: {{outgoing.totalCosts | currency:'BRL':'R$'}}</label>
+        <label>Saldo: {{outgoing.saldo | currency:'BRL':'R$'}}</label>
+
+        <h2><strong>Média Mensal</strong></h2>
+        <label>Faturamento: {{outgoing.totalBilling / outgoing.month | currency:'BRL':'R$'}}</label>
+        <label>Despesas: {{outgoing.totalCosts / outgoing.month | currency:'BRL':'R$'}}</label>
+        <label>Saldo: {{outgoing.saldo / outgoing.month | currency:'BRL':'R$'}}</label>
+
+        <h2><strong>No Ano</strong></h2>
+        <label>Faturamento: {{outgoing.totalBillingYear | currency:'BRL':'R$'}}</label>
+        <label>Despesas: {{outgoing.totalCostsYear | currency:'BRL':'R$'}}</label>
+        <label>Saldo: {{outgoing.saldoYear | currency:'BRL':'R$'}}</label>
+
+        <h2><strong>Licenças</strong></h2>
+        <label>Faturamento médio por licença: {{outgoing.totalBillingAverageLicensesYear | currency:'BRL':'R$'}}</label>
+        <label>Despesa média por licença: {{outgoing.totalCostsAverageLicensesYear | currency:'BRL':'R$'}}</label>
+        <label>Saldo: {{outgoing.totalBillingAverageLicensesYear - outgoing.totalCostsAverageLicensesYear | currency:'BRL':'R$'}}</label>
+
+
+        <h3><strong>Conclusão</strong></h3>
+        <label>{{outgoing.description}}</label>
+
+        
+      </div>
+
+    </section>
+  </div>
+
+  <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+    <svg class="mark">
+      <circle cx="16" cy="16" r="16" /></svg>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="/sgi/relatorio-comercial">voltar</button>
+  </section>
+
+</form>

@@ -1,0 +1,30 @@
+<div class="container" fxLayout fxLayoutAlign="center center" fxLayoutGap="0px">
+    
+    <button type="button" mat-icon-button (click)="goToFirstPage()" style="width:24px;height: 24px; line-height: 24px"
+            [ngStyle]="{'visibility': isFirstPage ? 'hidden' : 'visible' }">
+        <mat-icon>first_page</mat-icon>
+    </button>    
+    
+    <button type="button" mat-icon-button (click)="goToPreviousPage()" style="width:24px;height: 24px; line-height: 24px"
+            [ngStyle]="{'visibility': isFirstPage ? 'hidden' : 'visible' }">
+        <mat-icon>navigate_before</mat-icon>
+    </button>    
+
+    <label>{{currentPage}}</label>&nbsp;
+    <div *ngIf="hasTotalPages">
+        <label i18n="@@of">of</label>&nbsp;
+        <label>{{totalPages}}</label>
+    </div>
+    
+    <button type="button" mat-icon-button (click)="goToNextPage()" style="width:24px;height: 24px; line-height: 24px"
+            [ngStyle]="{'visibility': isLastPage ? 'hidden' : 'visible' }">
+        <mat-icon>navigate_next</mat-icon>
+    </button>
+    
+    <button type="button" mat-icon-button (click)="goToLastPage()" style="width:24px;height: 24px; line-height: 24px"
+            *ngIf="hasTotalPages"
+            [ngStyle]="{'visibility': isLastPage ? 'hidden' : 'visible' }">
+        <mat-icon>last_page</mat-icon>
+    </button>    
+    
+</div>

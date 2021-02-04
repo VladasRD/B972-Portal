@@ -1,0 +1,60 @@
+<div class="body-content">
+  <section class="body-wrapper">
+    
+
+      <div class="headline" fxLayout>
+          <button mat-icon-button routerLink="/">
+              <mat-icon>arrow_back</mat-icon>
+          </button>
+          <div class="mat-h1" i18n="@@groups_title">Groups</div>
+          <div class="buttonBoxArea right">              
+              <button mat-raised-button color="primary" routerLink="new" appRequiredRoles="ROLE.WRITE">
+                  <mat-icon>add</mat-icon>
+                  <span i18n="@@add_button">new</span>
+              </button>
+              <button mat-button color="primary" class="filterBoxAreaButton" i18n-title="@@filter" title="filter" (click)="showFilters = !showFilters;">
+                  <mat-icon>tune</mat-icon>
+                  <span i18n="@@filter">filter</span>
+              </button>
+          </div>    
+      </div>
+
+    
+    <form *ngIf="showFilters" novalidate class="container filterBoxArea" fxLayout fxLayoutGap="10px"  fxLayout.xs="column">
+    
+      <mat-form-field appearance="outline" fxFlex="1 1">
+          <mat-label i18n="@@search_label" >Search</mat-label>
+          <input matInput i18n-placeholder="@@group_search_placeholder" placeholder="Type a group name or permission"
+              #searchBox id="search-box" (keyup)="filterIfNotMobile(searchBox.value)" (keyup.enter)="filter(searchBox.value)">
+          <mat-icon matSuffix>search</mat-icon>      
+        </mat-form-field>
+              
+    </form>
+
+  <div class="container resultsContainer" fxLayout="row wrap" fxLayout.xs="column"  >
+    <mat-card *ngFor="let group of results" routerLink="{{group.id}}" class="tile1x">
+      <mat-card-header style="overflow: hidden">
+          <div mat-card-avatar>
+              <mat-icon style="font-size: 38px" matListIcon>people</mat-icon>
+          </div>
+        <mat-card-title>{{group.name}}</mat-card-title>
+        <mat-card-subtitle>
+          {{group.description}}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-actions>
+          <strong class="system-role">
+            {{group.isSystemRole ? '*Perfil visível no cadastro de sub-clientes' : ''}}
+          </strong>
+      </mat-card-actions>
+    </mat-card>    
+  </div>
+
+  <h2 *ngIf="results.length==0 && !firstSearch" i18n="@@could_not_find_any_result">Could not find any result. Try to change your search.</h2>
+
+  <app-pagination [skip]="skip" [pageSize]="pageSize" [totalCount]="totalCount" (pageChanged)="pageChanged($event)" ></app-pagination> 
+
+
+    
+  </section>
+</div>

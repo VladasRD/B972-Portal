@@ -1,0 +1,59 @@
+<div *ngIf="isOpened" class="file-list-bg">
+  <div class="file-list-body dark-mode">    
+    <div class="headline" style="position: relative;" fxLayout>      
+      <div class="mat-h1" i18n="@@Media_gallery_header">
+        Media Gallery
+        <span class="head-folder">({{folder}})</span>
+      </div>
+      <button mat-icon-button (click)="close()" class="close-button">
+        <mat-icon>close</mat-icon>
+      </button>      
+  </div>
+
+    <form *ngIf="!isAtUploadMode" [formGroup]="form" novalidate class="container filterBoxArea" fxLayout="column">
+
+      <div fxLayout fxLayoutGap="10px" fxLayout="column">
+          
+          <mat-form-field appearance="outline" fxFlex="1 1" color="white">
+              <mat-label i18n="@@search_label">Search by file name</mat-label>
+              <input matInput i18n-placeholder="@@file_search_placeholder"
+                  placeholder="Search by file name" #searchBox id="search-box"
+                  (keyup)="filterIfNotMobile(searchBox.value)" (keyup.enter)="filter(searchBox.value)">
+              <mat-icon matSuffix>search</mat-icon>
+          </mat-form-field>
+
+      </div>
+    </form>
+
+    <button mat-button class="back-to-search" *ngIf="isAtUploadMode" i18n="@@Go_back_to_search" (click)="goToSearchMode()">back to search...</button>
+
+    <div *ngIf="filesAddedCount > 0" class="files-added-label">
+      <b>{{filesAddedCount}}</b>&nbsp;<span i18n="@@files_added">file(s) added</span>
+    </div>
+
+    <div class="container resultsContainer" fxLayout="row wrap" fxLayout.xs="column">
+      <div *ngIf="isAddButtonVisible" class="image-thumb add" (click)="showUploadDialog()">
+          <mat-icon>add</mat-icon>
+      </div>
+      <div *ngFor="let file of results" class="tile1x image-thumb  with-hover"
+        (click)="select(file)"
+        [ngStyle]="{'background': 'url(' + file.thumbUrl + ')'}">          
+        <span class="caption">{{file.fileName}}</span>    
+        
+        <mat-icon class="preview visible-on-parent-hover" (click)="preview(file, $event)">open_in_new</mat-icon>
+        <mat-icon 
+          appRequiredRoles="CMS_FILE.DELETE"
+          class="delete visible-on-parent-hover" color="warn" (click)="showConfirmDeleteDialog(file, $event)">delete_forever</mat-icon>        
+        
+        
+      </div>
+    </div>
+
+    <app-pagination 
+    *ngIf="!isAtUploadMode"
+    [skip]="skip" [pageSize]="pageSize" [totalCount]="totalCount" (pageChanged)="pageChanged($event)" >
+  </app-pagination> 
+
+  </div>
+</div>
+<input #fileInput type="file" hidden (change)="uploadFiles($event.target.files)" />

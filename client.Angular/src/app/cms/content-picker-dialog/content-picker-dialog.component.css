@@ -1,0 +1,16 @@
+.thumb {
+    width: 42;
+    height: 42px;
+}
+
+.content-location {
+    margin-top: 8px;
+    font-size: small;
+    font-style: italic;
+    color: gray;
+}
+
+.results {
+    overflow-y: scroll;
+    height: 350px;
+}

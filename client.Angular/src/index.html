@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <!-- IE and Edge URL too long issue-->
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <script>
+    if(/MSIE/i.test(navigator.userAgent) || /Edge\/\d./i.test(navigator.userAgent)){
+	    window.history.replaceState = function (){ console.log('Empty stub for history.replaceState()') }; 
+    } 
+  </script>
+  
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+  <title>RadioDados Analítica</title>
+  <base href="/">
+  <!-- <base href="/clientname/"> -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1976d2">
+
+  <!-- NEED THIS TO CMS  -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>  
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <!-- NEED THIS TO CMS  -->
+
+</head>
+<body class="customTheme">
+  <app-root></app-root>
+  <noscript>Please enable JavaScript to continue using this application.</noscript>
+</body>
+</html>

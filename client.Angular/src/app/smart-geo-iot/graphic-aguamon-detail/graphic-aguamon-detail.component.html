@@ -1,0 +1,28 @@
+<form novalidate class="container" [formGroup]="form" autocomplete="off">
+  <div class="body-content-top">
+    <section class="body-wrapper">
+
+      <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="/sgi/grafico">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1">{{pageTitle}}</div>
+      </div>
+
+      <div fxLayout="column">
+        <h2>Não existe gráfico para este dispositivo.</h2>
+      </div>
+      
+    </section>
+
+  </div>
+
+
+  <!-- <h2 *ngIf="dashboard===null">Nenhuma informação encontrada para o disposivo selecionado.</h2> -->
+
+  <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+    <svg class="mark">
+      <circle cx="16" cy="16" r="16" /></svg>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="">voltar</button>
+  </section>
+</form>

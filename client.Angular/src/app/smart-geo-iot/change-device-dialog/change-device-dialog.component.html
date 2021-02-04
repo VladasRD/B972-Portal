@@ -1,0 +1,44 @@
+<h2 mat-dialog-title>{{data.title}}</h2>
+<mat-dialog-content>
+  <form novalidate [formGroup]="form" fxLayoutGap="10px" fxLayout="row" class="mat-typography">
+    <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left" class="top-changes">
+      <mat-form-field appearance="outline" fxFlex="25%">
+        <mat-label>Número máximo de envios por dia</mat-label>
+        <input matInput autocomplete="off" maxlength="3" type="number" min="1" max="140" formControlName="numeroEnvios">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tempo de transmissão</mat-label>
+        <input matInput autocomplete="off" type="number" min="11" formControlName="tempoTransmissao">
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" fxFlex="20%">
+        <mat-label>Transmissão em</mat-label>
+        <mat-select formControlName="tipoEnvio">
+          <mat-option value="false">Segundos</mat-option>
+          <mat-option value="true">Minutos</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" fxFlex="15%">
+        <mat-label>Tensão mínima</mat-label>
+        <input matInput autocomplete="off" maxlength="3" type="number" min="0" max="255" formControlName="tensaoMinima">
+      </mat-form-field>
+    </div>
+  </form>
+
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left" class="top-changes">
+    <p *ngIf="data.message" class="subMessage">{{data.message}}</p>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <div>
+    <button mat-raised-button color="primary" mat-dialog-close cdkFocusInitial="true">
+      Não
+    </button>
+    <button mat-button [mat-dialog-close]="closeReturn">
+      Sim
+    </button>
+  </div>
+</mat-dialog-actions>

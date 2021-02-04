@@ -1,0 +1,16 @@
+<form [formGroup]="form">               
+    <mat-list dense>
+        <ng-container *ngFor="let s of modulesFormArray.controls; let si = index">
+            <div style="float: left">
+                <h3 matSubheader>
+                    <mat-icon style="margin-right: 10px">{{modules[si].moduleIcon}}</mat-icon>
+                    {{modules[si].moduleName}}
+                </h3>   
+                <mat-list-item *ngFor="let c of s.controls; let ci = index">
+                    <mat-checkbox [formControl]="c"
+                    [checked]="userHasThisClaim(modules[si].moduleClaims[ci].claimValue)">{{modules[si].moduleClaims[ci].claimDescription}}</mat-checkbox>
+                </mat-list-item>
+            </div>                            
+        </ng-container>
+    </mat-list>
+</form>

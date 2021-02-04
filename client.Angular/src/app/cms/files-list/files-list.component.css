@@ -1,0 +1,77 @@
+.file-list-bg {
+    position: fixed;
+    top: 0px; left: 0px; right: 0px; bottom: 0px;
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.file-list-body {
+    margin: 83px 80px 20px 80px;
+    color: white!important;
+}
+
+.close-button {
+    position: absolute;
+    right: 0px;
+}
+
+.image-thumb {
+    width: 150px;
+    height: 150px;    
+    overflow: hidden;
+    position: relative;
+    padding: 0px!important;    
+    background-repeat: round!important;
+}
+.image-thumb .caption {
+    position: absolute;
+    left: 0px; right: 0px; bottom: 0px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 3px;
+}
+
+.head-folder {
+    font-size: 16px;
+}
+
+.files-added-label {
+    margin-bottom: 12px;
+}
+
+.add {
+    width: 100px; height: 100px;
+    margin: 25px 49px 49px 25px;
+    position: relative;
+    border: white dotted 2px;
+}
+.add:hover {
+    background-color: transparent!important;    
+    outline: transparent;
+    border: #0277bd dotted 2px;
+}
+.add:hover mat-icon {
+    color: #0277bd;
+}
+.add mat-icon {
+    transform: scale(2.0);
+    color: white;
+    position: absolute;
+    top:50%; left: 50%;
+    margin-left: -12px;
+    margin-top: -12px;
+    cursor: pointer;
+}
+
+.back-to-search {
+    margin-bottom: 20px;
+}
+
+.preview {
+    position: absolute;
+    top: 2px; right: 2px;    
+}
+
+.delete {
+    position: absolute;
+    bottom: 2px; right: 2px;    
+}

@@ -1,0 +1,161 @@
+<form novalidate class="container" [formGroup]="form" (ngSubmit)="saveUser(form.value)" autocomplete="off">
+
+    <div class="body-content-top">    
+        <section class="body-wrapper">
+            
+            <div class="headline" fxLayout>
+                <button mat-icon-button routerLink="/security/users">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div class="mat-h1">{{pageTitle}}</div>
+
+                <div class="buttonBoxArea right">
+                    <button mat-button type="button" color="primary" (click)="lockUser()" *ngIf="!user.isLockedout && !isNewUser" appRequiredRoles="USER.WRITE">
+                        <mat-icon>block</mat-icon>
+                        <span i18n="@@lockUser_button">Lock</span>
+                    </button>
+                    <button mat-button type="button" color="primary" (click)="openConfirmDeleteDialog()" appRequiredRoles="USER.WRITE" *ngIf="!isNewUser">
+                        <mat-icon>delete</mat-icon>
+                        <span i18n="@@delete_button">Remove</span>
+                    </button>            
+                </div>
+            </div>
+            
+                <!-- LOCKED ALERT -->
+                <div *ngIf="user.isLockedout" class="mat-warn-bgcolor" fxLayout="row" fxLayout.xs="column" fxLayoutGap="16px" style="padding: 16px">
+                    <mat-icon fxFlexAlign="center">block</mat-icon>
+                    <div fxFlexAlign="center" fxFlex="1 1">
+                        <span i18n="@@lockoutUserMessage">This user is locked out until</span>&nbsp;
+                        <span style="font-weight: bold">{{user.lockoutEnd | date:'medium'}}</span>.            
+                    </div>            
+                    <button fxFlexAlign="center end"  mat-button i18n="@@unlock" type="button" (click)="unlockUser()">unlock</button>            
+                </div>
+
+                <!-- TABS-->
+                <mat-tab-group dynamicHeight="true">
+
+
+                    <!-- IDENTITY -->
+                    <mat-tab i18n-label="@@User_identity" label="Identity">
+
+                        <div fxLayout fxLayoutGap="24px">
+                            
+                            <div fxLayout="column" fxLayoutGap="16px" fxFlex="1 1 100%">
+
+                                <mat-form-field appearance="outline">
+                                        <mat-label i18n="@@user_email">User e-mail</mat-label>
+                                        <input matInput required type="email" formControlName="email" (focusout)="autoFillGivenName()">
+                                        <mat-error *ngIf="form.controls.email.invalid" i18n="@@invalid_email">Provide a valid email</mat-error>
+                                </mat-form-field>
+                        
+                                <mat-form-field appearance="outline">
+                                    <mat-label i18n="@@user_givenName">User full name</mat-label>
+                                    <input matInput autocomplete="off" required formControlName="givenName">
+                                    <mat-error *ngIf="form.controls.givenName.invalid" i18n="@@required_field">This field is required</mat-error>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline">
+                                    <mat-label i18n="@@NT_Login">NT Login (optional: use only for Windows Domain Authentication)</mat-label>
+                                    <input matInput autocomplete="off" formControlName="loginNT">                            
+                                </mat-form-field>
+                            
+                                <mat-form-field appearance="outline" style="max-width: 450px;">
+                                    <mat-label i18n="@@user_phoneNumber">Phone number</mat-label>
+                                    <input matInput autocomplete="off" formControlName="phoneNumber">
+                                </mat-form-field>
+                        
+                                <mat-form-field appearance="outline" style="max-width: 450px;">
+                                    <mat-label i18n="@@set_password">Set password</mat-label>
+                                    <input matInput type="password" autocomplete="off" autocomplete="new-password" formControlName="cleanPassword">
+                                    <mat-error *ngIf="!form.controls.cleanPassword.valid" i18n="@@password_rules">
+                                        Must have at least one lowercase, one uppercase, one digit and one non alphanumeric character.
+                                    </mat-error>
+                                </mat-form-field>
+
+                            </div>      
+                            
+                            <div fxHide.xs fxFlex="1 1 25%">
+                                <img *ngIf="user.id" [src]="user.avatarImageUrl" class="img-profile150" style="display: block; margin: auto"/>
+                                <br/>
+                                <p i18n="@@GravatarHelp">User picture is provided by Gravatar.</p>
+                                <a href="https://gravatar.com" target="_blank">https://gravatar.com</a>
+                            </div>
+                        </div>
+                        
+                        
+                    </mat-tab>
+
+                    <!-- GROUPS -->
+                    <mat-tab i18n-label="@@User_groups" label="Groups">
+
+                        <div fxLayout="column" fxLayoutGap="16px">
+
+                            <div *ngIf="userRoles!=null && userRoles.length==0" i18n="@@user_does_not_belong_to_any_group">User does not belong to any group.</div>
+
+                            <mat-list>
+                                <mat-list-item *ngFor="let role of userRoles" (click)="removeRoleFromUser(role)"  class="with-hover">
+                                    
+                                    <div>
+                                        <mat-icon matListIcon>people</mat-icon>    
+                                    </div>
+                                    <div class="role-detail">                                        
+                                        <div><b>{{role.name}}</b></div>
+                                        <div>{{role.description}}</div>
+                                    </div>
+                                    <div class="remove-role-button">
+                                        <mat-icon matListIcon color="warn" class="visible-on-parent-hover">remove_circle</mat-icon>
+                                    </div>
+                                    
+                                </mat-list-item>
+                            </mat-list>
+                            
+                            <a i18n="@@add_groups" [routerLink]="" (click)="isGroupPanelVisible = !isGroupPanelVisible" >add groups</a>
+                                    
+                            <div id="addGroupsPanel" *ngIf="isGroupPanelVisible">
+
+                                <h2 i18n="@@groups_to_add">groups to add</h2>
+                    
+                                <div *ngIf="otherRoles!=null && otherRoles.length==0" i18n="@@There_are_no_groups_to_add">There are no groups to add.</div>
+                        
+                                <mat-list>
+                                    <mat-list-item *ngFor="let role of otherRoles" (click)="addRoleToUser(role)" class="with-hover">
+                                        
+                                        <div>
+                                            <mat-icon matListIcon>people</mat-icon>    
+                                        </div>
+                                        <div class="role-detail">                                        
+                                            <div><b>{{role.name}}</b></div>
+                                            <div>{{role.description}}</div>
+                                        </div>
+                                        <div class="add-role-button">
+                                            <mat-icon matListIcon color="primary" class="visible-on-parent-hover">add_circle</mat-icon>
+                                        </div>
+
+                                    </mat-list-item>
+                                </mat-list>
+                
+                            </div>
+
+                        </div>
+
+                    </mat-tab>     
+
+                    <!-- PERMISSIONS -->   
+                    <mat-tab i18n-label="@@Permissions" label="Permissions">
+                        <app-claims-form [currentClaims]="this.user.userClaims"></app-claims-form>
+                    </mat-tab>
+                </mat-tab-group>    
+            
+            
+
+
+        </section>
+    </div>    
+
+    <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+        <svg class="mark"><circle cx="16" cy="16" r="16" /></svg>
+        <button mat-raised-button color="primary" i18n="@@save_button" type="submit" fxFlexLayout="start" appRequiredRoles="USER.WRITE">apply</button>
+        <button mat-button i18n="@@back_button" fxFlexLayout="start" type="button" routerLink="/security/users">back</button>            
+    </section>
+    
+</form>

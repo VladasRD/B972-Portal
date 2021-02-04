@@ -1,0 +1,58 @@
+<form novalidate class="container" [formGroup]="form" (ngSubmit)="saveDeviceRegistration()" autocomplete="off">
+
+  <div class="body-content-top">
+    <section class="body-wrapper">
+
+      <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="/sgi/dispositivos">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1">{{pageTitle}}</div>
+
+        <div class="buttonBoxArea right" *ngIf="!isNewDeviceRegistration">
+          <button mat-button type="button" color="primary" (click)="openConfirmDeleteDialog()">
+            <mat-icon>delete</mat-icon>
+            <span>Remover</span>
+          </button>
+        </div>
+      </div>
+
+      <div fxLayout="column" fxLayoutGap="16px">
+
+        <mat-form-field floatLabel="outline" appearance="outline" fxFlexAlign.xs="stretch">
+          <mat-label>Dispositivo</mat-label>
+          <mat-select formControlName="deviceId">
+            <mat-option *ngFor="let device of listDevicesFilter" [value]="device.id">{{device.getDeviceNameId}}</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls.deviceId.invalid">Campo obrigatório</mat-error>
+        </mat-form-field>
+
+        <app-package-select [control]="form.controls.packageUId"></app-package-select>
+
+        <app-project-select [control]="form.controls.projectUId"></app-project-select>
+        
+        <mat-form-field appearance="outline">
+          <mat-label>Nome</mat-label>
+          <input matInput autocomplete="off" required maxlength="500" formControlName="name">
+          <mat-error *ngIf="form.controls.name.invalid">Campo obrigatório</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Nome amigável</mat-label>
+          <input matInput autocomplete="off" required formControlName="nickName">
+          <mat-error *ngIf="form.controls.nickName.invalid">Campo obrigatório</mat-error>
+        </mat-form-field>
+        
+      </div>
+
+    </section>
+  </div>
+
+  <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+    <svg class="mark">
+      <circle cx="16" cy="16" r="16" /></svg>
+    <button mat-raised-button color="primary" type="submit" fxFlexLayout="start">salvar</button>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="/sgi/dispositivos">voltar</button>
+  </section>
+
+</form>

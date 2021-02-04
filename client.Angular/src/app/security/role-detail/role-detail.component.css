@@ -1,0 +1,15 @@
+.member-name {
+    margin-left: 15px;
+}
+.member-email {
+    margin-left: 8px;
+    color: gray;
+}
+.remove-member-button {
+    position: absolute;
+    right: 12px;
+    cursor: pointer!important;
+}
+.no-cursor {
+    cursor: default!important;
+}

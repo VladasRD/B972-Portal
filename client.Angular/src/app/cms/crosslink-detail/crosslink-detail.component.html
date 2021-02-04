@@ -1,0 +1,30 @@
+<h2>{{area.area}}</h2>
+<p>
+  {{area.description}}
+</p>
+<div fxLayout="row wrap" fxLayout.xs="column">
+
+  <mat-card *ngFor="let content of contents" routerLink="/cms/contents/{{content.kind}}/{{content.contentUId}}" class="tile1x content-card with-hover">            
+    <div class="content-image">
+        <img [src]="content.thumbUrl"  />
+        <div *ngIf="content.pageView !== '0' && content.isPublished" class="page-view" title="page views" >
+            {{content.pageView}}
+        </div>
+        <div *ngIf="!content.isPublished" class="not-published mat-warn-bgcolor" i18n="@@not_published">not published</div>
+    </div>            
+    <mat-card-header>                
+        <mat-card-title>{{content.name}}</mat-card-title>                
+    </mat-card-header>             
+    <div class="action-panel visible-on-parent-hover">
+      <mat-icon *ngIf="canMoveUp(content)" (click)="move(content, 1, $event)">arrow_back</mat-icon>
+      <mat-icon *ngIf="canMoveDown(content)"  (click)="move(content, -1, $event)">arrow_forward</mat-icon>
+      <mat-icon color="primary" (click)="remove(content, $event)" >remove_circle</mat-icon>
+    </div>    
+  </mat-card>
+  
+  <div class="with-hover add" (click)="pickContent()">
+      <mat-icon>add</mat-icon>
+  </div>
+  
+  
+</div>

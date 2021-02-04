@@ -1,0 +1,11 @@
+.user-name {
+    color: gray;
+}
+
+.given-name {
+    font-weight: bold;
+}
+
+.add-button {
+    width: 100px;
+}

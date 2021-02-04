@@ -1,0 +1,44 @@
+<div fxLayoutGap="10px" fxLayout="column"  class="mat-typography">
+
+    <mat-form-field appearance="outline" fxFlex="1 1">
+        <mat-label i18n="@@search_label">Search</mat-label>
+        <input matInput i18n-placeholder="@@content_search_placeholder"
+            placeholder="Search by Content name, description or cross-link" #searchBox id="search-box"
+            (keyup)="filterIfNotMobile(searchBox.value)" (keyup.enter)="filter(searchBox.value)">
+        <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
+
+    <h2 *ngIf="results.length==0 && !firstSearch" i18n="@@could_not_find_any_result">Could not find any result. Try to change your search.</h2>
+
+    <mat-table *ngIf="results.length > 0" [dataSource]="results" class="with-hover results">
+
+        <ng-container matColumnDef="thumb">            
+            <mat-cell *matCellDef="let element" fxFlex="100px">
+                <img class="thumb" [src]="element.thumbUrl"  />
+            </mat-cell>
+        </ng-container>
+    
+        <ng-container matColumnDef="name">            
+            <mat-cell *matCellDef="let element">
+              <div style="display: block">
+                  <div>{{element.name}}</div>
+                  <div class="content-location">{{element.location}}</div>
+              </div>              
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="link">            
+            <mat-cell *matCellDef="let element" fxFlex="50px" class="visible-on-parent-hover">
+                <a target="_blank" routerLink="/cms/contents/{{element.kind}}/{{element.contentUId}}"
+                (click)="$event.stopPropagation();" i18n="@@view">view</a>
+            </mat-cell>
+        </ng-container>
+
+        <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="pick(row)"></mat-row>
+    
+        
+    </mat-table>
+
+    <div *ngIf="results.length >=7" i18n="@@for_more_results_refine_your_search">for more results refine your search</div>
+
+</div>

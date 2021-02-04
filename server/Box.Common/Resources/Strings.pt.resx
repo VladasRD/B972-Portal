@@ -1,0 +1,246 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="...or use another service" xml:space="preserve">
+    <value>...ou use outro serviço</value>
+  </data>
+  <data name="Provide your credentials" xml:space="preserve">
+    <value>Informe suas credenciais</value>
+  </data>
+  <data name="Forgot your password?" xml:space="preserve">
+    <value>Esqueceu sua senha?</value>
+  </data>
+  <data name="Invalid login attempt" xml:space="preserve">
+    <value>Tentativa inválida de login</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Senha</value>
+  </data>
+  <data name="Remember me?" xml:space="preserve">
+    <value>Lembrar-me?</value>
+  </data>
+  <data name="Sign in" xml:space="preserve">
+    <value>Entrar</value>
+  </data>
+  <data name="This field is required" xml:space="preserve">
+    <value>Campo obrigatório</value>
+  </data>
+  <data name="This is not a valid e-mail address" xml:space="preserve">
+    <value>Não é um e-mail válido</value>
+  </data>
+  <data name="User not allowed" xml:space="preserve">
+    <value>Usuário não permitido</value>
+  </data>
+  <data name="You do not have access to this application. Please contact support." xml:space="preserve">
+    <value>Você não possui acesso a essa aplicação. Por favor, entre em contato com o suporte.</value>
+  </data>
+  <data name="return to login page" xml:space="preserve">
+    <value>retornar</value>
+  </data>
+  <data name="Locked out account" xml:space="preserve">
+    <value>Conta bloqueada</value>
+  </data>
+  <data name="This account has been locked out, please try again later." xml:space="preserve">
+    <value>Por motivos de segurança, essa conta foi bloqueada. Por favor tente novamente mais tarde.</value>
+  </data>  
+  <data name="Enter your email" xml:space="preserve">
+    <value>Informe seu email</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Enviar</value>
+  </data>    
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="ResetPasswordSubject" xml:space="preserve">
+    <value>{0} - Redefinir senha</value>
+  </data>
+  <data name="Access denied" xml:space="preserve">
+    <value>Acesso negado</value>
+  </data>
+  <data name="You do not have access to this resource." xml:space="preserve">
+    <value>Você não tem permissão para acessar esse recurso.</value>
+  </data>
+  <data name="Signed out." xml:space="preserve">
+    <value>Saiu</value>
+  </data>
+  <data name="You have successfully signed out." xml:space="preserve">
+    <value>Você saiu do sistema com sucesso.</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Início</value>
+  </data>
+  <data name="Sign in with a differnt account" xml:space="preserve">
+    <value>Entrar com uma conta diferente</value>
+  </data>
+  <data name="You are logeed in as {0}" xml:space="preserve">
+    <value>Você entrou como {0}</value>
+  </data>  
+  <data name="Reset password" xml:space="preserve">
+    <value>Reconfigurar sua senha</value>
+  </data>  
+  <data name="Confirm Password" xml:space="preserve">
+    <value>Confirme sua senha</value>
+  </data>  
+  <data name="Reset" xml:space="preserve">
+    <value>Reconfigurar</value>
+  </data>  
+  <data name="New password" xml:space="preserve">
+    <value>Nova senha</value>
+  </data>  
+  <data name="The password and confirmation password do not match" xml:space="preserve">
+    <value>A senha não confere com a senha digitada</value>
+  </data>  
+  <data name="It must be at least {2} and at max {1} characters long" xml:space="preserve">
+    <value>Deve ter ao menos {2} e no máximo {1} caracteres</value>
+  </data>  
+  <data name="Your password has been reset." xml:space="preserve">
+    <value>Sua senha foi reconfigurada com sucesso.</value>
+  </data>  
+  <data name="Please" xml:space="preserve">
+    <value>Por favor</value>
+  </data>  
+  <data name="click here to log in" xml:space="preserve">
+    <value>clique aqui para entrar</value>
+  </data>  
+  <data name="Please check your email to reset your password." xml:space="preserve">
+    <value>
+    <![CDATA[
+    <p>
+    Enviamos um email com instruções para você reconfigurar sua senha.
+    </p>
+    <p>
+    Por favor, verifique seu email para dar continuidade.
+    </p>
+    ]]>
+    </value>
+  </data>  
+  <data name="PasswordChangedSubject" xml:space="preserve">
+    <value>{0} - Sua senha foi alterada</value>
+  </data>
+  <data name="UNUSED_FILES_REMOVED" xml:space="preserve">
+    <value>Arquivos não utilizados apagados.</value>
+  </data>
+  <data name="FILE_REMOVE_0_1" xml:space="preserve">
+    <value>Arquivo {0} apagado do de {1}.</value>
+  </data>
+  <data name="FILE_UPLOAD" xml:space="preserve">
+    <value>Arquivo enviado para pasta {0}.</value>
+  </data>  
+</root>

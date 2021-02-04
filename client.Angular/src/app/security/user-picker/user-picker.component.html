@@ -1,0 +1,16 @@
+<ul class="user-list">
+  <li *ngFor="let user of _users">    
+    <div class="user with-hover" [title]="user.userNameAndEmail">
+        <div class="user-avatar">
+            <img [src]="user.avatarImageUrl" class="img-profile"/>
+        </div>
+        <div class="user-info">{{user.givenName}}</div>        
+        <mat-icon class="remove-button" (click)="removeUser(user, $event)" >clear</mat-icon>
+    </div>
+    
+  </li>
+</ul>
+
+<button type="button" mat-button class="add-button" (click)="pickUser($event)" color="primary" *ngIf="canAddUser">
+  <mat-icon>add</mat-icon>  
+</button>

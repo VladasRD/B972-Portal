@@ -1,0 +1,20 @@
+<input #fileInput type="file" hidden multiple (change)="addFilesToUpload($event.target.files)" placeholder="Upload file..."/>
+
+<ul #fileList class="fileList"
+    [class.isDragging]="isDragging"
+    draggable="true" (drop)="onDrop($event)" (dragover)="onDragover($event)" (dragleave)="onDragleave($event)">
+  <li *ngFor="let file of _files" class="with-hover" [class.tile]="mode=='tile'">
+    <div class="thumb" [class.tile]="mode=='tile'">
+      <img [src]="file.thumbUrl" />
+    </div>    
+    <div class="fileName" [class.tile]="mode=='tile'">
+      <a *ngIf="file.sent" [href]="file.url" (click)="$event.stopPropagation();" target="_blank">{{file.fileName}}</a>
+      <span *ngIf="!file.sent">{{file.fileName}}</span>
+    </div>    
+    <mat-icon class="visible-on-parent-hover remove-icon"  [class.tile]="mode=='tile'" (click)="removeFile(file); $event.stopPropagation();">clear</mat-icon>    
+  </li>
+</ul>
+<button mat-button class="gallery-button" *ngIf="isMediaGalleryLinkVisible" (click)="openMediaGallery($event)" color="primary">
+  <mat-icon>photo_library</mat-icon>
+  <span>{{mediaGalleryPlaceHolder}}</span>
+</button>

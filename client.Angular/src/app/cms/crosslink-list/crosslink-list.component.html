@@ -1,0 +1,18 @@
+<div class="body-content">
+    <section class="body-wrapper">
+        
+    <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="/">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1" i18n="@@Crosslinks">Crosslinks</div>      
+    </div>
+
+    <div class="container resultsContainer" fxLayout="column">
+        <div *ngFor="let area of crosslinkAreas" >                      
+            <app-crosslink-detail [area]="area"></app-crosslink-detail>       
+        </div>
+    </div>
+
+    </section>
+</div>

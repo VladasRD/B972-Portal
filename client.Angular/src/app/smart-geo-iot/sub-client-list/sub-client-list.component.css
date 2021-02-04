@@ -1,0 +1,7 @@
+.active {
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+}
+.small-font {
+    font-size: 13px;
+}

@@ -1,0 +1,137 @@
+<div class="body-content">
+  <section class="body-wrapper">
+
+    <div class="headline" fxLayout>
+      <div class="mat-h1">
+        Relatório <span class="titleDevice">do dispositivo {{deviceFilter}}</span>
+      </div>
+      <div class="buttonBoxArea right">
+        <button mat-button type="button" color="primary" (click)="cleanFilterDate()" [disabled]="!form.valid">
+          <mat-icon>clear</mat-icon>
+          <span>Limpar datas</span>
+        </button>
+        <button mat-button color="primary" (click)="printReport()" [disabled]="!form.valid || results.length==0">
+          <mat-icon>print</mat-icon>
+          <span>Imprimir</span>
+        </button>
+        <button mat-button type="button" color="primary" (click)="exportToExcel()"
+          [disabled]="!form.valid || results.length==0">
+          <mat-icon>cloud_download</mat-icon>
+          <span>Exportar</span>
+        </button>
+        <button type="submit" mat-raised-button type="button" color="primary" (click)="searchReports()"
+          [disabled]="!form.valid">
+          <mat-icon>visibility</mat-icon>
+          <span>Visualizar</span>
+        </button>
+        <button mat-button color="primary" class="filterBoxAreaButton" title="filter"
+          (click)="showFilters = !showFilters;">
+          <mat-icon>tune</mat-icon>
+          <span>filter</span>
+        </button>
+      </div>
+    </div>
+    <p class="subTitle">Informe os campos obrigatórios e depois clique em <b>Visualizar</b> para ver o relatório.</p>
+
+    <form *ngIf="showFilters" [formGroup]="form" class="container filterBoxArea preserve-margin" fxLayout
+      fxLayoutGap="10px" fxLayout.xs="column">
+
+      <app-device-select project="12" [control]="form.controls.deviceFilter"></app-device-select>
+
+      <mat-form-field appearance="outline" fxFlex="15%">
+        <mat-label>Status</mat-label>
+        <mat-select formControlName="statusType" placeholder="Selecione o status que deseja visualizar">
+          <mat-option value="null">Todos</mat-option>
+          <mat-option value="true">Somente bloqueios</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-card-content fxLayout="row" fxLayoutGap="10px" fxLayout.xs="column">
+        <mat-form-field appearance="outline">
+          <mat-label>De</mat-label>
+          <mat-datepicker-toggle matPrefix [for]="startPicker"></mat-datepicker-toggle>
+          <input matInput [matDatepicker]="startPicker" formControlName="startPeriod">
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Até</mat-label>
+          <mat-datepicker-toggle matPrefix [for]="endPicker"></mat-datepicker-toggle>
+          <input matInput [matDatepicker]="endPicker" formControlName="endPeriod" placeholder="Até">
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+      </mat-card-content>
+    </form>
+
+    <div *ngIf="results.length > 0" class="container">
+      <mat-table [dataSource]="results" class="mat-elevation-z4" style="margin-bottom: 20px; clear:both;">
+
+        <ng-container matColumnDef="data">
+          <mat-header-cell fxFlex="10%" *matHeaderCellDef>Data</mat-header-cell>
+          <mat-cell fxFlex="10%" *matCellDef="let element" class="small-font">
+            {{element.date | date: 'short'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="estado">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Estado do detector</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.nameEstadoDetector}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="alimentacao">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Alimentação</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.alimentacao != null ? element.alimentacao + ' V': 'N/A'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="temperatura">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Temperatura</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.temperature != null ? element.temperature + ' °C' : 'N/A'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="contCarencia">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Contador de carências</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.contadorCarencias}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="contBloqueio">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Contador de bloqueios</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.contadorBloqueios}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="tipoEnvio">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Tipo de envio / Tempo</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.bits.tipoEnvio ? 'Por evento' : 'Por tempo'}} /
+            {{element.bits.baseTempoUpLink ? element.periodoTransmissao + ' Minutos' : element.periodoTransmissao + ' Segundos'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="bloqueio">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Bloqueio / Ras Out</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.bits.estadoBloqueio ? 'Sim' : 'Não'}} / {{element.bits.estadoSaidaRastreador ? 'Sim' : 'Não'}}
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+
+    <h2 *ngIf="results.length==0 && !firstSearch">Nenhum resultado encontrado. Tente alterar sua pesquisa.</h2>
+
+    <app-pagination [skip]="skip" [pageSize]="pageSize" [totalCount]="totalCount" (pageChanged)="pageChanged($event)">
+    </app-pagination>
+
+  </section>
+</div>

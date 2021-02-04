@@ -1,0 +1,51 @@
+{
+  "index": "/index.html",
+  "assetGroups": [
+      {
+      "name": "appshell",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/*.css",
+          "/*.js"
+        ]}
+    }, 
+    {
+    "name": "assets",
+    "installMode": "lazy",
+    "updateMode": "prefetch",
+    "resources": {
+      "files": [
+        "/assets/**"
+      ]
+    },
+    "urls": [      
+      "https://fonts.googleapis.com/css?family=Material+Icons",
+      "https://fonts.gstatic.com/s/materialicons/v29/2fcrYFNaTjcS6g4U3t-Y5UEw0lE80llgEseQY3FEmqw.woff2"
+    ]
+    }
+  ],
+  "dataGroups": [
+    {
+    "name": "api-freshness",
+    "urls": ["/api"],
+    "cacheConfig": {
+      "maxSize": 100,
+      "maxAge": "3d",
+      "timeout": "1m",
+      "strategy": "freshness"
+    }
+  },
+  {
+    "name": "server-pages",
+    "urls": ["/connect", "/account", "/Account", "signin-google", "signin-microsoft", "signin-windows"],
+    "cacheConfig": {
+      "maxSize": 0,
+      "maxAge": "0u",
+      "strategy": "freshness"
+    }
+  }  
+  ]
+}

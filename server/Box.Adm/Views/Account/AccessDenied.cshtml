@@ -1,0 +1,10 @@
+﻿@using Microsoft.Extensions.Localization
+@inject IStringLocalizer<Box.Common.Strings> Strings
+@{
+    Layout = "~/Views/Shared/_CardLayout.cshtml";
+    ViewData["Title"] = Strings["Access denied"];
+}
+
+
+<p class="text-danger">@Strings["You do not have access to this resource."]</p>
+

@@ -1,0 +1,563 @@
+@import './stylesCustom.scss';
+
+/* Body --------------------------------*/
+body {
+    overflow-y:hidden;    
+}
+
+
+mat-sidenav-content {
+    background: rgb(220, 220, 220);
+}
+
+.body-content {
+    background-color: white;    
+    padding-bottom: 30px;
+    padding-top: 20px;
+    height: auto;
+    min-height: 100%;
+    box-sizing: border-box;    
+    bottom: 0px;
+}
+
+.body-content-top {
+    background-color: white;
+    padding-bottom: 30px;
+    padding-top: 20px;
+}
+
+
+.body-content-bottom {    
+    padding: 20px 0px 60px 0px;
+    position: relative;       
+}
+
+.body-content-bottom .mark {
+    position: absolute;
+    top: -14px;
+    left: 8px;
+    height: 16px;
+    width: 32px;
+    
+}
+.body-content-bottom .mark circle {
+    fill: rgb(220, 220, 220);
+    stroke-width: 0px;    
+}
+
+
+mat-sidenav-container {
+    position: absolute !important; top: 56px; bottom: 0px; left:0px; right: 0px; height: auto; min-height: auto;
+}
+@media screen and (min-width: 601px) {
+    mat-sidenav-container {
+        top: 64px; 
+    }
+}
+
+.mat-toolbar.mat-primary{
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 9;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.24);
+}
+
+.mat-progress-bar {
+    z-index: 100;
+}
+
+
+  /*-----------------------------------*/
+
+@media screen and (min-width: 1280px) {
+    .body-wrapper {
+        max-width: 1272px; width: 100%;
+        margin-left: auto; margin-right: auto;        
+    }
+}
+
+@media screen and (max-width: 1279px) {
+    .body-wrapper {        
+        width: calc(100% - 80px);
+        margin-left: 40px; margin-right: 40px;
+    }   
+}
+
+@media screen and (max-width: 600px) {
+    .body-wrapper {  
+        width: calc(100% - 24px);      
+        margin-left: 12px; margin-right: 12px;
+    }   
+}
+
+.app-name {
+    font-size: 16px;
+}
+
+@media screen and (max-width: 600px) {
+    .app-name {
+        font-size: 14px;
+    }
+}
+
+.headline .mat-h1 {
+    height: 40px; line-height: 40px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+@media screen and (max-width: 600px) {
+    .headline .mat-h1 {
+        font-size: 20px;         
+    }
+}
+
+/* Tiles -----------------------------*/
+.tile1x {
+    width: 256px;
+    height: auto;
+    margin-right: 24px; margin-bottom: 24px;
+    border-radius: 0px!important;        
+    border: none;
+    padding: 20px!important;
+    cursor: pointer;
+}
+
+.tile1x .mat-card-title {
+    font-size: 14px;
+    max-height: 40px;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.tile1x .mat-card-subtitle {
+    font-size: 12px;
+    max-height: 40px;
+    overflow: hidden; 
+    text-overflow: ellipsis;
+}
+
+.tile100 {
+    width: auto!important;
+}
+
+.tile1x:hover, .tile100:hover, .tile:hover {        
+    //background-color: #FCFCFC;    
+    background-color: $customHover;
+    outline: 3px solid mat-color($customTheme-primary);
+}
+
+.resultsContainer {    
+    margin-right: -24px;
+}
+
+
+@media screen and (max-width: 600px) {
+    .tile1x {
+        width: calc(100% - 40px);
+        margin-right: 0px;
+    }
+    .resultsContainer {    
+        margin-right: 0px;
+    }
+}
+
+/* Menus -----------------------------*/
+.customTheme .mat-menu-panel {
+    border-radius: 0px;
+}
+.customTheme .mat-menu-text {
+    padding: 0px 16px;
+    overflow: hidden;
+    font-family: Roboto,"Helvetica Neue",sans-serif;
+    font-size: 16px;
+    line-height: 48px; height: 48px;
+    vertical-align: middle;
+}
+
+/* Top Buttons -----------------------------*/
+.customTheme .top-button {
+    border-radius: 3px;
+    line-height: 64px; height: 64px;
+    min-width: auto;
+}
+
+
+@media screen and (max-width: 583px) {
+    .customTheme .top-button { 
+        line-height: 56px; height: 56px;
+    }
+}
+
+/* Buttons ------------------------*/
+.customTheme .mat-button, .mat-raised-button {
+    border-radius: 3px!important
+}
+.customTheme .mat-button.secondary {
+    background-color: rgb(224, 224, 224);
+}
+
+/* Form Fields -----------------------------*/
+.customTheme .mat-form-field-appearance-fill .mat-form-field-flex {
+    border-radius: 0px;
+}
+.customTheme .mat-form-field.no-border .mat-form-field-underline {
+    display: none;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-outline-start {
+    border-radius: 0px!important;
+}
+.mat-form-field-appearance-outline .mat-form-field-outline-end {
+    border-radius: 0px!important;
+}
+
+
+/* Snackbar -----------------------------*/
+.customTheme .mat-snack-bar-container {
+    border-radius: 0px!important;
+}
+.customTheme .mat-snack-bar-container.errorMessage {
+    background-color: mat-color($customTheme-warn);
+}
+.customTheme .mat-snack-bar-container .mat-simple-snackbar-action {
+    color: white;
+}
+.customTheme .mat-snack-bar-container.normalMessage {
+    background-color: rgba($color: #000000, $alpha: 0.9);
+}
+
+/* Dialogs -----------------------------*/
+.customTheme .mat-dialog-container {
+    border-radius: 0px;
+}
+
+.customTheme .mat-dialog-content {
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.customTheme .mat-accent-color {
+    color: mat-color($customTheme-accent);
+}
+
+/* Colors -------------------------------*/
+.customTheme .mat-warn-bgcolor {
+    background-color: mat-color($customTheme-warn);
+    color: white;    
+}
+
+.customTheme .mat-warn-color {    
+    color: mat-color($customTheme-warn);
+}
+.customTheme :disabled.mat-input-element.mat-warn-color {
+    color: mat-color($customTheme-warn);
+}
+
+
+/* Table & Lists -----------------------*/
+.customTheme .visible-on-parent-hover {
+    visibility: collapse;
+}
+
+.customTheme .with-hover:not(mat-table):hover .visible-on-parent-hover {
+    visibility: visible;
+}
+
+.customTheme .hidden-on-parent-hover {
+    visibility: visible;
+}
+
+.customTheme .with-hover:hover .hidden-on-parent-hover {
+    visibility: collapse;
+}
+
+.customTheme .with-hover:hover {
+    background-color: $customHover;
+    cursor: pointer;
+}
+
+.customTheme mat-table.with-hover:hover {
+    background-color: transparent;
+}
+.customTheme mat-table.with-hover mat-row:hover {
+    background-color: $customHover;
+    cursor: pointer;
+}
+
+.customTheme mat-table.with-hover mat-row:hover .visible-on-parent-hover {
+    visibility: visible;
+}
+
+/* Slide menu ------------------------------*/
+.customTheme .mat-drawer-container {
+    background-color: white;
+}
+
+.mat-sidenav button {
+    width: 100%;
+}
+
+
+/* Profile Image ------------------------------*/
+.img-profile {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+}
+.img-profile40 {
+    width: 40px; height: 40px;
+    border-radius: 50%;
+}
+.img-profile150 {
+    width: 150px; height: 150px;
+    border-radius: 50%;
+}
+
+/* Buttons areas -----------------------------------*/
+.filterBoxArea .mat-form-field-wrapper {
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+}
+
+.filterBoxArea.preserve-margin .mat-form-field-wrapper {
+    margin: .25em 0!important;
+    padding-bottom: 1.34375em!important;
+}
+
+.filterBoxAreaButton {
+    display: none!important;
+}
+
+@media screen and (max-width: 601px) {
+    .filterBoxAreaButton {
+        display: inline-block!important;
+    }
+}
+
+.buttonBoxArea {
+    height: 40px;
+    display: flex;
+}
+
+.buttonBoxArea .mat-button, .buttonBoxArea .mat-raised-button {
+    padding-left: 6px; padding-right: 16px;
+    text-align: left; min-width: 0px;
+    height: 40px;
+}
+.buttonBoxArea .mat-button .mat-icon, .buttonBoxArea .mat-raised-button .mat-icon {
+    margin-right: 4px;
+}
+
+.buttonBoxArea.right {
+    margin-left: auto;
+}
+
+.customTheme .right-panel .mat-button-toggle-checked {
+    background-color: mat-color($customTheme-primary);
+    color: white;
+}
+.customTheme .right-panel .mat-button-toggle-checked.mat-button-toggle-appearance-standard {
+    color: white;
+}
+
+@media screen and (max-width: 600px) {
+    .buttonBoxArea .mat-button, .buttonBoxArea .mat-raised-button {        
+        padding-left: 8px; padding-right: 8px;
+        text-align: center;
+    }
+    .buttonBoxArea .mat-button .mat-icon, .buttonBoxArea .mat-raised-button .mat-icon {
+        margin-right: 0px;
+    }
+    .buttonBoxArea .mat-button-wrapper span {
+        display: none!important;
+    }
+}
+
+/* Tabs --------------------------------------*/
+.mat-tab-body {
+    padding-top: 32px;
+}
+
+/* Dark mode --------------------------------------*/
+.customTheme .dark-mode .mat-form-field-appearance-outline .mat-form-field-outline {
+    color: white!important;    
+}
+
+.dark-mode .mat-input-element {
+    caret-color: white!important;
+}
+.dark-mode .mat-form-field-label {
+    color: white!important;    
+}
+.dark-mode .mat-form-field.mat-focused .mat-form-field-label {
+    color:white!important;
+}
+
+/* right panel --------------------------------------*/
+.right-panel {
+    position: fixed;
+    top: 0px; bottom: 0px; right: 0px;    
+    background-color:white;    
+    padding: 80px 60px 24px 24px;    
+    color: mat-color($customTheme-primary);
+    transition: right 0.3s, left 0.3s;     
+}
+
+.right-panel .ok-button {
+    width: 80px;
+}
+
+.right-panel .close-button {
+    position: absolute;
+    right: 24px;
+    top: 83px;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 600px) {
+    .right-panel {
+        left: 0px;
+    }
+}
+
+/* content cards --------------------------------------*/
+
+.content-card .content-image {
+    margin-left: -20px!important;
+    margin-top: -20px!important;
+    width: 100px;
+    height: 105px;
+    overflow: hidden;
+    position: absolute;
+    background-color: #EEEEEE;
+}
+.content-card .content-image img {
+    margin-left: -25px!important;    
+}
+.content-card .content-image .not-published {
+    font-size: 10px;
+    position: absolute;
+    bottom: 0px; left: 0px; right: 0px;
+    text-align: center;    
+}
+
+.content-card .content-image .page-view {    
+    position: absolute;
+    font-size: 28px;
+    bottom: 4px; left: 4px; right: 0px;    
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.content-card .mat-card-header {
+    margin-left: 80px!important;
+}
+
+.content-card .content-tags {
+    position: absolute;
+    bottom: 0px; right: 8px;
+    font-size: 12px;
+    width: 175px;    
+}
+
+.content-card .content-tags .tag {    
+    padding: 0px 2px 0px 2px;
+    margin-right: 3px; 
+    max-width: 80px;
+    overflow: hidden;    
+    border-radius: 8px;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+
+/* tags bg color --------------------------------------*/
+.bg-color-class-0 { background-color: #e6194b!important; color: white!important }
+.bg-color-class-1 { background-color: #3cb44b!important; color: white!important }
+.bg-color-class-2 { background-color: #ffe119!important; color: black!important }
+.bg-color-class-3 { background-color: #4363d8!important; color: white!important }
+.bg-color-class-4 { background-color: #f58231!important; color: white!important }
+.bg-color-class-5 { background-color: #911eb4!important;  color: white!important }
+.bg-color-class-6 { background-color: #46f0f0!important; color: black!important}
+.bg-color-class-7 { background-color: #f032e6!important; color: white!important }
+.bg-color-class-8 { background-color: #bcf60c!important; color: black!important }
+.bg-color-class-9 { background-color: #fabebe!important; color: black!important }
+.bg-color-class-10 { background-color: #008080!important; color: white }
+.bg-color-class-11 { background-color: #e6beff!important; color: black }
+.bg-color-class-12 { background-color: #9a6324!important; color: white!important }
+.bg-color-class-13 { background-color: #fffac8!important; color: black!important }
+.bg-color-class-14 { background-color: #800000!important; color: white!important }
+.bg-color-class-15 { background-color: #aaffc3!important; color: black!important }
+.bg-color-class-16 { background-color: #808000!important; color: white!important }
+.bg-color-class-17 { background-color: #000075!important; color: white!important }
+.bg-color-class-18 { background-color: #808080!important; color: white!important }
+.bg-color-class-19 { background-color: #000000!important;  color: white!important}
+
+
+.fg-primary {
+    color: mat-color($customTheme-primary);
+}
+
+@media print {
+    // Force to print colors, otherwise the material components will look white
+    color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  
+    body {
+      // Roboto not printing ok on Chrome, fallback on supported fonts
+      font-family: 'Helvetica Neue', sans-serif !important;
+      
+      mat-sidenav-container {
+        // Remove background color to save toner
+        background-color: transparent !important;
+        // Override the color from the template
+        color: black !important;
+        // Position needs to be relative
+        position: relative !important;
+  
+        mat-sidenav-content {
+          // Remove the content margin if sidenav is expanded when hidden for print
+          margin: 0 !important;
+  
+          // Remove max width and padding from containers to flow text depending on printer page sizes
+          .container {
+            min-width: 0 !important;
+            padding: 0 !important;
+          }
+  
+          // Roboto not printing ok on Chrome, fallback on supported fonts
+          .mat-typography, .mat-card {
+            font-family: 'Helvetica Neue', sans-serif !important;
+            h1, h2, h3, h4, h5 {
+              font-family: 'Helvetica Neue', sans-serif !important;
+            }
+          }
+          .mat-button, .mat-raised-button, .mat-icon-button,
+          .mat-stroked-button, .mat-flat-button, .mat-fab, .mat-mini-fab {
+            font-family: 'Helvetica Neue', sans-serif !important;
+          }
+  
+          // Define where a page break should occur when printing
+          h2 {
+            page-break-before: always; // always break before h2 elements, for chapters for example
+          }
+          h3, h4 {
+            page-break-after: avoid; // avoid breaking after subtitles, it looks weird
+          }
+          pre, blockquote, img {
+            page-break-inside: avoid; // avoid breaking inside pre and blockquotes
+          }
+        }
+      }
+    }
+    // Hide website controls when printing
+    .hide-print, .navbar, .sidenav.details, app-header, app-footer {
+      display: none !important;
+    }
+
+    //avoid page break at table rows
+    .mat-row {
+        page-break-inside: avoid;
+    }
+  }

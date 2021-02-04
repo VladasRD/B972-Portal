@@ -1,0 +1,100 @@
+<div class="body-content">
+        <section class="body-wrapper">
+    
+                <div class="headline" fxLayout>
+                    <button mat-icon-button routerLink="/">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+                    <div class="mat-h1">{{kind.friendlyPluralName}}</div>
+                    <div class="buttonBoxArea right">                        
+                        <button mat-raised-button color="primary" routerLink="new/{{selectedLocationIdx}}" appRequiredRoles="CONTENT.WRITE">
+                            <mat-icon>add</mat-icon>
+                            <span i18n="@@add_button">new</span>
+                        </button>                        
+                        <button mat-button type="button" color="primary" [matMenuTriggerFor]="orderMenu" appRequiredRoles="CONTENT.WRITE">
+                            <mat-icon>swap_vert</mat-icon>      
+                            <span>{{orderByLabel}}</span>          
+                        </button>
+                        <button mat-button color="primary" class="filterBoxAreaButton" i18n-title="@@filter" title="filter"
+                            (click)="showFilters = !showFilters;">
+                            <mat-icon>tune</mat-icon>
+                            <span i18n="@@filter">filter</span>
+                        </button>
+                    </div>
+                </div>
+            
+                <mat-menu #orderMenu="matMenu" [overlapTrigger]="false">        
+                    <button mat-menu-item i18n="@@orderby_date" (click)="orderBy($event, 'Date')">Newest</button>
+                    <button mat-menu-item i18n="@@orderby_dateASC" (click)="orderBy($event, 'DateASC')">Oldest</button>
+                    <button mat-menu-item i18n="@@orderby_name" (click)="orderBy($event, 'Name')">Name</button>
+                    <button mat-menu-item i18n="@@orderby_pageviewDESC" (click)="orderBy($event, 'PageViewDESC')">More views</button>
+                    <button mat-menu-item i18n="@@orderby_pageview" (click)="orderBy($event, 'PageView')">Less views</button>
+                    <button mat-menu-item i18n="@@orderby_displayOrder" (click)="orderBy($event, 'DisplayOrder')">Priority</button>
+                    <button mat-menu-item i18n="@@orderby_share" (click)="orderBy($event, 'ShareDESC')">More popular</button>
+                    <button mat-menu-item i18n="@@orderby_shareDESC" (click)="orderBy($event, 'Share')">Less popular</button>                
+                </mat-menu>
+            
+                <form *ngIf="showFilters" [formGroup]="form" novalidate class="container filterBoxArea" fxLayout="column">
+            
+                    <div fxLayout fxLayoutGap="10px" fxLayout.xs="column">
+                        
+                        <mat-form-field appearance="outline" fxFlex="1 1">
+                            <mat-label i18n="@@search_label">Search</mat-label>
+                            <input matInput i18n-placeholder="@@content_search_placeholder"
+                                placeholder="Search by Content name, description or cross-link" #searchBox id="search-box"
+                                (keyup)="filterIfNotMobile(searchBox.value)" (keyup.enter)="filter(searchBox.value)">
+                            <mat-icon matSuffix>search</mat-icon>
+                        </mat-form-field>
+                            
+                        <mat-form-field floatLabel="never" class="no-border" fxFlexAlign="end" fxFlexAlign.xs="stretch">
+                            <mat-select formControlName="onlyPublishFilter">
+                                <mat-option i18n="@@All_content" value="all">All content</mat-option>
+                                <mat-option i18n="@@Only_published" value="published">Only published</mat-option>                    
+                            </mat-select>
+                        </mat-form-field>
+            
+                    </div>
+                    
+                    <mat-button-toggle-group *ngIf="!isLocationDropDownVisible"
+                        name="locations" formControlName="location" class="locationGroup">
+                        <mat-button-toggle *ngFor="let location of kind.locations" [value]="location">{{location}}</mat-button-toggle>            
+                    </mat-button-toggle-group>
+            
+                    <mat-form-field *ngIf="isLocationDropDownVisible">
+                        <mat-select formControlName="location-dropdown">
+                            <mat-option *ngFor="let location of kind.locations" [value]="location">
+                                {{location}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </form>
+            
+            
+            
+            
+                <h2 *ngIf="results.length==0 && !firstSearch" i18n="@@could_not_find_any_result">Could not find any result. Try to change your search.</h2>
+            
+                <div class="container resultsContainer" fxLayout="row wrap" fxLayout.xs="column">
+                    <mat-card *ngFor="let content of results" routerLink="{{content.contentUId}}" class="tile1x content-card">            
+                        <div class="content-image">
+                            <img [src]="content.thumbUrl"  />
+                            <div *ngIf="content.pageView !== '0' && content.isPublished" class="page-view" title="page views" >
+                                {{content.pageView}}
+                            </div>
+                            <div *ngIf="!content.isPublished" class="not-published mat-warn-bgcolor" i18n="@@not_published">not published</div>
+                        </div>            
+                        <mat-card-header>                
+                            <mat-card-title>{{content.name}}</mat-card-title>                
+                        </mat-card-header>           
+                        <div class="content-tags">
+                            <div class="tag" [ngClass]="tag.bgColorCss" *ngFor="let tag of content.tags">
+                                {{tag.tag}}
+                            </div>
+                        </div>
+                    </mat-card>
+                </div>
+            
+                <app-pagination [skip]="skip" [pageSize]="pageSize" [totalCount]="totalCount" (pageChanged)="pageChanged($event)" ></app-pagination> 
+            
+            </section>
+</div>

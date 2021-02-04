@@ -1,0 +1,96 @@
+<div class="body-content">
+  <section class="body-wrapper">
+
+    <div class="headline" fxLayout>
+      <button mat-icon-button routerLink="/sgi/configuracoes">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <div class="mat-h1">Empresas / Clientes</div>
+
+      <div class="buttonBoxArea right">
+        <button mat-raised-button color="primary" routerLink="new">
+          <mat-icon>add</mat-icon>
+          <span>Novo</span>
+        </button>
+        <button mat-button color="primary" class="filterBoxAreaButton" title="filter"
+          (click)="showFilters = !showFilters;">
+          <mat-icon>tune</mat-icon>
+          <span>filter</span>
+        </button>
+      </div>
+    </div>
+
+    <form *ngIf="showFilters" [formGroup]="form" class="container filterBoxArea" fxLayout fxLayoutGap="10px"
+      fxLayout.xs="column">
+      <mat-form-field appearance="outline" fxFlex="1 1">
+        <mat-label>Pesquisar</mat-label>
+        <input matInput placeholder="Pesquisar por nome ou categoria" #searchBox id="search-box"
+          (keyup)="filterIfNotMobile(searchBox.value)" (keyup.enter)="filter(searchBox.value)">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <div fxFlexAlign="end" fxFlexAlign.xs="stretch">
+        <mat-form-field appearance="outline" fxFlex="100%">
+          <mat-label>Status do cliente</mat-label>
+          <mat-select formControlName="filterStatus" placeholder="Status do cliente">
+            <mat-option value="null">Todos os clientes</mat-option>
+            <mat-option value="false">Inativos</mat-option>
+            <mat-option value="true">Ativos</mat-option>
+          </mat-select>
+          <mat-error *ngIf="form.controls.filterStatus.invalid">Campo obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </form>
+
+    <div *ngIf="results.length > 0" class="container">
+
+      <mat-table [dataSource]="results" class="mat-elevation-z4 with-hover" style="margin-bottom: 20px">
+
+        <ng-container matColumnDef="name">
+          <mat-header-cell *matHeaderCellDef fxFlex="40%" fxFlex.lt-sm="40%">Cliente</mat-header-cell>
+          <mat-cell *matCellDef="let element" fxFlex="40%" fxFlex.lt-sm="40%">{{element.clientName}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="document">
+          <mat-header-cell *matHeaderCellDef fxFlex="18%" fxFlex.lt-sm="18%">CPF/CPNJ</mat-header-cell>
+          <mat-cell *matCellDef="let element" fxFlex="18%" fxFlex.lt-sm="18%">{{element.documentMask}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="city_state">
+          <mat-header-cell *matHeaderCellDef fxFlex="20%" fxFlex.lt-sm="20%">Cidade/UF</mat-header-cell>
+          <mat-cell *matCellDef="let element" fxFlex="20%" fxFlex.lt-sm="20%">{{element.city + '/' + element.state}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="postalCode">
+          <mat-header-cell *matHeaderCellDef fxFlex="8%" fxFlex.lt-sm="8%">CEP</mat-header-cell>
+          <mat-cell *matCellDef="let element" fxFlex="8%" fxFlex.lt-sm="8%">{{element.postalCode}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="active">
+          <mat-header-cell *matHeaderCellDef fxFlex="10%" fxFlex.lt-sm="10%" fxLayoutAlign="center center">Status</mat-header-cell>
+          <mat-cell *matCellDef="let element" fxFlex="10%" fxFlex.lt-sm="10%" fxLayoutAlign="center center">
+            <mat-chip class="active" *ngIf="element.active" color="primary" selected>Ativo</mat-chip>
+            <mat-chip class="active" *ngIf="!element.active">Inativo</mat-chip>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="notifications">
+          <mat-header-cell *matHeaderCellDef fxFlex="14%" fxFlex.lt-sm="14%">Notificações</mat-header-cell>
+          <mat-cell *matCellDef="let element" fxFlex="14%" fxFlex.lt-sm="14%" class="small-font">{{element.notificationName}}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;" routerLink="{{row.clientUId}}"></mat-row>
+
+      </mat-table>
+
+    </div>
+
+    <h2 *ngIf="results.length==0 && !firstSearch">Nenhum cliente encontrado. Tente alterar sua pesquisa.</h2>
+
+    <app-pagination [skip]="skip" [pageSize]="pageSize" [totalCount]="totalCount" (pageChanged)="pageChanged($event)">
+    </app-pagination>
+
+  </section>
+</div>

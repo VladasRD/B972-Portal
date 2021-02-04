@@ -1,0 +1,61 @@
+<div class="body-content">
+    <section class="body-wrapper">
+    
+        <div class="headline" fxLayout>
+            <button mat-icon-button routerLink="/">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="mat-h1" i18n="@@users_title">Users</div>
+            <div class="buttonBoxArea right">                
+                <button mat-raised-button color="primary" routerLink="new" appRequiredRoles="USER.WRITE">
+                    <mat-icon>add</mat-icon>
+                    <span i18n="@@add_button">new</span>
+                </button>            
+                <button mat-button color="primary" class="filterBoxAreaButton" i18n-title="@@filter" title="filter" (click)="showFilters = !showFilters;">
+                    <mat-icon>tune</mat-icon>
+                    <span i18n="@@filter">filter</span>
+                </button>
+            </div>    
+        </div>  
+        
+        <form *ngIf="showFilters" novalidate [formGroup]="form" class="container filterBoxArea" fxLayout fxLayoutGap="10px"  fxLayout.xs="column">
+        
+        <mat-form-field appearance="outline" fxFlex="1 1">
+            <mat-label i18n="@@search_label" >Search</mat-label>
+            <input matInput i18n-placeholder="@@user_search_placeholder" placeholder="Type a user name or e-mail"
+                #searchBox id="search-box" (keyup)="filterIfNotMobile(searchBox.value)" (keyup.enter)="filter(searchBox.value)">
+            <mat-icon matSuffix>search</mat-icon>      
+            </mat-form-field>
+
+            <mat-form-field floatLabel="never" class="no-border" fxFlexAlign="end" fxFlexAlign.xs="stretch">
+                <mat-select formControlName="statusFilter">
+                    <mat-option i18n="@@All_users" value="all">All users</mat-option>
+                    <mat-option i18n="@@Active_users" value="active">Active users only</mat-option>
+                    <mat-option i18n="@@Blocked_users" value="blocked">Blocked users only</mat-option>
+                </mat-select>
+            </mat-form-field>
+                
+        </form>
+    
+    <div class="container resultsContainer" fxLayout="row wrap" fxLayout.xs="column"  >
+        <mat-card *ngFor="let user of results" routerLink="{{user.id}}" class="tile1x">
+        <!--div style="width: 60px; background-color: #EFEFEF; top:0px; left:0px;bottom: 0px; position: absolute;"></div-->
+        <mat-card-header style="overflow: hidden">
+            <div mat-card-avatar>
+                <img [src]="user.avatarImageUrl" class="img-profile40"/>
+            </div>
+            <mat-card-title>{{user.userName}}</mat-card-title>
+            <mat-card-subtitle>{{user.givenName}}</mat-card-subtitle>
+        </mat-card-header>      
+        <mat-icon *ngIf="user.isLockedout" color="warn" style="position: absolute; right: 8px; bottom: 8px">block</mat-icon>      
+        </mat-card>    
+    </div>
+
+    <h2 *ngIf="results.length==0 && !firstSearch" i18n="@@could_not_find_any_result">Could not find any result. Try to change your search.</h2>
+
+    <app-pagination [skip]="skip" [pageSize]="pageSize" [totalCount]="totalCount" (pageChanged)="pageChanged($event)" ></app-pagination> 
+
+    
+        
+    </section>
+</div>

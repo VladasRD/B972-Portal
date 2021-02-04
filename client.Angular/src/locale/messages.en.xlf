@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="9b16f73c2057f8d9d065d488b877e0562da9e431" datatype="html">
+        <source>Could not connect to identity server</source>
+        <target>Could not connect to identity server</target>
+      </trans-unit><trans-unit id="807f39b93f38db144148c3e05f4886e99593227c" datatype="html">
+        <source>Password changed.</source>
+        <target>Password changed.</target>
+      </trans-unit><trans-unit id="653539a38f21a5bf189859ce97c43e722585bcc9" datatype="html">
+        <source>New Group</source>
+        <target>New Group</target>
+      </trans-unit><trans-unit id="a59b3a7e735b57ebcd9d2138dac740b9e1ba0d64" datatype="html">
+        <source>Group saved.</source>
+        <target>Group saved.</target>
+      </trans-unit><trans-unit id="ffcfb09643edc5443786d22061a7edfd4a083108" datatype="html">
+        <source>Remove group</source>
+        <target>Remove group</target>
+      </trans-unit><trans-unit id="42b491bf8e7f8deeb79b2250af1c311b5a9804fe" datatype="html">
+        <source>Are you sure you want to remove this group?</source>
+        <target>Are you sure you want to remove this group?</target>
+      </trans-unit><trans-unit id="a663a98162e19ee3588d5f864ea7accbb3f3a0be" datatype="html">
+        <source>Group deleted.</source>
+        <target>Group deleted.</target>
+      </trans-unit><trans-unit id="65c9111d22358fd5a15ee666f372e08a4f8939ff" datatype="html">
+        <source>SECURITY</source>
+        <target>SECURITY</target>
+      </trans-unit><trans-unit id="4d5f34b09c9913468da6e8d00a0adf4049c88957" datatype="html">
+        <source>Manage users</source>
+        <target>Manage users</target>
+      </trans-unit><trans-unit id="74d5a6c67fe61b68883dd61d1be250b8aaf3ad46" datatype="html">
+        <source>Manage groups</source>
+        <target>Manage groups</target>
+      </trans-unit><trans-unit id="eb3d5aefff38a814b76da74371cbf02c0789a1ef" datatype="html">
+        <source>Logs</source>
+        <target>Logs</target>
+      </trans-unit><trans-unit id="f0e7812d90472cb43414d2f3600a0e158d7b49ba" datatype="html">
+        <source>Users reader</source>        
+        <target>Users reader</target>
+      </trans-unit><trans-unit id="8ce647cd3413438b8e13428a552f75739bdeb078" datatype="html">
+        <source>Can view users.</source>
+        <target>Can view users.</target>
+      </trans-unit><trans-unit id="8031ca6b16877bcc9908a45e578881fb13848931" datatype="html">
+        <source>Users writer</source>
+        <target>Users writer</target>
+      </trans-unit><trans-unit id="af1822e7f19e72e212714723eecdf5067262dd35" datatype="html">
+        <source>Can create, edit and remove users.</source>
+        <target>Can create, edit and remove users.</target>
+      </trans-unit><trans-unit id="50b06a1012b928a8e092cd26c776cadae32dbbf2" datatype="html">
+        <source>Roles reader</source>
+        <target>Roles reader</target>
+      </trans-unit><trans-unit id="a314343c956463d78b245519a0acbb34f68453cb" datatype="html">
+        <source>Can view roles.</source>
+        <target>Can view roles.</target>
+      </trans-unit><trans-unit id="83c622e5c9edeb858f326051fde00dd1f453c7e9" datatype="html">
+        <source>Roles writer</source>
+        <target>Roles writer</target>
+      </trans-unit><trans-unit id="5b296fee3b9339a8e682167a5a0ea6101bc69955" datatype="html">
+        <source>Can create, edit and remove roles.</source>
+        <target>Can create, edit and remove roles.</target>
+      </trans-unit><trans-unit id="a4d41d2c6149582449ec29cd453f21215fc760d5" datatype="html">
+        <source>Log reader</source>
+        <target>Log reader</target>
+      </trans-unit><trans-unit id="97378e45e6503d66b2c302004e4d7647d5552383" datatype="html">
+        <source>Can view all system logs.</source>
+        <target>Can view all system logs.</target>
+      </trans-unit><trans-unit id="8343e8f0c374c79f8d1b971fe1b9124de8f3fac5" datatype="html">
+        <source>New User</source>
+        <target>New User</target>
+      </trans-unit><trans-unit id="6da3d7a0ce4cad5021861ea57173881b4a979474" datatype="html">
+        <source>User <x id="INTERPOLATION" equiv-text="{{0}}"/></source>
+        <target>User <x id="INTERPOLATION" equiv-text="{{0}}"/></target>
+      </trans-unit><trans-unit id="069fc5f76d7218c7328beffa7d5619f42c09a531" datatype="html">
+        <source>User saved.</source>
+        <target>User saved.</target>
+      </trans-unit><trans-unit id="36b8c12e3d36f3a653be59a07fd20fa1c0603dae" datatype="html">
+        <source>Remove user</source>
+        <target>Remove user</target>
+      </trans-unit><trans-unit id="38ecb0bc1a4535b8c9ad724e4d060a708607b9f0" datatype="html">
+        <source>Are you sure you want to remove this user?</source>
+        <target>Are you sure you want to remove this user?</target>
+      </trans-unit><trans-unit id="b1199f66e01da05d6ca6914520be2eb5dad6adcb" datatype="html">
+        <source>User deleted.</source>
+        <target>User deleted.</target>
+      </trans-unit><trans-unit id="dc10c8bfb24fb7d7db1e6bd0b381cb14860965ff" datatype="html">
+        <source>User unlocked.</source>
+        <target>User unlocked.</target>
+      </trans-unit><trans-unit id="69cec0e078538dbc10cd08cbf10154ab8d55fdb0" datatype="html">
+        <source>User locked.</source>
+        <target>User locked.</target>
+      </trans-unit><trans-unit id="content_search_placeholder" datatype="html">              
+        <target>Search by Content name, description or cross-link</target>
+      </trans-unit><trans-unit id="published_check" datatype="html">              
+        <target>Only published</target>
+      </trans-unit><trans-unit id="publish_button" datatype="html">              
+        <target>Publication</target>
+      </trans-unit><trans-unit id="crosslinks_button" datatype="html">              
+        <target>Cross Links</target>
+      </trans-unit><trans-unit id="score_button" datatype="html">              
+        <target>Score</target>
+      </trans-unit><trans-unit id="orderby_button" datatype="html">              
+        <target>Sorted by</target>
+      </trans-unit><trans-unit id="moveto_button" datatype="html">              
+        <target>Move to</target>
+      </trans-unit>
+      
+      <trans-unit id="da0554afc797885a5c4847b72977f84da9467752" datatype="html">
+        <source>Are you sure you want to remove this content?</source>
+        <target>Are you sure you want to remove this content?</target>
+      </trans-unit>
+      <trans-unit id="01ca2c8026816c9162621ae8a7306b73eeffa7f4" datatype="html">
+        <source>orderby_date</source>
+        <target>Newest</target>        
+      </trans-unit>
+      <trans-unit id="InfoTextMessage" datatype="html">        
+        <target>Enter a message...</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

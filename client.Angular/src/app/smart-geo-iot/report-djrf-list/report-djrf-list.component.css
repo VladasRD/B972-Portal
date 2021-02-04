@@ -1,0 +1,45 @@
+.client {
+    text-align: left!important;
+}
+
+.small-font {
+    font-size: 10px;
+}
+
+.center-content {
+    place-content: center;
+}
+
+mat-header-row, mat-header-cell, mat-cell {
+    text-align: center!important;
+}
+
+.align-center {
+    place-content: center;
+}
+
+/* PRINT STYLE ----------------------------------------------------------------------------*/
+@media print {
+
+    @page {size: landscape}
+    
+    mat-header-cell, .small-font {
+        font-size: 10px!important;
+    }
+    .small-font {
+        font-size: 8px!important;
+    }
+    .client, .client-header {
+        max-width: 150px!important; min-width: 150px!important;
+    }
+    .subTitle {
+        display: none;
+    }
+    .titleDevice {
+        display: initial!important;
+    }
+}
+
+.titleDevice {
+    display: none;
+}

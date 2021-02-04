@@ -1,0 +1,204 @@
+<div class="body-content">
+  <section class="body-wrapper">
+
+    <div class="headline" fxLayout>
+      <!-- <button mat-icon-button routerLink="/sgi/relatorio">
+        <mat-icon>arrow_back</mat-icon>
+      </button> -->
+      <div class="mat-h1">Relatório</div>
+      <div class="buttonBoxArea right">
+        <button mat-button type="button" color="primary" (click)="cleanFilterDate()" [disabled]="!form.valid">
+          <mat-icon>clear</mat-icon>
+          <span>Limpar datas</span>
+        </button>
+        <button mat-button color="primary" (click)="printReport()" [disabled]="!form.valid || results.length==0">
+          <mat-icon>print</mat-icon>
+          <span>Imprimir</span>
+        </button>
+        <button mat-button type="button" color="primary" (click)="exportToExcel()" [disabled]="!form.valid || results.length==0">
+          <mat-icon>cloud_download</mat-icon>
+          <span>Exportar</span>
+        </button>
+        <button type="submit" mat-raised-button type="button" color="primary" (click)="searchReports()"
+          [disabled]="!form.valid">
+          <mat-icon>visibility</mat-icon>
+          <span>Visualizar</span>
+        </button>
+        <button mat-button color="primary" class="filterBoxAreaButton" title="filter"
+          (click)="showFilters = !showFilters;">
+          <mat-icon>tune</mat-icon>
+          <span>filter</span>
+        </button>
+      </div>
+    </div>
+    <p>Informe os campos obrigatórios e depois clique em <b>Visualizar</b> para ver o relatório.</p>
+
+    <form *ngIf="showFilters" [formGroup]="form" class="container filterBoxArea preserve-margin" fxLayout
+      fxLayoutGap="10px" fxLayout.xs="column">
+      
+      <app-device-select project="{{currentProject}}" [control]="form.controls.deviceFilter"></app-device-select>
+
+      <mat-card-content fxLayout="row" fxLayoutGap="10px" fxLayout.xs="column">
+        <mat-form-field appearance="outline">
+          <mat-label>De</mat-label>
+          <mat-datepicker-toggle matPrefix [for]="startPicker"></mat-datepicker-toggle>
+          <input matInput [matDatepicker]="startPicker" formControlName="startPeriod">
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Até</mat-label>
+          <mat-datepicker-toggle matPrefix [for]="endPicker"></mat-datepicker-toggle>
+          <input matInput [matDatepicker]="endPicker" formControlName="endPeriod" placeholder="Até">
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+      </mat-card-content>
+    </form>
+
+    <div *ngIf="results.length > 0" class="container">
+      <mat-table [dataSource]="results" class="mat-elevation-z4" style="margin-bottom: 20px; clear:both;">
+
+        <ng-container matColumnDef="data">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef>Data</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="small-font">
+            {{element.date | date: 'short'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="temperatura">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Temperatura</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.temperature == 0 ? '-' : element.temperature + '°C'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ph">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Ph</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.ph == 0 ? '-' : element.ph}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="fluor">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Flúor (ppm)</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.fluor}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="cloro">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Cloro (ppm)</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.cloro}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="turbidez">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Turbidez (NTU)</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.turbidez}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="rele1">
+          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 1</mat-header-cell>
+          <mat-cell fxFlex="8%" *matCellDef="let element" class="small-font align-center">
+            {{element.rele === null ? '-' : element.rele?.rele1 + '%'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="rele2">
+          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 2</mat-header-cell>
+          <mat-cell fxFlex="8%" *matCellDef="let element" class="small-font align-center">
+            {{element.rele === null ? '-' : element.rele?.rele2 + '%'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="rele3">
+          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 3</mat-header-cell>
+          <mat-cell fxFlex="8%" *matCellDef="let element" class="small-font align-center">
+            {{element.rele === null ? '-' : element.rele?.rele3 + '%'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="rele4">
+          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 4</mat-header-cell>
+          <mat-cell fxFlex="8%" *matCellDef="let element" class="small-font align-center">
+            {{element.rele === null ? '-' : element.rele?.rele4 + '%'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="rele5">
+          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 5</mat-header-cell>
+          <mat-cell fxFlex="8%" *matCellDef="let element" class="small-font align-center">
+            {{element.rele === null ? '-' : element.rele?.rele5 + '%'}}
+          </mat-cell>
+        </ng-container>
+
+
+        <!-- <ng-container matColumnDef="data">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef>Data</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="small-font">
+            {{element.date | date: 'shortDate'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="nivel">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Nível</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.level}}%
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="luz">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Luz</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">{{element.light}}%</mat-cell>
+        </ng-container>
+
+
+        <ng-container matColumnDef="temperatura">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Temperatura</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.temperature}}°C
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="umidade">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Umidade</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.moisture}}%
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="oxigenio">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Oxigênio</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.oxigenioDissolvido}}mg/L
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ph">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Ph</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.ph}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="condutividade">
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Condutividade</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
+            {{element.condutividade}}μS
+          </mat-cell>
+        </ng-container> -->
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+
+    <h2 *ngIf="results.length==0 && !firstSearch">Nenhum resultado encontrado. Tente alterar sua pesquisa.</h2>
+
+    <app-pagination [skip]="skip" [pageSize]="pageSize" [totalCount]="totalCount" (pageChanged)="pageChanged($event)">
+    </app-pagination>
+  </section>
+</div>

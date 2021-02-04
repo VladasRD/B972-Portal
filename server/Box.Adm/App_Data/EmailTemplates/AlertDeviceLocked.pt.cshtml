@@ -1,0 +1,16 @@
+<html>
+    <body>
+        <img src="@(Model.siteUrl)/images/custom/appLogo.png" width="50" height="50" />
+        <h1>@Model.subject</h1>
+        <p>
+            Você está recebendo um alerta do dispositivo @Model.deviceId.
+        </p>
+        <p>
+            Este é um alerta de bloqueio na data de @Model.date.
+        </p>
+        <p>
+            Se você não conseguir visualizar, por favor, entre com contato com o administrador do sistema.
+        </p>        
+        <a href="@Model.siteUrl">@Model.siteName</a>
+    </body>
+</html>

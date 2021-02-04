@@ -1,0 +1,9 @@
+.client-icon {
+    line-height: 48px;
+}
+
+.auto-complete-field {
+    width: 100%;
+}
+
+::ng-deep .cdk-overlay-pane .mat-autocomplete-panel { max-height: 440px!important;}

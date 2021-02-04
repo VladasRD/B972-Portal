@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="sign_in_button" datatype="html">
+        <target>entrar</target>        
+      </trans-unit>
+      <trans-unit id="sign_out_button" datatype="html">        
+        <target>sair</target>        
+      </trans-unit>
+      <trans-unit id="change_password_button" datatype="html">        
+        <target>alterar senha</target>        
+      </trans-unit>
+      <trans-unit id="users_title" datatype="html">        
+        <target>Usuários</target>        
+      </trans-unit>
+      <trans-unit id="add_button" datatype="html">        
+        <target>novo</target>        
+      </trans-unit>
+      <trans-unit id="user_email_placeholder" datatype="html">        
+        <target>E-mail do usuário</target>        
+      </trans-unit>
+      <trans-unit id="could_not_find_any_result" datatype="html">        
+        <target>Nenhum resultado encontrado. Tente alterar seu filtro de pesquisa.</target>        
+      </trans-unit>
+      <trans-unit id="invalid_email" datatype="html">
+        <target>Informe um e-mail válido</target>        
+      </trans-unit>
+      <trans-unit id="user_givenName_placeholder" datatype="html">        
+        <target>Nome do usuário</target>        
+      </trans-unit>
+      <trans-unit id="required_field" datatype="html">        
+        <target>Campo obrigatório</target>        
+      </trans-unit>
+      <trans-unit id="save_button" datatype="html">        
+        <target>aplicar</target>        
+      </trans-unit>
+      <trans-unit id="search_label" datatype="html">        
+        <target>Pesquisar</target>        
+      </trans-unit>
+      <trans-unit id="user_search_placeholder" datatype="html">        
+        <target>Digite um nome de usuário ou e-mail</target>        
+      </trans-unit>      
+      <trans-unit id="of" datatype="html">        
+        <target>de</target>
+      </trans-unit>
+      <trans-unit id="AccessDenied" datatype="html">        
+        <target>Acesso negado</target>
+      </trans-unit>
+      <trans-unit id="AccessDeniedMessage" datatype="html">        
+        <target>Você não possui as permissões necessárias, ou sua sessão expirou.</target>
+      </trans-unit>
+      <trans-unit id="Bye" datatype="html">        
+        <target>Até logo...</target>
+      </trans-unit>
+      <trans-unit id="ByeMessage" datatype="html">        
+        <target>Você foi desconectado com sucesso da aplicação.</target>
+      </trans-unit>
+      <trans-unit id="All_users" datatype="html">        
+        <target>Todos usuários</target>
+      </trans-unit>
+      <trans-unit id="Active_users" datatype="html">        
+        <target>Usuários ativos</target>
+      </trans-unit>
+      <trans-unit id="ClickHere" datatype="html">        
+        <target>clique aqui</target>
+      </trans-unit>
+      <trans-unit id="ToSignInAgain" datatype="html">        
+        <target>para entrar novamente</target>
+      </trans-unit>
+      <trans-unit id="Blocked_users" datatype="html">        
+        <target>Usuários bloqueados</target>
+      </trans-unit>
+      <trans-unit id="delete_button" datatype="html">        
+        <target>Excluir</target>
+      </trans-unit>
+      <trans-unit id="user_email" datatype="html">        
+        <target>E-mail do usuário</target>
+      </trans-unit>
+      <trans-unit id="group_name" datatype="html">        
+        <target>Nome do perfil</target>
+      </trans-unit>
+      <trans-unit id="user_givenName" datatype="html">        
+        <target>Nome completo do usuário</target>
+      </trans-unit>
+      <trans-unit id="cancel_button" datatype="html">        
+        <target>cancelar</target>
+      </trans-unit>
+      <trans-unit id="user_phoneNumber" datatype="html">        
+        <target>Telefone</target>
+      </trans-unit>
+      <trans-unit id="user_password_placeholder" datatype="html">        
+        <target>Nova senha</target>
+      </trans-unit>
+      <trans-unit id="Groups" datatype="html">        
+        <target>Perfis</target>
+      </trans-unit>
+      <trans-unit id="groups_title" datatype="html">        
+        <target>Perfis</target>
+      </trans-unit>
+      <trans-unit id="Permissions" datatype="html">        
+        <target>Permissões</target>
+      </trans-unit>
+      <trans-unit id="group_search_placeholder" datatype="html">        
+        <target>Digite um nome do perfil ou permissão</target>
+      </trans-unit>
+      <trans-unit id="logs_title" datatype="html">        
+        <target>Logs</target>
+      </trans-unit>
+      <trans-unit id="When" datatype="html">        
+        <target>Quando</target>
+      </trans-unit>
+      <trans-unit id="Action" datatype="html">        
+        <target>Ação</target>
+      </trans-unit>
+      <trans-unit id="IP_address" datatype="html">        
+        <target>Endereço IP</target>
+      </trans-unit>
+      <trans-unit id="log_search_placeholder" datatype="html">        
+        <target>Digite uma ação ou usuário</target>
+      </trans-unit>
+      <trans-unit id="No" datatype="html">        
+        <target>Não</target>
+      </trans-unit>
+      <trans-unit id="User" datatype="html">        
+        <target>Usuário</target>
+      </trans-unit>
+      <trans-unit id="Yes" datatype="html">        
+        <target>Sim</target>
+      </trans-unit>
+      <trans-unit id="refresh" datatype="html">        
+        <target>atualizar</target>
+      </trans-unit>
+      <trans-unit id="from" datatype="html">        
+        <target>de</target>
+      </trans-unit>
+      <trans-unit id="to" datatype="html">        
+        <target>até</target>
+      </trans-unit>
+      <trans-unit id="clearFilter" datatype="html">        
+        <target>limpar filtro</target>
+      </trans-unit>
+      <trans-unit id="Home" datatype="html">        
+        <target>Início</target>
+      </trans-unit>
+      <trans-unit id="lockUser_button" datatype="html">        
+        <target>Bloquear</target>
+      </trans-unit>
+      <trans-unit id="Log" datatype="html">              
+        <target>Log</target>
+      </trans-unit>
+      <trans-unit id="lockoutUserMessage" datatype="html">        
+        <target>Esse usuário está bloqueado até </target>
+      </trans-unit>
+      <trans-unit id="unlock" datatype="html">              
+        <target>desbloquear</target>
+      </trans-unit>
+      <trans-unit id="set_password" datatype="html">              
+        <target>definir senha</target>
+      </trans-unit>
+      <trans-unit id="password_rules" datatype="html">              
+        <target>Deve possuir caracteres maiúsculos, minúsculas, números e símbolos</target>
+      </trans-unit>
+      <trans-unit id="User_identity" datatype="html">              
+        <target>Identidade</target>
+      </trans-unit>
+      <trans-unit id="description" datatype="html">              
+        <target>Descrição</target>
+      </trans-unit>
+      <trans-unit id="user_does_not_belong_to_any_group" datatype="html">              
+        <target>Usuário não pertence a nenhum perfil.</target>
+      </trans-unit>
+      <trans-unit id="add_groups" datatype="html">              
+        <target>adicionar perfis</target>
+      </trans-unit>
+      <trans-unit id="groups_to_add" datatype="html">              
+        <target>perfis</target>
+      </trans-unit>
+      <trans-unit id="There_are_no_groups_to_add" datatype="html">              
+        <target>Não exitem perfis para adicionar</target>
+      </trans-unit>
+      <trans-unit id="User_groups" datatype="html">              
+        <target>Perfis</target>
+      </trans-unit>
+      <trans-unit id="Url" datatype="html">              
+        <target>Url</target>
+      </trans-unit>
+      <trans-unit id="Data" datatype="html">              
+        <target>Dados</target>
+      </trans-unit>
+      <trans-unit id="Error" datatype="html">              
+        <target>Erro</target>
+      </trans-unit>
+      <trans-unit id="NT_Login" datatype="html">              
+        <target>NT Login (opcional: usado somente para Windows Domain Authentication)</target>
+      </trans-unit>
+      <trans-unit id="settings" datatype="html">              
+        <target>Configurações</target>
+      </trans-unit>
+      <trans-unit id="filter" datatype="html">              
+        <target>Filtro</target>
+      </trans-unit>
+      <trans-unit id="Welcome" datatype="html">              
+        <target>Seja bem vindo!</target>
+      </trans-unit>
+      <trans-unit id="WARNNING" datatype="html">              
+        <target>ATENÇÃO</target>
+      </trans-unit>
+      <trans-unit id="Home_restrict_alert" datatype="html">              
+        <target>        
+        Esse é um sistema restrito APENAS para usuários autorizados.
+        O acesso não autorizado, ou uso idenvido estão sujeitos as penalidades previstas na lei.                
+        Por favor, informe suas credenciais usando o botão entrar.
+        </target>
+      </trans-unit>
+      <trans-unit id="please_signin_fisrt1" datatype="html">              
+        <target>Você não entrou ainda.</target>
+      </trans-unit>
+      <trans-unit id="please_signin_fisrt2" datatype="html">              
+        <target>Por favor, realize login primeiro.</target>
+      </trans-unit>
+      <trans-unit id="signing" datatype="html">              
+        <target>Abrindo...</target>
+      </trans-unit>
+      <trans-unit id="ChangePassword" datatype="html">              
+        <target>Alterar senha</target>
+      </trans-unit>
+      <trans-unit id="Old_password" datatype="html">              
+        <target>Senha antiga</target>
+      </trans-unit>
+      <trans-unit id="New_password" datatype="html">              
+        <target>Nova senha</target>
+      </trans-unit>
+      <trans-unit id="Confirm_password" datatype="html">              
+        <target>Confirmação da senha</target>
+      </trans-unit>
+      <trans-unit id="Your_password_was_changed" datatype="html">              
+        <target>Sua senha foi alterada.</target>
+      </trans-unit>
+      <trans-unit id="GravatarHelp" datatype="html">              
+        <target>Imagem do usuário é fornecida por Gravatar.</target>
+      </trans-unit>
+      <trans-unit id="9b16f73c2057f8d9d065d488b877e0562da9e431" datatype="html">
+        <source>Could not connect to identity server</source>
+        <target>Não foi possível conectar com o servidor de autenticação</target>
+      </trans-unit>
+      <trans-unit id="807f39b93f38db144148c3e05f4886e99593227c" datatype="html">
+        <source>Password changed.</source>
+        <target>Senha alterada.</target>
+      </trans-unit>
+      <trans-unit id="653539a38f21a5bf189859ce97c43e722585bcc9" datatype="html">
+        <source>New Group</source>
+        <target>Novo Perfil</target>
+      </trans-unit>
+      <trans-unit id="a59b3a7e735b57ebcd9d2138dac740b9e1ba0d64" datatype="html">
+        <source>Group saved.</source>
+        <target>Perfil gravado.</target>
+      </trans-unit>
+      <trans-unit id="ffcfb09643edc5443786d22061a7edfd4a083108" datatype="html">
+        <source>Remove group</source>
+        <target>Excluir perfil</target>
+      </trans-unit>
+      <trans-unit id="42b491bf8e7f8deeb79b2250af1c311b5a9804fe" datatype="html">
+        <source>Are you sure you want to remove this group?</source>
+        <target>Tem certeza que deseja excluir esse perfil?</target>
+      </trans-unit>
+      <trans-unit id="a663a98162e19ee3588d5f864ea7accbb3f3a0be" datatype="html">
+        <source>Group deleted.</source>
+        <target>Perfil excluído.</target>
+      </trans-unit>
+      <trans-unit id="65c9111d22358fd5a15ee666f372e08a4f8939ff" datatype="html">
+        <source>SECURITY</source>
+        <target>SEGURANÇA</target>
+      </trans-unit>
+      <trans-unit id="4d5f34b09c9913468da6e8d00a0adf4049c88957" datatype="html">
+        <source>Manage users</source>
+        <target>Gerenciar usuários</target>
+      </trans-unit>
+      <trans-unit id="74d5a6c67fe61b68883dd61d1be250b8aaf3ad46" datatype="html">
+        <source>Manage groups</source>
+        <target>Gerenciar perfis</target>
+      </trans-unit>
+      <trans-unit id="eb3d5aefff38a814b76da74371cbf02c0789a1ef" datatype="html">
+        <source>Logs</source>
+        <target>Logs</target>
+      </trans-unit>
+      <trans-unit id="f0e7812d90472cb43414d2f3600a0e158d7b49ba" datatype="html">
+        <source>Users reader</source>        
+        <target>Consulta de usuários</target>
+      </trans-unit>
+      <trans-unit id="8ce647cd3413438b8e13428a552f75739bdeb078" datatype="html">
+        <source>Can view users.</source>
+        <target>Pode consultar usuários.</target>
+      </trans-unit>
+      <trans-unit id="8031ca6b16877bcc9908a45e578881fb13848931" datatype="html">
+        <source>Users writer</source>
+        <target>Alteração de usuários</target>
+      </trans-unit>
+      <trans-unit id="af1822e7f19e72e212714723eecdf5067262dd35" datatype="html">
+        <source>Can create, edit and remove users.</source>
+        <target>Pode criar, editar e excluir usuários.</target>
+      </trans-unit>
+      <trans-unit id="50b06a1012b928a8e092cd26c776cadae32dbbf2" datatype="html">
+        <source>Roles reader</source>
+        <target>Consulta de perfis</target>
+      </trans-unit>
+      <trans-unit id="a314343c956463d78b245519a0acbb34f68453cb" datatype="html">
+        <source>Can view roles.</source>
+        <target>Pode consultar perfis.</target>
+      </trans-unit>
+      <trans-unit id="83c622e5c9edeb858f326051fde00dd1f453c7e9" datatype="html">
+        <source>Roles writer</source>
+        <target>Alteração de perfis</target>
+      </trans-unit>
+      <trans-unit id="5b296fee3b9339a8e682167a5a0ea6101bc69955" datatype="html">
+        <source>Can create, edit and remove roles.</source>
+        <target>Pode criar, alterar e excluir perfis.</target>
+      </trans-unit>
+      <trans-unit id="a4d41d2c6149582449ec29cd453f21215fc760d5" datatype="html">
+        <source>Log reader</source>
+        <target>Consulta de logs</target>
+      </trans-unit>
+      <trans-unit id="97378e45e6503d66b2c302004e4d7647d5552383" datatype="html">
+        <source>Can view all system logs.</source>
+        <target>Pode consultar os logs do sistema.</target>
+      </trans-unit>
+      <trans-unit id="8343e8f0c374c79f8d1b971fe1b9124de8f3fac5" datatype="html">
+        <source>New User</source>
+        <target>Novo Usuário</target>
+      </trans-unit>
+      <trans-unit id="6da3d7a0ce4cad5021861ea57173881b4a979474" datatype="html">
+        <source>User <x id="INTERPOLATION" equiv-text="{{0}}"/></source>
+        <target>Usuário <x id="INTERPOLATION" equiv-text="{{0}}"/></target>
+      </trans-unit>
+      <trans-unit id="069fc5f76d7218c7328beffa7d5619f42c09a531" datatype="html">
+        <source>User saved.</source>
+        <target>Usuário gravado.</target>
+      </trans-unit>
+      <trans-unit id="36b8c12e3d36f3a653be59a07fd20fa1c0603dae" datatype="html">
+        <source>Remove user</source>
+        <target>Excluir usuário</target>
+      </trans-unit>
+      <trans-unit id="38ecb0bc1a4535b8c9ad724e4d060a708607b9f0" datatype="html">
+        <source>Are you sure you want to remove this user?</source>
+        <target>Tem certeza que deseja excluir esse usuário?</target>
+      </trans-unit>
+      <trans-unit id="b1199f66e01da05d6ca6914520be2eb5dad6adcb" datatype="html">
+        <source>User deleted.</source>
+        <target>Usuário excluído.</target>
+      </trans-unit>
+      <trans-unit id="dc10c8bfb24fb7d7db1e6bd0b381cb14860965ff" datatype="html">
+        <source>User unlocked.</source>
+        <target>Usuário desbloqueado.</target>
+      </trans-unit>
+      <trans-unit id="69cec0e078538dbc10cd08cbf10154ab8d55fdb0" datatype="html">
+        <source>User locked.</source>
+        <target>Usuário bloqueado.</target>
+      </trans-unit>
+      <trans-unit id="content_search_placeholder" datatype="html">              
+        <target>Pesquise por Nome do conteúdo, descrição ou cross-link</target>
+      </trans-unit>
+      <trans-unit id="published_check" datatype="html">              
+        <target>Somente publicados</target>
+      </trans-unit>
+      <trans-unit id="publish_button" datatype="html">              
+        <target>Publicação</target>
+      </trans-unit>            
+      <trans-unit id="orderby_button" datatype="html">              
+        <target>Ordenado por</target>
+      </trans-unit>
+      <trans-unit id="moveto_button" datatype="html">              
+        <target>Mover para</target>
+      </trans-unit>      
+      <trans-unit id="pick_from_gallery" datatype="html">              
+        <target>usar galeria</target>
+      </trans-unit>
+      <trans-unit id="add_tag" datatype="html">              
+        <target>Tags ...</target>
+      </trans-unit>
+      <trans-unit id="moveto_header" datatype="html">              
+        <target>Selecione onde publicar esse conteúdo</target>
+      </trans-unit>
+      <trans-unit id="change_order_header" datatype="html">              
+        <target>Selecione como ordenar esse conteúdo</target>
+      </trans-unit>
+      <trans-unit id="publish_header" datatype="html">              
+        <target>Esse coteúdo deve ser publicado</target>
+      </trans-unit>
+      <trans-unit id="Media_gallery_header" datatype="html">              
+        <target>Galeria de mídia</target>
+      </trans-unit>
+      <trans-unit id="file_search_placeholder" datatype="html">              
+        <target>Pesquise por nome do arquivo</target>
+      </trans-unit>
+      <trans-unit id="Location" datatype="html">              
+        <target>Publicar em</target>
+      </trans-unit>
+      <trans-unit id="Priority" datatype="html">              
+        <target>Prioridade</target>
+      </trans-unit>
+      <trans-unit id="Content_date" datatype="html">              
+        <target>Data do conteúdo</target>
+      </trans-unit>
+      <trans-unit id="Publish_after" datatype="html">              
+        <target>Em</target>
+      </trans-unit>
+      <trans-unit id="Publish_until" datatype="html">              
+        <target>Até</target>
+      </trans-unit>
+      <trans-unit id="not_published_warning" datatype="html">              
+        <target>Esse conteúdo não foi publicado ainda.</target>
+      </trans-unit>
+      <trans-unit id="not_published" datatype="html">              
+        <target>não publicado</target>
+      </trans-unit>
+      <trans-unit id="files_added" datatype="html">              
+        <target>arquivo(s) adicionados</target>
+      </trans-unit>
+      <trans-unit id="ok" datatype="html">              
+        <target>ok</target>
+      </trans-unit>
+      <trans-unit id="unpublish" datatype="html">              
+        <target>despublicar</target>
+      </trans-unit>
+      <trans-unit id="save_and_pub_button" datatype="html">              
+        <target>aplicar & publicar</target>      
+      </trans-unit>
+      <trans-unit id="crosslinks_button" datatype="html">              
+        <target>Crosslinks</target>      
+      </trans-unit>
+      <trans-unit id="crosslinks_header" datatype="html">              
+        <target>Esse conteúdo também vai aparecer em</target>      
+      </trans-unit>
+      <trans-unit id="01ca2c8026816c9162621ae8a7306b73eeffa7f4" datatype="html">
+        <source>orderby_date</source>
+        <target>Mais recente</target>        
+      </trans-unit>
+      <trans-unit id="orderby_date" datatype="html">              
+        <target>Mais recente</target>      
+      </trans-unit>
+      <trans-unit id="orderby_dateASC" datatype="html">              
+        <target>Mais antigo</target>      
+      </trans-unit>
+      <trans-unit id="orderby_name" datatype="html">              
+        <target>Nome</target>      
+      </trans-unit>
+      <trans-unit id="orderby_pageviewDESC" datatype="html">              
+        <target>Mais visto</target>      
+      </trans-unit>
+      <trans-unit id="orderby_pageview" datatype="html">              
+        <target>Menos visto</target>      
+      </trans-unit>
+      <trans-unit id="orderby_displayOrder" datatype="html">              
+        <target>Prioridade</target>      
+      </trans-unit>
+      <trans-unit id="orderby_shareDESC" datatype="html">              
+        <target>Mais popular</target>      
+      </trans-unit>
+      <trans-unit id="orderby_share" datatype="html">              
+        <target>Menos popular</target>      
+      </trans-unit>
+      <trans-unit id="All_content" datatype="html">              
+        <target>Tudo</target>      
+      </trans-unit>
+      <trans-unit id="Only_published" datatype="html">              
+        <target>Apenas publicado</target>      
+      </trans-unit>
+      <trans-unit id="required_number_field" datatype="html">        
+        <target>Campo numérico obrigatório</target>        
+      </trans-unit>
+      <trans-unit id="Go_back_to_search" datatype="html">        
+        <target>Voltar para a busca...</target>        
+      </trans-unit>
+      <trans-unit id="Crosslinks" datatype="html">        
+        <target>Crosslinks</target>        
+      </trans-unit>
+      <trans-unit id="view" datatype="html">        
+        <target>view</target>        
+      </trans-unit>
+      <trans-unit id="for_more_results_refine_your_search" datatype="html">        
+        <target>Para mais resultados aprimore sua busca</target>        
+      </trans-unit>      
+      <trans-unit id="back_button" datatype="html">        
+        <target>voltar</target>
+      </trans-unit>
+      <trans-unit id="Group" datatype="html">        
+        <target>Perfil</target>
+      </trans-unit>
+      <trans-unit id="This_group_has_no_members" datatype="html">        
+        <target>Esse perfil não possui nenhum integrante</target>
+      </trans-unit>
+      <trans-unit id="Add_member" datatype="html">        
+        <target>Adicionar integrante</target>
+      </trans-unit>
+      <trans-unit id="Members" datatype="html">        
+        <target>Integrantes</target>
+      </trans-unit>
+      <trans-unit id="Add" datatype="html">        
+        <target>Adicionar</target>
+      </trans-unit>
+      <trans-unit id="category" datatype="html">        
+        <target>Categoria</target>
+      </trans-unit>
+      <trans-unit id="Please_wait" datatype="html">        
+        <target>Por favor, aguarde...</target>
+      </trans-unit>
+      <trans-unit id="InfoTextMessage" datatype="html">        
+        <target>Informe uma mensagem...</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

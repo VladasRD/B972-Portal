@@ -1,0 +1,86 @@
+<div class="body-content">
+  <section class="body-wrapper">
+
+    <div *ngIf="!isSigninMessageVisible && !isLoading">
+      <div class="headline" fxLayout>
+        <div class="mat-h1">Dispositivos</div>
+        <div class="buttonBoxArea right">
+          <button mat-button color="primary" class="filterBoxAreaButton" title="filter"
+            (click)="showFilters = !showFilters;">
+            <mat-icon>tune</mat-icon>
+            <span>Filtro</span>
+          </button>
+        </div>
+      </div>
+
+      <form *ngIf="showFilters" novalidate [formGroup]="form" class="container filterBoxArea" fxLayout
+        fxLayoutGap="10px" fxLayout.xs="column">
+
+        <mat-form-field appearance="outline" fxFlex="1 1">
+          <mat-label>Search</mat-label>
+          <input matInput placeholder="Pesquisar pelo nome ou id do dispositivo" #searchBox id="search-box"
+            (keyup)="filterIfNotMobile(searchBox.value)" (keyup.enter)="filter(searchBox.value)">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </form>
+
+      <div class="container resultsContainer" fxLayout="row wrap" fxLayout.xs="column">
+        <mat-card *ngFor="let r of results" routerLink="{{r.getUrlRouterLinkProject}}" class="tile1x">
+          <mat-card-header style="overflow: hidden">
+            <div mat-card-avatar>
+              <mat-icon matSuffix>router</mat-icon>
+            </div>
+            <mat-card-title>{{r.nickName}}</mat-card-title>
+            <mat-card-subtitle>{{r.device.name + ' (' + r.deviceId + ')'}}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-divider></mat-divider>
+          <mat-card-content>
+            <p class="mb-2 first-in-content">Iluminação
+              <span style="color: white;"
+                class="{{r.device.bits?.iluminacao ? 'float-right badge badge-success' : 'float-right badge badge-danger'}}">{{r.device.bits?.iluminacao ? 'Ligada' : 'Desligada'}}</span>
+            </p>
+            <p class="mb-2">Bomba de circulação
+              <span style="color: white;"
+                class="{{r.device.bits?.bombaCirculacao ? 'float-right badge badge-success' : 'float-right badge badge-danger'}}">{{r.device.bits?.bombaCirculacao ? 'Ligada' : 'Desligada'}}</span>
+            </p>
+            <p class="mb-2">Modo
+              <span style="color: white;"
+                class="{{r.device.bits?.automatico ? 'float-right badge badge-success' : 'float-right badge badge-warning'}}">{{r.device.bits?.automatico ? 'Automático' : 'Manual'}}</span>
+            </p>
+            <p class="mb-2">Sensor de Nível
+              <span style="color: white;"
+                class="{{r.device.bits?.sensorNivelOperacional ? 'float-right badge badge-success' : 'float-right badge badge-warning'}}">{{r.device.bits?.sensorNivelOperacional ? 'Operacional' : 'Inoperante'}}</span>
+            </p>
+          </mat-card-content>
+
+          <mat-divider></mat-divider>
+          <mat-card-footer fxLayoutAlign="center center">
+            <div class="card-footer">
+              <mat-icon>visibility</mat-icon>
+              <span class="more-details">Mais detalhes</span>
+            </div>
+          </mat-card-footer>
+
+          <mat-icon *ngIf="!r.device.activable" color="warn" style="position: absolute; right: 8px; bottom: 8px">
+            block</mat-icon>
+        </mat-card>
+      </div>
+
+      <h2 *ngIf="results.length==0 && !firstSearch">Nenhum dispositivo encontrado. Tente alterar sua pesquisa.</h2>
+
+      <app-pagination [skip]="skip" [pageSize]="pageSize" [totalCount]="totalCount" (pageChanged)="pageChanged($event)">
+      </app-pagination>
+    </div>
+
+    <div *ngIf="isSigninMessageVisible">
+      <div class="mat-h1" i18n="@@please_signin_fisrt1">You have not signed in yet.</div>
+      <div class="mat-h1" i18n="@@please_signin_fisrt2">Please sign in first.</div>
+    </div>
+
+    <div *ngIf="isLoading">
+      <div class="mat-h1" i18n="@@signing" style="color: gray">Signing in....</div>
+    </div>
+
+  </section>
+</div>
