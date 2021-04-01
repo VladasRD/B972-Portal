@@ -19,6 +19,17 @@ export class Bits {
     estadoEntradaRastreador: boolean;
     estadoBloqueio: boolean;
     estadoSaidaRastreador: boolean;
+    bed1: boolean;
+    bed2: boolean;
+    bed3: boolean;
+    bed4: boolean;
+    bsd1: boolean;
+    bsd2: boolean;
+    btxev: boolean;
+    bAlertaMin: boolean;
+    bAlertaMax: boolean;
+    modoFechado: boolean;
+    modoAberto: boolean;
 }
 
 export class Rele {

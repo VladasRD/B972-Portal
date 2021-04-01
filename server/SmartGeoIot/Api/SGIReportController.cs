@@ -52,6 +52,12 @@ namespace SmartGeoIot.Api
             if (deviceRegistration.Package.Type.Equals("81"))
                 excelBytes = excel.ExportReportsPQA(reports, id, de, ate);
 
+            if (deviceRegistration.Package.Type.Equals("21"))
+                excelBytes = excel.ExportReportsTRM(reports, id, de, ate);
+            
+            if (deviceRegistration.Package.Type.Equals("23"))
+                excelBytes = excel.ExportReportsTRM10(reports, id, de, ate);
+
             var report = new FileContentResult(excelBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
             report.FileDownloadName = "relatório.xlsx";
 

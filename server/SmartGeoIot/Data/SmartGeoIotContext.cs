@@ -11,7 +11,9 @@ namespace SmartGeoIot.Data
         public SmartGeoIotContext(DbContextOptions<SmartGeoIotContext> options) : base(options) { }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Descomentar sempre que rodar migration para não incluir as views como tabelas.
             modelBuilder.Ignore<ApplicationUser>();
+            // modelBuilder.Ignore<VW_Outgoing>();
 
             modelBuilder.Entity<Client>()
                 .Property(b => b.Created)

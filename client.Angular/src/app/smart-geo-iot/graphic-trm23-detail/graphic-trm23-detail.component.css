@@ -1,0 +1,10 @@
+/* PRINT STYLE ----------------------------------------------------------------------------*/
+@media print {
+
+    @page {size: portrait}
+
+     .section-back {
+        display: none!important;
+    }
+        
+}

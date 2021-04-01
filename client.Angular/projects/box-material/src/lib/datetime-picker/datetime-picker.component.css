@@ -2,12 +2,21 @@
     width: 80px;
 }
 
+.date-picker-toogle {
+    margin-left: 45px;
+    margin-top: -5px;
+}
+
 .hour-input {
-    width: 18px;
+    width: auto;
+    margin-bottom: 7px!important;
+    border-color: #80808063!important;
 }
 
 .min-input {
-    width: 18px;
+    width: auto!important;
+    margin-bottom: 7px!important;
+    border-color: #80808063!important;
 }
 
 .dots {

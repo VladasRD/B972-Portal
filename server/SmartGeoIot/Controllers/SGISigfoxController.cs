@@ -47,9 +47,21 @@ namespace SmartGeoIot.Controllers
                     {
                         _log.Log($"Baixando dados do dispositivo {device.Id} - {device.Name}.");
                         var messages = _sgiService.SigfoxGetMessagesByDevice(device.Id);
+
                         if (messages.data.Length > 0)
                             _sgiService.SigfoxSaveMessages(messages);
                     }
+                }
+
+                try
+                {
+                    _log.Log("Iniciando atualização da data de operação.");
+                    _sgiService.UpdateOperationDateFromMessages();
+                    _log.Log("Finalizando atualização da data de operação.");
+                }
+                catch (System.Exception error)
+                {
+                    _log.Log("Erro na atualização da data de operação.", error.Message);
                 }
 
                 _log.Log("Finalizado download dos dados dos dispositivos.");
@@ -70,11 +82,59 @@ namespace SmartGeoIot.Controllers
                 if (messages.data.Length > 0)
                     _sgiService.SigfoxSaveMessages(messages);
 
+                try
+                {
+                    _log.Log("Iniciando atualização da data de operação.");
+                    _sgiService.UpdateOperationDateFromMessages();
+                    _log.Log("Finalizando atualização da data de operação.");
+                }
+                catch (System.Exception error)
+                {
+                    _log.Log("Erro na atualização da data de operação.", error.Message);
+                }
+
                 _log.Log($"Finalizado download de dados do dispositivo {deviceId}.");
             }
             catch (System.Exception ex)
             {
                 _log.Log($"Erro download de dados do dispositivo {deviceId}. Error: {ex.Message}");
+            }
+        }
+
+        public void DownloadOLDMessagesSigfox()
+        {
+            try
+            {
+                var devices = _sgiService.GetAllDevices();
+                if (devices != null)
+                {
+                    foreach (var device in devices)
+                    {
+                        _log.Log($"Baixando dados do dispositivo {device.Id} - {device.Name}.");
+                        Models.SigfoxMessage messages = GetMessagesByDevice(device.Id);
+
+                        bool continueUpdatingMessages = messages != null;
+                        while (continueUpdatingMessages)
+                        {
+                            if (messages.data.Length > 0)
+                                _sgiService.SigfoxSaveMessages(messages);
+
+                            continueUpdatingMessages = !string.IsNullOrWhiteSpace(messages.paging.next);
+                            if (continueUpdatingMessages)
+                                messages = GetMessagesByDevice(device.Id, messages.paging.next);
+                        }
+
+                        // var messages = _sgiService.SigfoxGetMessagesByDevice(device.Id);
+
+                        // if (messages.data.Length > 0)
+                        //     _sgiService.SigfoxSaveMessages(messages);
+                        _log.Log($"Finalizado download de dados do dispositivo {device.Id}.");
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                _log.Log($"Erro DownloadOLDMessagesSigfox. Error: {ex.Message}");
             }
         }
         #endregion
@@ -109,6 +169,11 @@ namespace SmartGeoIot.Controllers
             }
         }
         #endregion
+
+        public Models.SigfoxMessage GetMessagesByDevice(string deviceId, string next = null)
+        {
+            return _sgiService.SigfoxGetMessagesByDevice(deviceId, "0", "100", next);
+        }
 
         public void SaveLogs(string action, string error = null)
         {

@@ -1,0 +1,157 @@
+<form novalidate class="container" [formGroup]="form" autocomplete="off">
+  <div class="body-content-top">
+    <section class="body-wrapper">
+
+      <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1">{{pageTitle}}</div>
+
+        <div class="buttonBoxArea right" *ngIf="dashboard.deviceId!=''">
+          <button mat-raised-button color="primary" (click)="updateData()">
+            <mat-icon>autorenew</mat-icon>
+            <span>Atualizar informações</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- <div *ngIf="dashboard!=null" class="container"> -->
+      <div fxLayout="column">
+
+        <mat-card>
+          <mat-card-header fxFlex="75%">
+            <div class="title-page">
+              <span><strong>Informações de Estado</strong></span>
+            </div>
+          </mat-card-header>
+
+          <div class="position">
+            <div class="header">
+              <mat-icon>timelapse</mat-icon>
+              <span class="icon-text">{{dashboard.date | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+            </div>
+          </div>
+        </mat-card>
+
+        <div style="width:100%">
+          <div class="card">
+            <div class="card-body border-top p-0">
+              <div class="table-responsive-sm">
+                <table class="table table-striped table-bordered first">
+                  <tbody>
+                    <tr>
+                      <td>ED1</td>
+                      <td>
+                        <span
+                          class="{{!dashboard.bits.bed1 ? 'badge badge-info-state badge-danger' : 'badge badge-info-state badge-success'}}">{{dashboard.bits.bed1
+                          ? 'On' : 'Off'}}</span>
+                      </td>
+                      <td>SD1</td>
+                      <td><span
+                          class="{{!dashboard.bits.bsd1 ? 'badge badge-info-state badge-danger' : 'badge badge-info-state badge-success'}}">{{dashboard.bits.bsd1
+                          ? 'On' : 'Off'}}</span>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>ED2</td>
+                      <td><span
+                          class="{{!dashboard.bits.bed2 ? 'badge badge-info-state badge-danger' : 'badge badge-info-state badge-success'}}">{{dashboard.bits.bed2
+                          ? 'On' : 'Off'}}</span>
+                      </td>
+                      <td>SD2</td>
+                      <td><span
+                          class="{{!dashboard.bits.bsd2 ? 'badge badge-info-state badge-danger' : 'badge badge-info-state badge-success'}}">{{dashboard.bits.bsd2
+                          ? 'On' : 'Off'}}</span>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>ED3</td>
+                      <td><span
+                          class="{{!dashboard.bits.bed3 ? 'badge badge-info-state badge-danger' : 'badge badge-info-state badge-success'}}">{{dashboard.bits.bed3
+                          ? 'On' : 'Off'}}</span>
+                      </td>
+                      <td><strong>Alerta Mín</strong></td>
+                      <td><span
+                          class="{{!dashboard.bits.bAlertaMin ? 'badge badge-info-state badge-danger' : 'badge badge-info-state badge-success'}}">{{dashboard.bits.bAlertaMin
+                          ? 'On' : 'Off'}}</span>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td>ED4</td>
+                      <td><span
+                          class="{{!dashboard.bits.bed4 ? 'badge badge-info-state badge-danger' : 'badge badge-info-state badge-success'}}">{{dashboard.bits.bed4
+                          ? 'On' : 'Off'}}</span>
+                      </td>
+
+                      <td><strong>Alerta Máx</strong></td>
+                      <td><span
+                          class="{{!dashboard.bits.bAlertaMax ? 'badge badge-info-state badge-danger' : 'badge badge-info-state badge-success'}}">{{dashboard.bits.bAlertaMax
+                          ? 'On' : 'Off'}}</span>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container resultsContainer info-block-a" fxLayout="row wrap" fxLayout.xs="column">
+          <mat-card class="card-info">
+            <mat-card-header style="overflow: hidden" fxFlex="75%">
+              <mat-card-title>
+                <h5 class="title-info">Entrada EA10</h5>
+              </mat-card-title>
+              <mat-card-subtitle style="margin-top: 0px;">
+                <strong class="value-info">{{dashboard.entradaAnalogica}}</strong>
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/entradaea10.png" class="image-avatar" />
+                </div>
+              </div>
+            </div>
+          </mat-card>
+
+          <mat-card class="card-info">
+            <mat-card-header style="overflow: hidden" fxFlex="75%">
+              <mat-card-title>
+                <h5 class="title-info">Saída SA3</h5>
+              </mat-card-title>
+              <mat-card-subtitle style="margin-top: 0px;">
+                <strong class="value-info">{{dashboard.saidaAnalogica}}</strong>
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/saidasa3.png" class="image-avatar" />
+                </div>
+              </div>
+            </div>
+          </mat-card>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <h2 *ngIf="dashboard===null">Nenhuma informação encontrada para o disposivo selecionado.</h2>
+
+  <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+    <svg class="mark">
+      <circle cx="16" cy="16" r="16" />
+    </svg>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="">voltar</button>
+  </section>
+</form>

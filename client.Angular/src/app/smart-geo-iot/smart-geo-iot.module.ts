@@ -42,6 +42,13 @@ import { DashboardAguamon81DetailComponent } from './dashboard-aguamon81-detail/
 import { ReportAguamonListComponent } from './report-aguamon-list/report-aguamon-list.component';
 import { GraphicPqaDetailComponent } from './graphic-pqa-detail/graphic-pqa-detail.component';
 import { DashboardAguamon83DetailComponent } from './dashboard-aguamon83-detail/dashboard-aguamon83-detail.component';
+import { DashboardAguamon21DetailComponent } from './dashboard-aguamon21-detail/dashboard-aguamon21-detail.component';
+import { ReportAguamon2ListComponent } from './report-aguamon2-list/report-aguamon2-list.component';
+import { GraphicTrmDetailComponent } from './graphic-trm-detail/graphic-trm-detail.component';
+import { DashboardTrm23DetailComponent } from './dashboard-trm23-detail/dashboard-trm23-detail.component';
+import { ReportTrmListComponent } from './report-trm-list/report-trm-list.component';
+import { GraphicTrm23DetailComponent } from './graphic-trm23-detail/graphic-trm23-detail.component';
+import { DataUpdateComponent } from './data-update/data-update.component';
 
 @NgModule({
   imports: [
@@ -53,11 +60,15 @@ import { DashboardAguamon83DetailComponent } from './dashboard-aguamon83-detail/
       { path: 'sgi/relatorio/hidro', component: ReportListComponent, data: { shouldReuse: false } },
       { path: 'sgi/relatorio/djrf', component: ReportDjrfListComponent, data: { shouldReuse: false } },
       { path: 'sgi/relatorio/aguamon', component: ReportAguamonListComponent, data: { shouldReuse: false } },
+      { path: 'sgi/relatorio/aguamon2', component: ReportAguamon2ListComponent, data: { shouldReuse: false } },
+      { path: 'sgi/relatorio/trm', component: ReportTrmListComponent, data: { shouldReuse: false } },
       { path: 'sgi/grafico', component: GraphicListComponent, data: { shouldReuse: true } },
       { path: 'sgi/grafico/:id', component: GraphicDetailComponent },
       { path: 'sgi/grafico/aguamon/:id', component: GraphicAguamonDetailComponent },
       { path: 'sgi/grafico/djrf/:id', component: GraphicDjrfDetailComponent },
       { path: 'sgi/grafico/pqa/:id', component: GraphicPqaDetailComponent },
+      { path: 'sgi/grafico/trm/:id', component: GraphicTrmDetailComponent },
+      { path: 'sgi/grafico/trm23/:id', component: GraphicTrm23DetailComponent },
       { path: 'sgi/configuracoes', component: SettingsComponent, data: { shouldReuse: true } },
       { path: 'sgi/clientes', component: ClientListComponent, data: { shouldReuse: true } },
       { path: 'sgi/clientes/:id', component: ClientDetailComponent },
@@ -72,13 +83,16 @@ import { DashboardAguamon83DetailComponent } from './dashboard-aguamon83-detail/
       { path: 'sgi/sub-clientes/:id', component: SubClientDetailComponent },
       { path: 'sgi/dados-firmware', component: FirmwareListComponent, data: { shouldReuse: false } },
       { path: 'sgi/dados-firmware/:id', component: FirmwareDetailComponent },
+      { path: 'sgi/dados-atualizacao', component: DataUpdateComponent, data: { shouldReuse: false } },
       { path: 'redirect', component: RedirectionComponent },
       { path: 'sgi/maps/:id', component: MapsViewComponent },
       { path: 'sgi/relatorio-comercial', component: CommercialReportListComponent, data: { shouldReuse: true } },
       { path: 'sgi/relatorio-comercial/:id', component: CommercialReportDetailComponent },
       { path: 'sgi/relatorio-comercial-show/:id', component: CommercialReportShowComponent },
       { path: 'sgi/dashboard/aguamon81/:id', component: DashboardAguamon81DetailComponent },
-      { path: 'sgi/dashboard/aguamon83/:id', component: DashboardAguamon83DetailComponent }
+      { path: 'sgi/dashboard/aguamon83/:id', component: DashboardAguamon83DetailComponent },
+      { path: 'sgi/dashboard/aguamon21/:id', component: DashboardAguamon21DetailComponent },
+      { path: 'sgi/dashboard/trm23/:id', component: DashboardTrm23DetailComponent }
     ]),
     SharedModule,
     SecurityModule
@@ -124,7 +138,14 @@ import { DashboardAguamon83DetailComponent } from './dashboard-aguamon83-detail/
     DashboardAguamon81DetailComponent,
     ReportAguamonListComponent,
     GraphicPqaDetailComponent,
-    DashboardAguamon83DetailComponent
+    DashboardAguamon83DetailComponent,
+    DashboardAguamon21DetailComponent,
+    ReportAguamon2ListComponent,
+    GraphicTrmDetailComponent,
+    DashboardTrm23DetailComponent,
+    ReportTrmListComponent,
+    GraphicTrm23DetailComponent,
+    DataUpdateComponent
   ],
     // entryComponents: [
     //   BottomsheetComponent,

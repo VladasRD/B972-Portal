@@ -50,6 +50,11 @@ namespace SmartGeoIot.Services
 
             return clients.ToArray();
         }
+
+        public Client GetClientByDevice(string deviceId)
+        {
+            return _context.Clients.Include(i => i.Devices).FirstOrDefault(s => s.Devices.Any(c => c.Id == deviceId));
+        }
         public Client GetClient(string id)
         {
             var client = _context.Clients.AsNoTracking()

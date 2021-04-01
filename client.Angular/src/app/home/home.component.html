@@ -31,10 +31,11 @@
               <mat-icon matSuffix>router</mat-icon>
             </div>
             <mat-card-title>{{r.nickName}}</mat-card-title>
-            <mat-card-subtitle>{{r.device.name + ' (' + r.deviceId + ')'}}</mat-card-subtitle>
+            <!-- <mat-card-subtitle>{{r.device.name + ' (' + r.deviceId + ')'}}</mat-card-subtitle> -->
+            <mat-card-subtitle>{{r.deviceId}}</mat-card-subtitle>
           </mat-card-header>
 
-          <mat-divider></mat-divider>
+          <!-- <mat-divider></mat-divider>
           <mat-card-content>
             <p class="mb-2 first-in-content">Iluminação
               <span style="color: white;"
@@ -52,7 +53,7 @@
               <span style="color: white;"
                 class="{{r.device.bits?.sensorNivelOperacional ? 'float-right badge badge-success' : 'float-right badge badge-warning'}}">{{r.device.bits?.sensorNivelOperacional ? 'Operacional' : 'Inoperante'}}</span>
             </p>
-          </mat-card-content>
+          </mat-card-content> -->
 
           <mat-divider></mat-divider>
           <mat-card-footer fxLayoutAlign="center center">

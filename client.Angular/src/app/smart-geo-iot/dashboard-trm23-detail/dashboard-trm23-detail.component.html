@@ -1,0 +1,243 @@
+<form novalidate class="container" [formGroup]="form" autocomplete="off">
+  <div class="body-content-top">
+    <section class="body-wrapper">
+
+      <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1">{{pageTitle}}</div>
+
+        <div class="buttonBoxArea right" *ngIf="dashboard.deviceId!=''">
+          <button mat-raised-button color="primary" (click)="cleanUpdateData()">
+            <mat-icon>autorenew</mat-icon>
+            <span>Atualizar informações</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- <div *ngIf="dashboard!=null" class="container"> -->
+      <div fxLayout="column">
+
+        <mat-card>
+          <mat-card-header fxFlex="75%" style="margin-bottom: 20px;">
+            <div class="title-page">
+              <p>
+                <strong>{{clientByDevice.name}}</strong>
+              </p>
+              <p *ngIf="showDashboard">
+                <strong>Informações de Campo</strong>
+              </p>
+              <p class="icon-text" *ngIf="showDashboard">
+                <mat-icon style="vertical-align: bottom;">timelapse</mat-icon>
+                <label style="margin-left: 5px;">{{dashboard.date | date: 'dd/MM/yyyy HH:mm:ss'}}</label>
+              </p>
+              <p>
+                <strong *ngIf="!showDashboard" style="color: red; font-size: 16px;">Nenhuma informação encontrada para o dispositivo selecionado.</strong>
+              </p>
+            </div>
+          </mat-card-header>
+
+          <mat-form-field floatLabel="never" appearance="outline" fxFlex="270px">
+            <mat-label style="font-size: 14px;">Selecione uma data</mat-label>
+            <lib-datetime-picker readonly formControlName="dateFilter"></lib-datetime-picker>
+          </mat-form-field>
+
+          <div class="buttons_back_forward">
+            <button mat-raised-button color="primary" (click)="back()" class="button_back">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+
+            <button mat-raised-button color="primary" (click)="next()">
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+
+        </mat-card>
+
+        <div *ngIf="showDashboard">
+
+          <div class="container resultsContainer info-block-a" fxLayout="row wrap" fxLayout.xs="column">
+            <mat-card class="card-info">
+              <mat-card-header style="overflow: hidden" fxFlex="100%">
+                <mat-card-title>
+                  <h5 class="title-info">Consumo L/Min</h5>
+                </mat-card-title>
+                <mat-card-subtitle style="margin-top: 0px;">
+                  <strong class="value-info">{{dashboard.fluxoAgua}}</strong>
+                </mat-card-subtitle>
+              </mat-card-header>
+  
+              <div class="position">
+                <div class="header">
+                  <div mat-card-avatar>
+                    <img src="../../../assets/consumo.png" class="image-avatar" />
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+  
+            <mat-card class="card-info">
+              <mat-card-header style="overflow: hidden" fxFlex="100%">
+                <mat-card-title>
+                  <h5 class="title-info">Média Últ Hora L/Min</h5>
+                </mat-card-title>
+                <mat-card-subtitle style="margin-top: 0px;">
+                  <strong class="value-info">{{dashboard.consumoAgua}}</strong>
+                </mat-card-subtitle>
+              </mat-card-header>
+  
+              <div class="position">
+                <div class="header">
+                  <div mat-card-avatar>
+                    <img src="../../../assets/mediaConsumo.jpg" class="image-avatar" />
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+
+            <mat-card class="card-info">
+              <mat-card-header style="overflow: hidden" fxFlex="100%">
+                <mat-card-title>
+                  <h5 class="title-info">Modo</h5>
+                </mat-card-title>
+                <mat-card-subtitle style="margin-top: 0px;">
+                  <strong class="value-info">{{dashboard.modo}}</strong>
+                </mat-card-subtitle>
+              </mat-card-header>
+  
+              <div class="position">
+                <div class="header">
+                  <div mat-card-avatar>
+                    <img src="../../../assets/{{dashboard.modoImage}}.png" class="image-avatar" />
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+  
+            <mat-card class="card-info">
+              <mat-card-header style="overflow: hidden" fxFlex="100%">
+                <mat-card-title>
+                  <h5 class="title-info">Estado</h5>
+                </mat-card-title>
+                <mat-card-subtitle style="margin-top: 0px;">
+                  <strong class="value-info {{dashboard.estadoColor}}">
+                    {{dashboard.estado}}
+                  </strong>
+                </mat-card-subtitle>
+              </mat-card-header>
+  
+              <div class="position">
+                <div class="header">
+                  <div mat-card-avatar>
+                    <!-- <img src="../../../assets/{{dashboard.estadoImage}}.png" class="image-avatar" /> -->
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+
+            <mat-card class="card-info card-info-final">
+              <mat-card-header style="overflow: hidden" fxFlex="100%">
+                <mat-card-title>
+                  <h5 class="title-info">Válvula</h5>
+                </mat-card-title>
+                <mat-card-subtitle style="margin-top: 0px;">
+                  <strong class="value-info">
+                    {{dashboard.valvula}}
+                  </strong>
+                </mat-card-subtitle>
+              </mat-card-header>
+  
+              <div class="position">
+                <div class="header">
+                  <div mat-card-avatar>
+                    <img src="../../../assets/{{dashboard.estadoImage}}.png" class="image-avatar" />
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+
+
+          </div>
+
+          <!-- <div class="container resultsContainer" fxLayout="row wrap" fxLayout.xs="column">
+            <mat-card class="card-info">
+              <mat-card-header style="overflow: hidden" fxFlex="100%">
+                <mat-card-title>
+                  <h5 class="title-info">Modo</h5>
+                </mat-card-title>
+                <mat-card-subtitle style="margin-top: 0px;">
+                  <strong class="value-info">{{dashboard.modo}}</strong>
+                </mat-card-subtitle>
+              </mat-card-header>
+  
+              <div class="position">
+                <div class="header">
+                  <div mat-card-avatar>
+                    <img src="../../../assets/{{dashboard.modoImage}}.png" class="image-avatar" />
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+  
+            <mat-card class="card-info">
+              <mat-card-header style="overflow: hidden" fxFlex="100%">
+                <mat-card-title>
+                  <h5 class="title-info">Estado</h5>
+                </mat-card-title>
+                <mat-card-subtitle style="margin-top: 0px;">
+                  <strong class="value-info {{dashboard.estadoColor}}">
+                    {{dashboard.estado}}
+                  </strong>
+                </mat-card-subtitle>
+              </mat-card-header>
+  
+              <div class="position">
+                <div class="header">
+                  <div mat-card-avatar>
+                    <img src="../../../assets/{{dashboard.estadoImage}}.png" class="image-avatar" />
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+
+            <mat-card class="card-info card-info-final">
+              <mat-card-header style="overflow: hidden" fxFlex="100%">
+                <mat-card-title>
+                  <h5 class="title-info">Válvula</h5>
+                </mat-card-title>
+                <mat-card-subtitle style="margin-top: 0px;">
+                  <strong class="value-info">
+                    {{dashboard.valvula}}
+                  </strong>
+                </mat-card-subtitle>
+              </mat-card-header>
+  
+              <div class="position">
+                <div class="header">
+                  <div mat-card-avatar>
+                    <img src="../../../assets/{{dashboard.estadoImage}}.png" class="image-avatar" />
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+          </div> -->
+
+          
+
+          
+
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+    <svg class="mark">
+      <circle cx="16" cy="16" r="16" />
+    </svg>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="">voltar</button>
+  </section>
+</form>

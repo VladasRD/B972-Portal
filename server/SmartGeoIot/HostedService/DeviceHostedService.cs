@@ -18,7 +18,7 @@ namespace SmartGeoIot.HostedService
     {
         private Timer _timer;
         private int timerMiliseconds = 43200000;
-        private string _urlSigfoxGetData = "https://radiodadosanalitica.azurewebsites.net";
+        private string _urlSigfoxGetData = "https://radiodadosanalitica.azurewebsites.net/sgisigfox";
         // private string _urlSigfoxGetData = "http://rafaelestevao-001-site2.htempurl.com/sgisigfox";
         public Task StartAsync(CancellationToken cancellationToken)
         {

@@ -299,6 +299,8 @@ namespace SmartGeoIot.Migrations
 
                     b.Property<int>("NbFrames");
 
+                    b.Property<DateTime?>("OperationDate");
+
                     b.Property<string>("Operator");
 
                     b.Property<int>("RolloverCounter");
@@ -389,50 +391,6 @@ namespace SmartGeoIot.Migrations
                     b.HasKey("ProjectUId");
 
                     b.ToTable("Projects");
-                });
-
-            modelBuilder.Entity("SmartGeoIot.Models.VW_Outgoing", b =>
-                {
-                    b.Property<string>("OutgoingUId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<decimal>("AverageForClient")
-                        .HasColumnType("decimal(38, 2)");
-
-                    b.Property<decimal>("AverageForLicenseClient")
-                        .HasColumnType("decimal(38, 2)");
-
-                    b.Property<decimal>("AverageLicensesActived")
-                        .HasColumnType("decimal(38, 2)");
-
-                    b.Property<int>("ClientsActive");
-
-                    b.Property<decimal>("DataCenterValue")
-                        .HasColumnType("decimal(38, 2)");
-
-                    b.Property<string>("Description");
-
-                    b.Property<decimal>("DevelopmentValue")
-                        .HasColumnType("decimal(38, 2)");
-
-                    b.Property<int>("LicensesActive");
-
-                    b.Property<int>("Month");
-
-                    b.Property<decimal>("OperationValue")
-                        .HasColumnType("decimal(38, 2)");
-
-                    b.Property<decimal>("OperationsWNDValue")
-                        .HasColumnType("decimal(38, 2)");
-
-                    b.Property<decimal>("TotalBilling")
-                        .HasColumnType("decimal(38, 2)");
-
-                    b.Property<int>("Year");
-
-                    b.HasKey("OutgoingUId");
-
-                    b.ToTable("VW_Outgoings");
                 });
 
             modelBuilder.Entity("SmartGeoIot.Models.ClientBilling", b =>

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -43,11 +44,58 @@ namespace SmartGeoIot.Services
             return dashboards.ToArray();
         }
 
-        public DashboardViewModels GetDashboard(string id)
+        public DashboardViewModels GetDashboard(string id, DateTime? date = null, int seqNumber = 0, string navigation = null)
         {
             var deviceRegistration = _context.DevicesRegistration.Include(i => i.Package).SingleOrDefault(r => r.DeviceId == id);
 
-            if (deviceRegistration.Package.Type.Equals("22") || deviceRegistration.Package.Type.Equals("23")) // PROJETO SENSOR DE HIDROPONIA
+            if (deviceRegistration.Package.Type.Equals("23")) // TRM-10 (P972U1)
+            {
+                Models.Message deviceMessage23 = null;
+
+                if (seqNumber == 0)
+                {
+                    if (date == null)
+                    {
+                        deviceMessage23 = _context.Messages.AsNoTracking().Include(i => i.Device).OrderByDescending(o => o.Id)
+                                    .FirstOrDefault(w => w.DeviceId == id && w.Data.Substring(0, 2) == "23");
+                    }
+                    else
+                    {
+                        deviceMessage23 = _context.Messages.AsNoTracking().Include(i => i.Device).OrderByDescending(o => o.Id)
+                                    .FirstOrDefault(w => w.DeviceId == id && w.Data.Substring(0, 2) == "23" &&
+                                    w.OperationDate.Value.Year == date.Value.Year &&
+                                    w.OperationDate.Value.Month == date.Value.Month &&
+                                    w.OperationDate.Value.Day == date.Value.Day &&
+                                    w.OperationDate.Value.Hour == date.Value.Hour &&
+                                    w.OperationDate.Value.Minute == date.Value.Minute);
+                    }
+                }
+                else
+                {
+                    while (deviceMessage23 == null)
+                    {
+                        deviceMessage23 = _context.Messages.AsNoTracking()
+                            .Include(i => i.Device)
+                            .OrderByDescending(o => o.Id)
+                            .FirstOrDefault(w => w.DeviceId == id && w.Data.Substring(0, 2) == "23" && w.SeqNumber == seqNumber);
+
+                        if (navigation != null && deviceMessage23 == null)
+                            seqNumber = navigation.Equals("next") ? seqNumber+1 : seqNumber-1;
+                    }
+                }
+
+                if (deviceMessage23 == null)
+                {
+                    deviceMessage23 = _context.Messages.AsNoTracking().Include(i => i.Device).OrderByDescending(o => o.Id)
+                                    .FirstOrDefault(w => w.DeviceId == id && w.Data.Substring(0, 2) == "23");
+                }
+
+                if (deviceMessage23 == null)
+                    return null;
+
+                return CreateDashboard_Pack23ViewModel(deviceMessage23);
+            }
+            else if (deviceRegistration.Package.Type.Equals("22") || deviceRegistration.Package.Type.Equals("23")) // PROJETO SENSOR DE HIDROPONIA
             {
                 Models.Message deviceMessageType22 = _context.Messages.AsNoTracking().Include(i => i.Device).OrderByDescending(o => o.Id)
                                 .FirstOrDefault(w => w.DeviceId == id && w.Data.Substring(0, 2) == "22");
@@ -106,7 +154,16 @@ namespace SmartGeoIot.Services
 
                 return CreateDashboard_Pack83ViewModel(deviceMessage83);
             }
-           
+            else if (deviceRegistration.Package.Type.Equals("21")) // TRM-10 (P965U1)
+            {
+                Models.Message deviceMessage21 = _context.Messages.AsNoTracking().Include(i => i.Device).OrderByDescending(o => o.Id)
+                                .FirstOrDefault(w => w.DeviceId == id && w.Data.Substring(0, 2) == "21");
+
+                if (deviceMessage21 == null)
+                    return null;
+
+                return CreateDashboard_Pack21ViewModel(deviceMessage21);
+            }
 
             return null;
         }
@@ -166,6 +223,59 @@ namespace SmartGeoIot.Services
                 dashboard.Bits.BaseTempoUpLink = deviceRegistration.BaseTempoUpLink;
                 dashboard.TensaoMinima = deviceRegistration.TensaoMinima;
             }
+
+            return dashboard;
+        }
+
+
+        private DashboardViewModels CreateDashboard_Pack23ViewModel(Models.Message deviceMessage)
+        {
+            DashboardViewModels dashboard = new DashboardViewModels();
+            dashboard.DeviceId = deviceMessage.DeviceId;
+            dashboard.Name = deviceMessage.Device.Name;
+            dashboard.Package = deviceMessage.Data;
+            dashboard.TypePackage = deviceMessage.TypePackage;
+            dashboard.Date = deviceMessage.Date;
+            dashboard.Country = deviceMessage.Country;
+            dashboard.Lqi = deviceMessage.Lqi;
+            dashboard.Bits = deviceMessage.Bits;
+            dashboard.SeqNumber = deviceMessage.SeqNumber;
+
+            var _fluxoAgua = FromFloatSafe(deviceMessage.FluxoAgua);
+            var _consumoAgua = FromFloatSafe(deviceMessage.ConsumoAgua);
+
+            dashboard.FluxoAgua = String.Format("{0:0.0}", _fluxoAgua);
+            dashboard.ConsumoAgua = String.Format("{0:0.0}", _consumoAgua);
+
+            var _display = Consts.GetDisplayTRM10(dashboard.Bits.BAlertaMax, dashboard.Bits.ModoFechado, dashboard.Bits.ModoAberto);
+            dashboard.Modo = _display.DisplayModo; // modo
+            dashboard.Estado = _display.DisplayEstado; // alerta
+            dashboard.EstadoImage = _display.EstadoImage;
+            dashboard.ModoImage = _display.ModoImage;
+            dashboard.Valvula = _display.DisplayValvula;
+            dashboard.EstadoColor = _display.EstadoColor;
+
+            return dashboard;
+        }
+
+
+        private DashboardViewModels CreateDashboard_Pack21ViewModel(Models.Message deviceMessage)
+        {
+            DashboardViewModels dashboard = new DashboardViewModels();
+            dashboard.DeviceId = deviceMessage.DeviceId;
+            dashboard.Name = deviceMessage.Device.Name;
+            dashboard.Package = deviceMessage.Data;
+            dashboard.TypePackage = deviceMessage.TypePackage;
+            dashboard.Date = deviceMessage.Date;
+            dashboard.Country = deviceMessage.Country;
+            dashboard.Lqi = deviceMessage.Lqi;
+            dashboard.Bits = deviceMessage.Bits;
+
+            var _entradaAnalogica = FromFloatSafe(deviceMessage.EntradaAnalogica);
+            var _saidaAnalogica = FromFloatSafe(deviceMessage.SaidaAnalogica);
+
+            dashboard.EntradaAnalogica = String.Format("{0:0.0}", _entradaAnalogica);
+            dashboard.SaidaAnalogica = String.Format("{0:0.0}", _saidaAnalogica);
 
             return dashboard;
         }
@@ -315,5 +425,12 @@ namespace SmartGeoIot.Services
 
             return dashboard;
         }
+
+        public static double FromFloatSafe(long f)
+        {
+            uint fb = Convert.ToUInt32(f);
+            return BitConverter.ToSingle(BitConverter.GetBytes((int) fb), 0);
+        }
+
     }
 }

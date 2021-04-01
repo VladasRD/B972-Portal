@@ -22,6 +22,7 @@ export class Dashboard {
     country: string;
     lqi: number;
     bits: Bits;
+    seqNumber: number;
     level: string;
     light: string;
     temperature: string;
@@ -54,6 +55,17 @@ export class Dashboard {
     totalizacao: string;
     tempoParcial: string;
 
+    entradaAnalogica: string;
+    saidaAnalogica: string;
+    fluxoAgua: string;
+    consumoAgua: string;
+    modo: string;
+    estado: string;
+    valvula: string;
+    estadoImage: string;
+    modoImage: string
+    estadoColor: string;
+
     get nameEstadoDetector(): string {
         return EstadoDJ.enum[this.estadoDetector];
     }
@@ -64,6 +76,14 @@ export class Dashboard {
 
     get fonteColorEstadoDetector(): string {
         return EstadoDJ.enumFonteColor[this.estadoDetector];
+    }
+
+    get stadoNameOne(): string {
+        return this.estado ? this.estado.split(",", 2)[0] : '';
+    }
+
+    get stadoNameTwo(): string {
+        return this.estado ? this.estado.split(",", 2)[1] : '';
     }
 
     get linkMaps(): string {

@@ -119,18 +119,18 @@ namespace SmartGeoIot.Services
                 devicesQuery = devicesQuery.Take(top);
 
             var devices = devicesQuery.ToArray();
-            if (devices != null)
-            {
-                foreach (var d in devices)
-                {
-                    // adicionar dados da "message" para mostrar previamente nas telas de listagem algumas informações
-                    var dashboard = GetDashboard(d.DeviceId);
-                    if (dashboard == null)
-                        d.Device.Bits = new ViewModels.Bits();
-                    else
-                        d.Device.Bits = dashboard.Bits;
-                }
-            }
+            // if (devices != null)
+            // {
+            //     foreach (var d in devices)
+            //     {
+            //         // adicionar dados da "message" para mostrar previamente nas telas de listagem algumas informações
+            //         var dashboard = GetDashboard(d.DeviceId);
+            //         if (dashboard == null)
+            //             d.Device.Bits = new ViewModels.Bits();
+            //         else
+            //             d.Device.Bits = dashboard.Bits;
+            //     }
+            // }
             return devices;
         }
 
@@ -145,7 +145,7 @@ namespace SmartGeoIot.Services
                 devices = devices.Where(c => userDevices.Any(a => a.Id == c.DeviceId));
             }
 
-            if (project != null)
+            if (project != null && project != "null")
                 devices = devices.Where(c => c.Package.Type.Equals(project));
 
             // ordernação

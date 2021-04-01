@@ -50,6 +50,17 @@ namespace SmartGeoIot.Api
             return client;                
         }
 
+        [HttpGet("byDevice/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "SGI-CLIENT.READ, SGI-SUBCLIENT.READ")]
+        public Client GetClientByDevice(string id)
+        {
+            var client = _sgiService.GetClientByDevice(id);
+            // if(!User.CanAccessClient(client.ClientUId))
+            //     throw new Box.Common.BoxLogicException("Usuário não tem permissão para acessar o cliente.");
+
+            return client;                
+        }
+
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "SGI-CLIENT.WRITE, SGI-SUBCLIENT.WRITE")]
         public void Delete(string id)

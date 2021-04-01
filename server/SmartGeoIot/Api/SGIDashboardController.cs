@@ -6,6 +6,7 @@ using Box.Common.Web;
 using SmartGeoIot.ViewModels;
 using SmartGeoIot.Extensions;
 using System.Linq;
+using System;
 
 namespace SmartGeoIot.Api
 {
@@ -37,18 +38,19 @@ namespace SmartGeoIot.Api
 
         [HttpGet("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "SGI-DASHBOARD.READ")]
-        public DashboardViewModels Get(string id)
+        public DashboardViewModels Get(string id, [FromQuery] DateTime? date = null, [FromQuery] int seqNumber = 0, [FromQuery] string navigation = null)
         {
             if (id == null)
                 throw new Box.Common.BoxLogicException("É necessário informar o id do dispositivo.");
 
-            var dashboard = _sgiService.GetDashboard(id);
             if (!User.IsInRole("SGI.MASTER"))
             {
                 var userDevices = _sgiService.GetUserDevices(User.GetId());
                 if (!userDevices.Any(c => c.Id == id))
                     throw new Box.Common.BoxLogicException("Usuário não tem permissão para acessar dados deste dispositivo.");
             }
+            // var dashboard = _sgiService.GetDashboard(id, (date != null ? date.Value.AddHours(-3) : date), seqNumber);
+            var dashboard = _sgiService.GetDashboard(id, date, seqNumber, navigation);
 
             return dashboard;
         }

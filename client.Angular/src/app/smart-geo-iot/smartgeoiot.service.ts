@@ -148,6 +148,20 @@ export class SmartGeoIotService extends BaseService {
   }
 
   /**
+   * Gets a given client.
+   * @param id The client id
+   */
+   getClientByDevice(id: string): Observable<Client> {
+    this.messageService.isLoadingData = true;
+    return this.http.get<Client>(`${environment.API_SERVER_URL}/sgiClient/byDevice/${id}`)
+      .pipe(
+        tap(() => { this.messageService.isLoadingData = false; }),
+        map(c => Client.map(c)),
+        catchError(this.handleErrorAndContinue('getting client by device', new Client()))
+      );
+  }
+
+  /**
    * Updates or create a client.
    * @param user The client
    */
@@ -198,9 +212,9 @@ export class SmartGeoIotService extends BaseService {
    * Gets a given dashboard.
    * @param id The dashboard of device id
    */
-  getDashboard(id: string): Observable<Dashboard> {
+  getDashboard(id: string, date: string = null, seqNumber: number = 0, navigation: string = null): Observable<Dashboard> {
     this.messageService.isLoadingData = true;
-    return this.http.get<Dashboard>(`${environment.API_SERVER_URL}/sgiDashboard/${id}`)
+    return this.http.get<Dashboard>(`${environment.API_SERVER_URL}/sgiDashboard/${id}/?date=${date}&seqNumber=${seqNumber}&navigation=${navigation}`)
       .pipe(
         tap(() => { this.messageService.isLoadingData = false; }),
         catchError(this.handleErrorAndContinue('getting dashboard', new Dashboard()))
@@ -662,5 +676,25 @@ export class SmartGeoIotService extends BaseService {
       catchError(this.handleError(null))
     );
   }
+
+  // updateSigfoxDevices() {
+  //   console.log('updateSigfoxDevices');
+  //   this.messageService.isLoadingData = true;
+  //   return this.http.head(`${environment.IDENTITY_SERVER_URL}/sgisigfox/downloaddevicessigfox`);
+  // }
+
+  // updateSigfoxMessages() {
+  //   console.log('updateSigfoxMessages');
+  //   this.messageService.isLoadingData = true;
+  //   return this.http.head(`${environment.IDENTITY_SERVER_URL}/sgisigfox/downloadmessagessigfox`);
+  // }
+
+  // updateSigfoxMessages(): Observable<string> {
+  //   this.messageService.isLoadingData = true;
+  //   return this.http.get(`${environment.IDENTITY_SERVER_URL}/sgisigfox/downloaddevicessigfox`, this.httpOptions).pipe(
+  //     tap(() => { this.messageService.isLoadingData = false; }),
+  //     catchError(this.handleError(null))
+  //   );
+  // }
 
 }

@@ -7,6 +7,7 @@ namespace SmartGeoIot.Models
 
         public class Paging
         {
+            public string next { get; set; }
         }
 
         public class Datum

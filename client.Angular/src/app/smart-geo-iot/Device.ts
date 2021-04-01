@@ -60,6 +60,12 @@ export class DeviceRegistration {
         if (this.package.type === '83') {
             return ('sgi/dashboard/aguamon83/' + this.deviceId);
         }
+        if (this.package.type === '21') {
+            return ('sgi/dashboard/aguamon21/' + this.deviceId);
+        }
+        if (this.package.type === '23') {
+            return ('sgi/dashboard/trm23/' + this.deviceId);
+        }
         return ('sgi/dashboard/' + this.deviceId);
     }
 
@@ -75,6 +81,12 @@ export class DeviceRegistration {
         }
         if (this.package.type === '83') {
             return ('aguamon83/' + this.deviceId);
+        }
+        if (this.package.type === '21') {
+            return ('trm/' + this.deviceId);
+        }
+        if (this.package.type === '23') {
+            return ('trm23/' + this.deviceId);
         }
         return (this.deviceId);
     }

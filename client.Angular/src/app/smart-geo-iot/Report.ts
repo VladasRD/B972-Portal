@@ -1,4 +1,4 @@
-import { Bits } from './Bits';
+import { Bits, Rele } from './Bits';
 import { environment } from '../../environments/environment.stage';
 import { EstadoDJ } from './dashboard';
 
@@ -31,6 +31,25 @@ export class Report {
     latitudeConverted: string;
     longitudeConverted: string;
     radiusConverted: string;
+    alertaFonteBaixa: boolean;
+    tensaoMinima: string;
+    fluor: string;
+    cloro: string;
+    turbidez: string;
+    rele: Rele;
+    vazao: string;
+    totalizacaoParcial: string;
+    totalizacao: string;
+    tempoParcial: string;
+
+    entradaAnalogica: string;
+    saidaAnalogica: string;
+    fluxoAgua: string;
+    consumoAgua: string;
+    modo: string;
+    estado: string;
+    valvula: string;
+    estadoColor: string;
 
     get nameEstadoDetector(): string {
         return EstadoDJ.enum[this.estadoDetector];

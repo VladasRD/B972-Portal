@@ -68,6 +68,11 @@ namespace SmartGeoIot.Extensions
             return (Decimal)Convert.ToInt32(value, 16);
         }
 
+        public static long HexaToLong(string value)
+        {
+            return (long)Convert.ToInt64(value, 16);
+        }
+
         public static byte[] StringToHexadecimalFourChars(String HexString)
         {
             int numberChars = HexString.Length / 4;

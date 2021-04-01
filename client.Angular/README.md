@@ -21,6 +21,11 @@ First run `ng xi18n --output-path locale` for the view localization.
 Then run `./node_modules/.bin/ngx-extractor -i src/**/*.ts -f xlf -o src/locale/messages.en.xlf` for the dynamic terms.  
 See https://github.com/ngx-translate/i18n-polyfill for help.
 
+## To modify/build CMS Capture Templates
+
+Work on the /projects/capture-templates project.
+Build it using `ng build capture-templates`.
+Then copy _dist/capture-templates/bundles/capture-templates.umd.min.js_ to _/src/app/assets/plugins_.
 
 ## To modify/build Box Material
 

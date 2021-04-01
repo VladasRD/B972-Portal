@@ -1,7 +1,7 @@
 <div class="controls" fxLayout>
   
   <input matInput [matDatepicker]="picker" [(ngModel)]="value" class="date-input">
-  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-datepicker-toggle matSuffix [for]="picker" class="date-picker-toogle"></mat-datepicker-toggle>
 
   <select matNativeControl class="hour-input" [(ngModel)]="hour" >
       <option *ngFor="let h of hours">{{h}}</option>            

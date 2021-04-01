@@ -19,6 +19,7 @@ namespace SmartGeoIot.Models
         public string Operator { get; set; }
         public string Country { get; set; }
         public int Lqi { get; set; }
+        public DateTime? OperationDate { get; set; }
 
         [ForeignKey("DeviceId")]
         public Device Device { get; set; }
@@ -103,6 +104,38 @@ namespace SmartGeoIot.Models
                         EstadoSaidaRastreador = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(0, 1)))
                     };
                 }
+
+                 if (this.TypePackage.Equals("21"))
+                 {
+                     //00010101
+                     var _bitsByteToBinary2 = GetBitsByteToBinary(1);
+
+                     return new ViewModels.Bits()
+                     {
+                        Bed1 = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(7, 1))),
+                        Bed2 = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(6, 1))),
+                        Bed3 = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(5, 1))),
+                        Bed4 = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(4, 1))),
+                        Bsd1 = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(3, 1))),
+                        Bsd2 = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(2, 1))),
+
+
+
+                        Btxev = Convert.ToBoolean(int.Parse(_bitsByteToBinary2.Substring(7, 1))),
+                        BAlertaMin = Convert.ToBoolean(int.Parse(_bitsByteToBinary2.Substring(6, 1))),
+                        BAlertaMax = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(5, 1)))
+                     };
+                 }
+
+                 if (this.TypePackage.Equals("23"))
+                 {
+                      return new ViewModels.Bits()
+                      {
+                            BAlertaMax = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(7, 1))),
+                            ModoFechado = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(6, 1))),
+                            ModoAberto = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(5, 1)))
+                      };
+                 }
 
                 return new ViewModels.Bits()
                 {
@@ -326,7 +359,7 @@ namespace SmartGeoIot.Models
             get
             {
                 string tempPh = null;
-                if (!TypePackage.Equals("23") && !TypePackage.Equals("81"))
+                if (!TypePackage.Equals("23") || !TypePackage.Equals("81"))
                     return string.Empty;
 
                 if (TypePackage.Equals("81"))
@@ -468,6 +501,7 @@ namespace SmartGeoIot.Models
                 return Utils.StringToHexadecimalTwoChars(Package);
             }
         }
+
         //somente para consulta
         [NotMapped]
         public string BitsByteToBinary
@@ -476,6 +510,11 @@ namespace SmartGeoIot.Models
             {
                 return Utils.ByteToBinary(PackageToByteArray[0]);
             }
+        }
+
+        public string GetBitsByteToBinary(int bit)
+        {
+            return Utils.ByteToBinary(PackageToByteArray[bit]);
         }
 
         [NotMapped]
@@ -551,6 +590,45 @@ namespace SmartGeoIot.Models
                 return Utils.HexaToDecimal(this.Package.Substring(16, 4)).ToString();
             }
         }
+
+        [NotMapped]
+        public long EntradaAnalogica
+        {
+            get
+            {
+                return Utils.HexaToLong(this.Package.Substring(4, 8));
+            }
+        }
+
+        [NotMapped]
+        public long SaidaAnalogica
+        {
+            get
+            {
+                return Utils.HexaToLong(this.Package.Substring(12, 8));
+            }
+        }
+
+        [NotMapped]
+        public long FluxoAgua
+        {
+            get
+            {
+                var _value = this.Package.Substring(2, 8);
+                return Utils.HexaToLong($"{_value.ToString().Substring(6,2)}{_value.ToString().Substring(4,2)}{_value.ToString().Substring(2,2)}{_value.ToString().Substring(0,2)}");
+            }
+        }
+
+        [NotMapped]
+        public long ConsumoAgua
+        {
+            get
+            {
+                var _value = this.Package.Substring(10, 8);
+                return Utils.HexaToLong($"{_value.ToString().Substring(6,2)}{_value.ToString().Substring(4,2)}{_value.ToString().Substring(2,2)}{_value.ToString().Substring(0,2)}");
+            }
+        }
+
 
     }
 }

@@ -12,6 +12,7 @@ namespace SmartGeoIot.ViewModels
         public string Country { get; set; }
         public int Lqi { get; set; }
         public Bits Bits { get; set; }
+        public int SeqNumber { get; set; }
         public string Level { get; set; }
         public string Light { get; set; }
         public string Temperature { get; set; }
@@ -43,6 +44,16 @@ namespace SmartGeoIot.ViewModels
         public string TotalizacaoParcial { get; set; }
         public string Totalizacao { get; set; }
         public string TempoParcial { get; set; }
+        public string EntradaAnalogica { get; set; }
+        public string SaidaAnalogica { get; set; }
+        public string FluxoAgua { get; set; }
+        public string ConsumoAgua { get; set; }
+        public string Modo { get; set; }
+        public string Estado { get; set; }
+        public string Valvula { get; set; }
+        public string EstadoImage { get; set; }
+        public string EstadoColor { get; set; }
+        public string ModoImage { get; set; }
     }
 
     public class Rele
@@ -76,6 +87,23 @@ namespace SmartGeoIot.ViewModels
         public bool EstadoEntradaRastreador { get; set; }
         public bool EstadoBloqueio { get; set; }
         public bool EstadoSaidaRastreador { get; set; }
+
+
+        // Projeto TRM-10, bits de estado 1
+        public bool Bed1 { get; set; }
+        public bool Bed2 { get; set; }
+        public bool Bed3 { get; set; }
+        public bool Bed4 { get; set; }
+        public bool Bsd1 { get; set; }
+        public bool Bsd2 { get; set; }
+
+
+        // Projeto TRM-10, bits de estado 2
+        public bool Btxev { get; set; }
+        public bool BAlertaMin { get; set; }
+        public bool BAlertaMax { get; set; }
+        public bool ModoFechado { get; set; }
+        public bool ModoAberto { get; set; }
     }
 
     public enum EstatusDetector

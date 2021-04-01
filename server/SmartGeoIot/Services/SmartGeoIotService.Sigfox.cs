@@ -40,7 +40,7 @@ namespace SmartGeoIot.Services
             }
         }
 
-        public SigfoxMessage SigfoxGetMessagesByDevice(string id, string before = "0", string limit = "100")
+        public SigfoxMessage SigfoxGetMessagesByDevice(string id, string before = "0", string limit = "100", string next = null)
         {
             try
             {
@@ -53,7 +53,13 @@ namespace SmartGeoIot.Services
                 parameters.Add("limit", limit);
                 parameters.Add("before", before);
 
-                var req = new HttpRequestMessage(HttpMethod.Get, $"{_sgiSettings.SIG_FOX_URL}/devices/{id}/messages") { Content = new FormUrlEncodedContent(parameters) };
+                string _url = null;
+                if (String.IsNullOrWhiteSpace(next))
+                    _url = $"{_sgiSettings.SIG_FOX_URL}/devices/{id}/messages";
+                else
+                    _url = next;
+
+                var req = new HttpRequestMessage(HttpMethod.Get, _url) { Content = new FormUrlEncodedContent(parameters) };
                 HttpResponseMessage msg = wc.SendAsync(req).Result;
 
                 string jsonResult = string.Empty;
@@ -185,6 +191,7 @@ namespace SmartGeoIot.Services
                     newMessage.Operator = item._operator;
                     newMessage.Country = item.country;
                     newMessage.Lqi = item.lqi;
+                    newMessage.OperationDate = Utils.TimeStampToDateTime(item.time).ToUniversalTime();
 
                     listMessages.Add(newMessage);
                 }
@@ -195,6 +202,22 @@ namespace SmartGeoIot.Services
                 _context.Messages.AddRange(listMessages);
                 _context.SaveChanges();
                 _log.Log($"Dados do dispositivo criados.");
+            }
+        }
+
+        public void UpdateOperationDateFromMessages()
+        {
+            var messages = _context.Messages.Where(c => c.OperationDate.Value == null).ToList();
+            foreach (var message in messages)
+            {
+                message.OperationDate = Utils.TimeStampToDateTime(message.Time).ToUniversalTime();
+            }
+
+            if (messages.Count > 0)
+            {
+                _context.Messages.UpdateRange(messages);
+                _context.SaveChanges();
+                _log.Log($"Data da operação atualizada.");
             }
         }
 

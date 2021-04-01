@@ -30,6 +30,14 @@ namespace SmartGeoIot.Services
             if (typePackage.Equals("12"))
                 return GetReportDataDJRF(id, skip, top, de, ate, blocked, totalCount, isCallByGraphic);
 
+            // Projeto TRM
+            if (typePackage.Equals("21"))
+                return GetReportDataTRM(id, skip, top, de, ate, totalCount);
+
+            // Projeto TRM-10
+            if (typePackage.Equals("23"))
+                return GetReportDataTRM10(id, skip, top, de, ate, totalCount, isCallByGraphic);
+
             return null;
         }
 
@@ -182,17 +190,17 @@ namespace SmartGeoIot.Services
                     var deviceMessageType22 = reportsQuery
                         .Where(w => w.DeviceId == id
                         && w.TypePackage.Equals("22")
-                        && w.Date.Year == i.Year
-                        && w.Date.Month == i.Month
-                        && w.Date.Day == i.Day)
+                        && w.OperationDate.Value.Year == i.Year
+                        && w.OperationDate.Value.Month == i.Month
+                        && w.OperationDate.Value.Day == i.Day)
                         .OrderByDescending(o => o.Id).FirstOrDefault();
 
                     var deviceMessageType23 = reportsQuery
                           .Where(w => w.DeviceId == id
                           && w.TypePackage.Equals("23")
-                          && w.Date.Year == i.Year
-                          && w.Date.Month == i.Month
-                          && w.Date.Day == i.Day)
+                          && w.OperationDate.Value.Year == i.Year
+                          && w.OperationDate.Value.Month == i.Month
+                          && w.OperationDate.Value.Day == i.Day)
                           .OrderByDescending(o => o.Id).FirstOrDefault();
 
 
@@ -246,12 +254,12 @@ namespace SmartGeoIot.Services
                 if (!de.Equals("null"))
                 {
                     DateTime firstDate = Convert.ToDateTime(de).ToUniversalTime();
-                    messages = messages.Where(c => c.Date.Year >= firstDate.Year && c.Date.Month >= firstDate.Month && c.Date.Day >= firstDate.Day);
+                    messages = messages.Where(c => c.OperationDate.Value.Year >= firstDate.Year && c.OperationDate.Value.Month >= firstDate.Month && c.OperationDate.Value.Day >= firstDate.Day);
                 }
                 if (!ate.Equals("null"))
                 {
                     var lastDate = Convert.ToDateTime(ate).ToUniversalTime();
-                    messages = messages.Where(c => c.Date.Year <= lastDate.Year && c.Date.Month <= lastDate.Month && c.Date.Day <= lastDate.Day);
+                    messages = messages.Where(c => c.OperationDate.Value.Year <= lastDate.Year && c.OperationDate.Value.Month <= lastDate.Month && c.OperationDate.Value.Day <= lastDate.Day);
                 }
 
                 if (messages == null)
@@ -358,7 +366,9 @@ namespace SmartGeoIot.Services
         public IEnumerable<DashboardViewModels> GetReportDataAguamon(string id, int skip = 0, int top = 0, OptionalOutTotalCount totalCount = null)
         {
             List<DashboardViewModels> newData = new List<DashboardViewModels>();
-            IQueryable<Message> reportsQuery = _context.Messages.AsNoTracking().Include(i => i.Device).Where(w => w.DeviceId == id).OrderByDescending(o => o.Id);
+            IQueryable<Message> reportsQuery = _context.Messages
+            .AsNoTracking().Include(i => i.Device)
+            .Where(w => w.DeviceId == id && (w.TypePackage.Equals("10"))).OrderByDescending(o => o.Id);
 
             try
             {
@@ -397,6 +407,129 @@ namespace SmartGeoIot.Services
             }
             catch (System.Exception)
             {
+                return newData;
+            }
+        }
+
+        public IEnumerable<DashboardViewModels> GetReportDataTRM(string id, int skip = 0, int top = 0, string de = null, string ate = null, OptionalOutTotalCount totalCount = null)
+        {
+            List<DashboardViewModels> newData = new List<DashboardViewModels>();
+            IQueryable<Message> reportsQuery = _context.Messages.AsNoTracking().Include(i => i.Device).Where(w => w.DeviceId == id && (w.TypePackage.Equals("21"))).OrderByDescending(o => o.Id);
+
+            try
+            {
+                if (!de.Equals("null"))
+                {
+                    DateTime firstDate = Convert.ToDateTime(de).ToUniversalTime();
+                    reportsQuery = reportsQuery.Where(c => c.OperationDate.Value.Year >= firstDate.Year && c.OperationDate.Value.Month >= firstDate.Month && c.OperationDate.Value.Day >= firstDate.Day);
+                }
+                if (!ate.Equals("null"))
+                {
+                    DateTime lastDate = Convert.ToDateTime(ate).ToUniversalTime();
+                    reportsQuery = reportsQuery.Where(c => c.OperationDate.Value.Year <= lastDate.Year && c.OperationDate.Value.Month <= lastDate.Month && c.OperationDate.Value.Day <= lastDate.Day);
+                }
+
+                if (totalCount != null)
+                    totalCount.Value = reportsQuery.Count();
+
+                if (skip != 0)
+                    reportsQuery = reportsQuery.Skip(skip);
+
+                if (top != 0)
+                    reportsQuery = reportsQuery.Take(top);
+
+                foreach (var report in reportsQuery)
+                {
+                    DashboardViewModels newItem = new DashboardViewModels();
+                    newItem.DeviceId = report.DeviceId;
+                    newItem.Name = report.Device.Name;
+                    newItem.Package = report.Data;
+                    newItem.TypePackage = report.TypePackage;
+                    newItem.Date = report.Date;
+                    newItem.Country = report.Country;
+                    newItem.Lqi = report.Lqi;
+                    newItem.Bits = report.Bits;
+
+                    var _entradaAnalogica = FromFloatSafe(report.EntradaAnalogica);
+                    var _saidaAnalogica = FromFloatSafe(report.SaidaAnalogica);
+
+                    newItem.EntradaAnalogica = String.Format("{0:0.0}", _entradaAnalogica);
+                    newItem.SaidaAnalogica = String.Format("{0:0.0}", _saidaAnalogica);
+
+                    newData.Add(newItem);
+                }
+
+                return newData.OrderByDescending(o => o.Date).ToArray();
+            }
+            catch (System.Exception ex)
+            {
+                _log.Log("Erro GetReportDataTRM.", ex.Message, true);
+                return newData;
+            }
+        }
+
+        public IEnumerable<DashboardViewModels> GetReportDataTRM10(string id, int skip = 0, int top = 0, string de = null, string ate = null, OptionalOutTotalCount totalCount = null, bool isCallByGraphic = false)
+        {
+            List<DashboardViewModels> newData = new List<DashboardViewModels>();
+            IQueryable<Message> reportsQuery = _context.Messages.AsNoTracking().Include(i => i.Device).Where(w => w.DeviceId == id && (w.TypePackage.Equals("23"))).OrderByDescending(o => o.Id);
+
+            try
+            {
+                if (!de.Equals("null"))
+                {
+                    DateTime firstDate = Convert.ToDateTime(de).ToUniversalTime();
+                    reportsQuery = reportsQuery.Where(c => c.OperationDate.Value.Year >= firstDate.Year && c.OperationDate.Value.Month >= firstDate.Month && c.OperationDate.Value.Day >= firstDate.Day);
+                }
+                if (!ate.Equals("null"))
+                {
+                    var lastDate = Convert.ToDateTime(ate).ToUniversalTime();
+                    reportsQuery = reportsQuery.Where(c => c.OperationDate.Value.Year <= lastDate.Year && c.OperationDate.Value.Month <= lastDate.Month && c.OperationDate.Value.Day <= lastDate.Day);
+                }
+
+                if (totalCount != null)
+                    totalCount.Value = reportsQuery.Count();
+
+                if (skip != 0)
+                    reportsQuery = reportsQuery.Skip(skip);
+
+                if (top != 0)
+                    reportsQuery = reportsQuery.Take(top);
+
+                foreach (var report in reportsQuery)
+                {
+                    DashboardViewModels newItem = new DashboardViewModels();
+                    newItem.DeviceId = report.DeviceId;
+                    newItem.Name = report.Device.Name;
+                    newItem.Package = report.Data;
+                    newItem.TypePackage = report.TypePackage;
+                    newItem.Date = report.Date;
+                    newItem.Country = report.Country;
+                    newItem.Lqi = report.Lqi;
+                    newItem.Bits = report.Bits;
+
+                    var _fluxoAgua = FromFloatSafe(report.FluxoAgua);
+                    var _consumoAgua = FromFloatSafe(report.ConsumoAgua);
+
+                    newItem.FluxoAgua = String.Format("{0:0.0}", _fluxoAgua);
+                    newItem.ConsumoAgua = String.Format("{0:0.0}", _consumoAgua);
+
+                    if (!isCallByGraphic)
+                    {
+                        var _display = Consts.GetDisplayTRM10(newItem.Bits.BAlertaMax, newItem.Bits.ModoFechado, newItem.Bits.ModoAberto);
+                        newItem.Modo = _display.DisplayModo; // modo
+                        newItem.Estado = _display.DisplayEstado; // alerta
+                        newItem.Valvula = _display.DisplayValvula; // válvula
+                        newItem.EstadoColor = _display.EstadoColor;
+                    }
+
+                    newData.Add(newItem);
+                }
+
+                return newData.OrderBy(o => o.Date).ToArray();
+            }
+            catch (System.Exception ex)
+            {
+                _log.Log("Erro GetReportDataTRM.", ex.Message, true);
                 return newData;
             }
         }

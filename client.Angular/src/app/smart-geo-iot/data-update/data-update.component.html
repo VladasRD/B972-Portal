@@ -1,0 +1,60 @@
+<form novalidate class="container" [formGroup]="form" autocomplete="off">
+  <div class="body-content-top">
+    <section class="body-wrapper">
+
+      <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="/sgi/configuracoes">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1">Atualização de dados e dispositivos</div>
+      </div>
+
+      <div fxLayout="column">
+
+        <mat-card>
+          <div class="buttonBoxArea right">
+            <button mat-raised-button color="primary" (click)="updateDevices()">
+              <mat-icon>autorenew</mat-icon>
+              <span>Atualizar dispositivos</span>
+            </button>
+          </div>
+        </mat-card>
+        
+        <br>
+        
+        <mat-card>
+          <div class="buttonBoxArea right">
+            <button mat-raised-button color="primary" (click)="updateMessages()">
+              <mat-icon>autorenew</mat-icon>
+              <span>Atualizar dados de todos dispositivos</span>
+            </button>
+          </div>
+        </mat-card>
+        
+        <br>
+
+        <mat-card>
+          <!-- <app-device-select [control]="form.controls.deviceFilter"></app-device-select> -->
+
+          <div class="buttonBoxArea right">
+            <!-- <button mat-raised-button color="primary" [disabled]="!deviceFilter" (click)="updateMessagesOLD()"> -->
+            <button mat-raised-button color="primary" (click)="updateMessagesOLD()">
+              <mat-icon>autorenew</mat-icon>
+              <span>Atualizar dados deste dispositivo (antigos) se ocorrer de não ter dados anteriores</span>
+            </button>
+          </div>
+        </mat-card>
+
+        <br>
+      </div>
+    </section>
+
+  </div>
+
+  <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+    <svg class="mark">
+      <circle cx="16" cy="16" r="16" />
+    </svg>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="/sgi/configuracoes">voltar</button>
+  </section>
+</form>
