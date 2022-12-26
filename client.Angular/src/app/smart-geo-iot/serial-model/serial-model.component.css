@@ -1,0 +1,16 @@
+::ng-deep .mat-tooltip {
+    /* your own custom styles here */ 
+    /* e.g. */
+    color: red;
+}
+
+@media screen and (min-width: 600px) and (max-width: 1279px) {
+    .example-button-container {
+        max-width: 25%!important;
+    }
+}
+@media screen (max-width: 599px) {
+    .example-button-container {
+        max-width: 100%!important;
+    }
+}

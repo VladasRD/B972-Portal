@@ -8,7 +8,7 @@ using SmartGeoIot.ViewModels;
 
 namespace SmartGeoIot.Services
 {
-    public partial class SmartGeoIotService
+    public partial class RadiodadosService
     {
         public IEnumerable<DashboardViewModels> GetGraphicsMonths(string id, ClaimsPrincipal user)
         {

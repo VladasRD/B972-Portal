@@ -1,5 +1,6 @@
 import { environment } from './../../environments/environment';
-import { Bits, Rele } from './Bits';
+import { Bits, Rele, ReleBoolean } from './Bits';
+import { MCond } from './MCond';
 
 export class EstadoDJ {
     static readonly Aguardando = 0;
@@ -11,6 +12,13 @@ export class EstadoDJ {
     static readonly enum = ['Aguardando', 'Operacional', 'Em Carência', 'Em Ciclos', 'Em Bloqueio', 'Em Dormência'];
     static readonly enumBackground = ['bg-aguardando', 'bg-operacional', 'bg-carencia', 'bg-ciclos', 'bg-bloqueio', 'bg-dormencia'];
     static readonly enumFonteColor = ['fc-aguardando', 'fc-operacional', 'fc-carencia', 'fc-ciclos', 'fc-bloqueio', 'fc-dormencia'];
+}
+
+export class DownloadLink {
+    numeroEnvios: number;
+    tempoTransmissao: number;
+    tipoEnvio: boolean;
+    tensaoMinima: number;
 }
 
 export class Dashboard {
@@ -50,6 +58,7 @@ export class Dashboard {
     cloro: string;
     turbidez: string;
     rele: Rele;
+    releBoolean: ReleBoolean;
     vazao: string;
     totalizacaoParcial: string;
     totalizacao: string;
@@ -65,6 +74,38 @@ export class Dashboard {
     estadoImage: string;
     modoImage: string
     estadoColor: string;
+    seqNumberb: number;
+
+    downloadLink: DownloadLink;
+    calha: string;
+    calhaAlerta: string;
+    calhaImage: string;
+
+    consumoDia: string;
+    consumoSemana: string;
+    consumoMes: string;
+    time: number;
+
+    // B972
+    flow: string;
+    velocity: string;
+    flags: string;
+    total: string;
+    partial: string;
+
+    serialNumber: string;
+    model: string;
+    notes: string;
+    notesCreateDate: string;
+    ed1: string;
+    ed2: string;
+    ed3: string;
+    ed4: string;
+    sd1: string;
+    sd2: string;
+    ea10: string;
+    sa3: string;
+    mCond: MCond;
 
     get nameEstadoDetector(): string {
         return EstadoDJ.enum[this.estadoDetector];

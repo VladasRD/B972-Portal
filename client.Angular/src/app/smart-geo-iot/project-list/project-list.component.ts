@@ -13,7 +13,7 @@ import { GrudList } from '../../common/grud-list';
 export class ProjectListComponent extends GrudList<Object> implements OnInit {
 
   form: FormGroup;
-  displayedColumns: string[] = ['name', 'description'];
+  displayedColumns: string[] = ['code', 'name', 'description'];
 
   constructor(private sgiService: SmartGeoIotService) {
     super();

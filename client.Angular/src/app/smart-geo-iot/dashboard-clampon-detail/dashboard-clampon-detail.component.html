@@ -1,0 +1,250 @@
+<form novalidate class="container" [formGroup]="form" autocomplete="off">
+  <div class="body-content-top">
+    <section class="body-wrapper">
+
+      <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1">{{pageTitle}}</div>
+
+        <div class="buttonBoxArea right" *ngIf="dashboard.deviceId!=''">
+          <button mat-raised-button color="primary" (click)="cleanUpdateData()">
+            <mat-icon>autorenew</mat-icon>
+            <span>Atualizar informações</span>
+          </button>
+        </div>
+      </div>
+
+      <div fxLayout="column">
+
+        <mat-card>
+          <mat-card-header fxFlex="75%" style="margin-bottom: 20px;">
+            
+            <div style="padding-right: 35px; margin-top: 22px;">
+              <img src="{{'../../../assets/' + getNameLogoClient + '.png'}}" class="image-avatar" />
+            </div>
+            
+            <div class="title-page">
+              <p>
+                <strong>{{userName}}</strong>
+              </p>
+              <p *ngIf="showDashboard">
+                <strong>Informações de Campo</strong>
+              </p>
+              <p class="icon-text" *ngIf="showDashboard">
+                <mat-icon style="vertical-align: bottom;">timelapse</mat-icon>
+                <label style="margin-left: 5px;">Última Atualização {{dashboard.date | date: 'dd/MM/yyyy HH:mm:ss'}}</label>
+              </p>
+              <p>
+                <strong *ngIf="!showDashboard" style="color: red; font-size: 16px;">Nenhuma informação encontrada para o dispositivo selecionado.</strong>
+              </p>
+            </div>
+          </mat-card-header>
+
+          <mat-form-field floatLabel="never" appearance="outline" fxFlex="270px">
+            <mat-label style="font-size: 14px;">Selecione uma data</mat-label>
+            <lib-datetime-picker readonly formControlName="dateFilter"></lib-datetime-picker>
+          </mat-form-field>
+
+          <div class="buttons_back_forward">
+            <button mat-raised-button color="primary" (click)="back()" class="button_back">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+
+            <button mat-raised-button color="primary" (click)="next()">
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+
+        </mat-card>
+
+        <app-serial-model [deviceId]="deviceId"></app-serial-model>
+
+        <!-- <div style="width:100%">
+          <div class="card">
+            <div class="card-body border-top p-0">
+              <div class="table-responsive-sm">
+                <table class="table table-striped table-bordered first">
+                  <tbody>
+                    <tr>
+                      <td>Vazão</td>
+                      <td>
+                        <span
+                          class="{{dashboard.bits.vazao ? 'badge badge-info-state badge-danger' : 'badge badge-info-state badge-success'}}"></span>
+                      </td>
+
+                      <td>Totalizador</td>
+                      <td><span
+                          class="{{dashboard.bits.totalizador ? 'badge badge-info-state badge-danger' : 'badge badge-info-state badge-success'}}"></span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Qualidade</td>
+                      <td><span
+                          class="{{dashboard.bits.qualidade ? 'badge badge-info-state badge-danger' : 'badge badge-info-state badge-success'}}"></span>
+                      </td>
+                      <td>Alerta de vazão</td>
+                      <td><span
+                          class="{{dashboard.bits.alertaVazao ? 'badge badge-info-state badge-success' : 'badge badge-info-state badge-danger'}}"></span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Alerta de Totalizador</td>
+                      <td><span
+                          class="{{dashboard.bits.alertaTotalizador ? 'badge badge-info-state badge-danger' : 'badge badge-info-state badge-success'}}"></span>
+                      </td>
+                      <td>Alerta de qualidade</td>
+                      <td><span
+                          class="{{dashboard.bits.alertaQualidade ? 'badge badge-info-state badge-danger' : 'badge badge-info-state badge-success'}}"></span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+        <div class="container resultsContainer info-block-a" fxLayout="row wrap" fxLayout.xs="column">
+          <mat-card class="card-info-last">
+            <mat-card-header style="overflow: hidden" fxFlex="75%" matTooltip="Vazão">
+              <mat-card-title>
+                <h5 class="title-info">Vazão</h5>
+              </mat-card-title>
+              <mat-card-subtitle>
+                <strong class="value-info">{{dashboard.flow}}</strong>
+                <span class="format-info">m³/h</span>
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/vazao.png" class="image-avatar" />
+                </div>
+              </div>
+            </div>
+          </mat-card>
+
+          <mat-card class="card-info-last">
+            <mat-card-header style="overflow: hidden" fxFlex="75%" matTooltip="Velocidade">
+              <mat-card-title>
+                <h5 class="title-info">Velocidade</h5>
+              </mat-card-title>
+              <mat-card-subtitle>
+                <strong class="value-info">{{dashboard.velocity}}</strong>
+                <span class="format-info">m/s</span>
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/velocidade.jpg" class="image-avatar"/>
+                </div>
+              </div>
+            </div>
+          </mat-card>
+
+          <!-- <mat-card class="card-info-last">
+            <mat-card-header style="overflow: hidden" fxFlex="75%">
+              <mat-card-subtitle style="margin-top: 15px;">
+                <h5 class="title-info">Totalização 1</h5>
+                <strong class="value-info">{{dashboard.partial}}</strong>
+                <span class="format-info">m³</span>
+              </mat-card-subtitle>
+
+              <mat-card-title>
+                <h5 class="title-info">Totalização 2</h5>
+                <strong class="value-info">{{dashboard.totalizacao}}</strong>
+                <span class="format-info">m³</span>
+              </mat-card-title>
+
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/totalizadores.png" class="image-avatar" />
+                </div>
+              </div>
+
+              <button mat-raised-button color="primary" (click)="cleanPartial()" style="top: 60px;right: 15px;">
+                <span>Zerar</span>
+              </button>
+            </div>
+          </mat-card> -->
+
+          <!-- <mat-card class="card-info-last card-info-final">
+            <mat-card-header style="overflow: hidden" fxFlex="75%">
+              <mat-card-title>
+                <h5 class="title-info">Temperatura</h5>
+              </mat-card-title>
+              <mat-card-subtitle style="margin-top: 0px;">
+                <strong class="value-info">{{dashboard.temperature}}</strong>
+                <span class="format-info">°C</span>
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/temperatura.png" class="image-avatar" />
+                </div>
+              </div>
+            </div>
+          </mat-card> -->
+        </div>
+
+      </div>
+
+      <!-- <mat-slide-toggle class="change-device" [checked]="changeDevice" (change)="changeStatus()">
+        Alterar informações do dispositivo (número máximo de envios por dia, tempo de transmissão...)
+      </mat-slide-toggle>
+
+      <div *ngIf="changeDevice">
+        <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left"
+          class="top-changes">
+
+          <mat-form-field appearance="outline" fxFlex="15%">
+            <mat-label>Número máximo de envios por dia</mat-label>
+            <input matInput autocomplete="off" maxlength="3" type="number" min="1" max="140"
+              formControlName="numeroEnvios">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Tempo de transmissão</mat-label>
+            <input matInput autocomplete="off" type="number" min="11" formControlName="tempoTransmissao">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" fxFlex="15%">
+            <mat-label>Transmissão em</mat-label>
+            <mat-select formControlName="tipoEnvio">
+              <mat-option value="false">Segundos</mat-option>
+              <mat-option value="true">Minutos</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="buttonBoxArea right" *ngIf="dashboard.deviceId!=''">
+          <button mat-raised-button color="primary" (click)="openConfirmDeleteDialog()">
+            <mat-icon>send</mat-icon>
+            <span>Enviar alterações</span>
+          </button>
+        </div>
+      </div> -->
+
+    </section>
+
+  </div>
+
+  <h2 *ngIf="dashboard===null">Nenhuma informação encontrada para o disposivo selecionado.</h2>
+
+  <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+    <svg class="mark">
+      <circle cx="16" cy="16" r="16" />
+    </svg>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="">voltar</button>
+  </section>
+</form>

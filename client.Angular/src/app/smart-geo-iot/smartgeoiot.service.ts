@@ -19,6 +19,7 @@ import { AppUser } from '../common/appUser';
 import { p } from '@angular/core/src/render3';
 import { Client, ClientUser } from './client';
 import { toJSON } from 'knockout';
+import { MCond } from './MCond';
 
 @Injectable({
   providedIn: 'root'
@@ -89,8 +90,8 @@ export class SmartGeoIotService extends BaseService {
   /**
    * Gets reports.
    */
-  getReports(deviceId: string, de: string, ate: string, skip = 0, top = 0, blocked: boolean = null, out: (totalCount: number) => void = null): Observable<Report[]> {
-    const url = `${environment.API_SERVER_URL}/sgiReport/${deviceId}?de=${de}&ate=${ate}&skip=${skip}&top=${top}&blocked=${blocked}`;
+  getReports(deviceId: string, de: string, ate: string, skip = 0, top = 0, blocked: boolean = null, reportType: number = 0, out: (totalCount: number) => void = null): Observable<Report[]> {
+    const url = `${environment.API_SERVER_URL}/sgiReport/${deviceId}?de=${de}&ate=${ate}&skip=${skip}&top=${top}&blocked=${blocked}&reportType=${reportType}`;
     return this.getEntities<Report>(() => new Report(), url, out).pipe(
       tap(() => { this.messageService.isLoadingData = false; }),
       catchError(this.handleError([]))
@@ -98,10 +99,45 @@ export class SmartGeoIotService extends BaseService {
   }
 
   /**
+   * Gets reports MCond.
+   */
+   getReportMCond(deviceId: string, de: string, ate: string, skip = 0, top = 0, out: (totalCount: number) => void = null): Observable<MCond[]> {
+    const url = `${environment.API_SERVER_URL}/sgiReport/B987/${deviceId}?de=${de}&ate=${ate}&skip=${skip}&top=${top}`;
+    return this.getEntities<MCond>(() => new MCond(), url, out).pipe(
+      tap(() => { this.messageService.isLoadingData = false; }),
+      catchError(this.handleError([]))
+    );
+  }
+  /**
+   * Export MCond reports to excel.
+   */
+   exportReportMCondToExcel(deviceId: string, de: string, ate: string, top = 0) {
+    this.messageService.isLoadingData = true;
+    const url = `${environment.API_SERVER_URL}/sgiReport/B987/download/?id=${deviceId}&de=${de}&ate=${ate}&top=${top}`;
+
+    return this.http.get(url, { responseType: 'blob' as 'json' }).pipe(
+      map(res => res),
+      tap(() => { this.messageService.isLoadingData = false; }),
+      catchError(this.handleError([]))
+    );
+  }
+  /**
+   * Gets data MCond to graphic.
+   */
+   getDataMCondGraphic(deviceId: string, de: string, ate: string, skip = 0, top = 0, out: (totalCount: number) => void = null): Observable<MCond[]> {
+    const url = `${environment.API_SERVER_URL}/sgiGraphic/b987/${deviceId}?de=${de}&ate=${ate}&skip=${skip}&top=${top}`;
+    return this.getEntities<MCond>(() => new MCond(), url, out).pipe(
+      tap(() => { this.messageService.isLoadingData = false; }),
+      catchError(this.handleError([]))
+    );
+  }
+
+
+  /**
    * Gets reports.
    */
-  getDataGraphic(deviceId: string, de: string, ate: string, skip = 0, top = 0, out: (totalCount: number) => void = null): Observable<Report[]> {
-    const url = `${environment.API_SERVER_URL}/sgiGraphic/${deviceId}?de=${de}&ate=${ate}&skip=${skip}&top=${top}`;
+  getDataGraphic(deviceId: string, de: string, ate: string, skip = 0, top = 0, reportType: number = 0, out: (totalCount: number) => void = null): Observable<Report[]> {
+    const url = `${environment.API_SERVER_URL}/sgiGraphic/${deviceId}?de=${de}&ate=${ate}&skip=${skip}&top=${top}&reportType=${reportType}`;
     return this.getEntities<Report>(() => new Report(), url, out).pipe(
       tap(() => { this.messageService.isLoadingData = false; }),
       catchError(this.handleError([]))
@@ -111,13 +147,14 @@ export class SmartGeoIotService extends BaseService {
   /**
    * Export reports to excel.
    */
-  exportReportsToExcel(deviceId: string, de: string, ate: string, top = 0, blocked: boolean = false) {
+  exportReportsToExcel(deviceId: string, de: string, ate: string, top = 0, blocked: boolean = false, reportType: number = 0) {
     this.messageService.isLoadingData = true;
-    const url = `${environment.API_SERVER_URL}/sgiReport/download/?id=${deviceId}&de=${de}&ate=${ate}&top=${top}&blocked=${blocked}`;
+    const url = `${environment.API_SERVER_URL}/sgiReport/download/?id=${deviceId}&de=${de}&ate=${ate}&top=${top}&blocked=${blocked}&reportType=${reportType}`;
 
     return this.http.get(url, { responseType: 'blob' as 'json' }).pipe(
       map(res => res),
-      tap(() => { this.messageService.isLoadingData = false; })
+      tap(() => { this.messageService.isLoadingData = false; }),
+      catchError(this.handleError([]))
     );
   }
 
@@ -156,7 +193,7 @@ export class SmartGeoIotService extends BaseService {
     return this.http.get<Client>(`${environment.API_SERVER_URL}/sgiClient/byDevice/${id}`)
       .pipe(
         tap(() => { this.messageService.isLoadingData = false; }),
-        map(c => Client.map(c)),
+        // map(c => Client.map(c)),
         catchError(this.handleErrorAndContinue('getting client by device', new Client()))
       );
   }
@@ -196,6 +233,61 @@ export class SmartGeoIotService extends BaseService {
     );
   }
 
+  sendChangeSerialNumber(id: string, serialNumber: string): Observable<DeviceRegistration> {
+    let action = null;
+    const _url = `${environment.API_SERVER_URL}/sgiDeviceRegistration/change-serial-number/${id}?serialNumber=${serialNumber}`;
+    action = this.http.put<DeviceRegistration>(_url, this.httpOptions);
+    this.messageService.isLoadingData = true;
+    return action.pipe(
+      tap(() => { this.messageService.isLoadingData = false; }),
+      catchError(this.handleError())
+    );
+  }
+
+  changeFieldsTRM11(id: string, field: string, value: string): Observable<DeviceRegistration> {
+    let action = null;
+    const _url = `${environment.API_SERVER_URL}/sgiDeviceRegistration/change-fields-trm11/${id}?field=${field}&value=${value}`;
+    action = this.http.put<DeviceRegistration>(_url, this.httpOptions);
+    this.messageService.isLoadingData = true;
+    return action.pipe(
+      tap(() => { this.messageService.isLoadingData = false; }),
+      catchError(this.handleError())
+    );
+  }
+
+  sendChangeModel(id: string, model: string): Observable<DeviceRegistration> {
+    let action = null;
+    const _url = `${environment.API_SERVER_URL}/sgiDeviceRegistration/change-model/${id}?model=${model}`;
+    action = this.http.put<DeviceRegistration>(_url, this.httpOptions);
+    this.messageService.isLoadingData = true;
+    return action.pipe(
+      tap(() => { this.messageService.isLoadingData = false; }),
+      catchError(this.handleError())
+    );
+  }
+
+  sendChangeNotes(id: string, notes: string): Observable<DeviceRegistration> {
+    let action = null;
+    const _url = `${environment.API_SERVER_URL}/sgiDeviceRegistration/change-notes/${id}?notes=${notes}`;
+    action = this.http.put<DeviceRegistration>(_url, this.httpOptions);
+    this.messageService.isLoadingData = true;
+    return action.pipe(
+      tap(() => { this.messageService.isLoadingData = false; }),
+      catchError(this.handleError())
+    );
+  }
+
+  cleanPartialbyDevice(id: string, partial: number): Observable<Client> {
+    let action = null;
+    const _url = `${environment.API_SERVER_URL}/sgiDashboard/clean-partial/${id}?partial=${partial}`;
+    action = this.http.put<Client>(_url, this.httpOptions);
+    this.messageService.isLoadingData = true;
+    return action.pipe(
+      tap(() => { this.messageService.isLoadingData = false; }),
+      catchError(this.handleError())
+    );
+  }
+
   /**
    * Disable a client, the method don´t delete a client, only disable.
    * @param user The client
@@ -212,9 +304,9 @@ export class SmartGeoIotService extends BaseService {
    * Gets a given dashboard.
    * @param id The dashboard of device id
    */
-  getDashboard(id: string, date: string = null, seqNumber: number = 0, navigation: string = null): Observable<Dashboard> {
+  getDashboard(id: string, date: string = null, seqNumber: number = 0, navigation: string = null, seqNumberb: number = 0, project: string = null): Observable<Dashboard> {
     this.messageService.isLoadingData = true;
-    return this.http.get<Dashboard>(`${environment.API_SERVER_URL}/sgiDashboard/${id}/?date=${date}&seqNumber=${seqNumber}&navigation=${navigation}`)
+    return this.http.get<Dashboard>(`${environment.API_SERVER_URL}/sgiDashboard/${id}/?date=${date}&seqNumber=${seqNumber}&navigation=${navigation}&seqNumberb=${seqNumberb}&project=${project}`)
       .pipe(
         tap(() => { this.messageService.isLoadingData = false; }),
         catchError(this.handleErrorAndContinue('getting dashboard', new Dashboard()))
@@ -362,6 +454,19 @@ export class SmartGeoIotService extends BaseService {
   getDeviceRegistration(id: string): Observable<DeviceRegistration> {
     this.messageService.isLoadingData = true;
     return this.http.get<DeviceRegistration>(environment.API_SERVER_URL + '/sgiDeviceRegistration/' + id)
+      .pipe(
+        tap(() => { this.messageService.isLoadingData = false; }),
+        catchError(this.handleErrorAndContinue('getting device', new DeviceRegistration()))
+      );
+  }
+
+  /**
+     * Gets a given device registration.
+     * @param id The device registration id
+     */
+   getDeviceRegistrationByDeviceID(id: string): Observable<DeviceRegistration> {
+    this.messageService.isLoadingData = true;
+    return this.http.get<DeviceRegistration>(environment.API_SERVER_URL + '/sgiDeviceRegistration/byDeviceId/' + id)
       .pipe(
         tap(() => { this.messageService.isLoadingData = false; }),
         catchError(this.handleErrorAndContinue('getting device', new DeviceRegistration()))

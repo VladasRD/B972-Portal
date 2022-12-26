@@ -4,12 +4,13 @@ using System.Linq;
 using System.Security.Claims;
 using Box.Common.Web;
 using Microsoft.EntityFrameworkCore;
+using SmartGeoIot.Extensions;
 using SmartGeoIot.Models;
 using SmartGeoIot.ViewModels;
 
 namespace SmartGeoIot.Services
 {
-    public partial class SmartGeoIotService
+    public partial class RadiodadosService
     {
         public IEnumerable<DeviceRegistration> GetDevicesRegistrations(int skip = 0, int top = 0, string filter = null, OptionalOutTotalCount totalCount = null)
         {
@@ -19,7 +20,10 @@ namespace SmartGeoIot.Services
             {
                 filter = filter.ToLower();
                 devicesRegistrations = devicesRegistrations.Where(c =>
-                    c.Name.ToLower().Contains(filter));
+                    c.Name.ToLower().Contains(filter) ||
+                    c.DeviceId.ToLower().Contains(filter) ||
+                    c.NickName.ToLower().Contains(filter)
+                    );
             }
 
             // ordernação
@@ -49,7 +53,17 @@ namespace SmartGeoIot.Services
 
         public DeviceRegistration GetDeviceRegistrationFull(string id)
         {
-            return _context.DevicesRegistration.Include(i => i.Package).SingleOrDefault(r => r.DeviceId == id);
+            return _context.DevicesRegistration.Include(i => i.Project).Include(i => i.Package).SingleOrDefault(r => r.DeviceId == id);
+        }
+
+        public bool VerifyDeviceIsProjectB987(string deviceId)
+        {
+            var deviceFather = GetDeviceFather(deviceId);
+            var deviceReg = GetDeviceRegistrationFull(deviceFather);
+            if (deviceReg != null && deviceReg.Project.Code.ToLower() == Utils.EnumToAnnotationText(ProjectCode.B987).ToLower())
+                return true;
+
+            return false;
         }
 
         public Models.DeviceRegistration SaveDeviceRegistration(Models.DeviceRegistration deviceRegistration)
@@ -89,6 +103,85 @@ namespace SmartGeoIot.Services
         public bool CanRegisterDevice(string deviceId)
         {
             return !_context.DevicesRegistration.Any(a => a.DeviceId == deviceId);
+        }
+
+        public DeviceRegistration ChangeSerialNumberByDevide(string deviceId, string serialNumber)
+        {
+            DeviceRegistration deviceRegistration = _context.DevicesRegistration.AsNoTracking().SingleOrDefault(c => c.DeviceId == deviceId);
+            if (deviceRegistration == null)
+                return null;
+
+            deviceRegistration.SerialNumber = serialNumber;
+            _context.Entry<DeviceRegistration>(deviceRegistration).State = EntityState.Modified;
+            _context.SaveChanges(true);
+            _log.Log($"Serial Number do dispositivo {deviceRegistration.DeviceId} foi criado/alterado.");
+
+            return deviceRegistration;
+        }
+
+        public DeviceRegistration ChangeModelByDevide(string deviceId, string model)
+        {
+            DeviceRegistration deviceRegistration = _context.DevicesRegistration.AsNoTracking().SingleOrDefault(c => c.DeviceId == deviceId);
+            if (deviceRegistration == null)
+                return null;
+
+            deviceRegistration.Model = model;
+            _context.Entry<DeviceRegistration>(deviceRegistration).State = EntityState.Modified;
+            _context.SaveChanges(true);
+            _log.Log($"Modelo do dispositivo {deviceRegistration.DeviceId} foi criado/alterado.");
+
+            return deviceRegistration;
+        }
+
+        public DeviceRegistration ChangeNotesByDevide(string deviceId, string notes)
+        {
+            DeviceRegistration deviceRegistration = _context.DevicesRegistration.AsNoTracking().SingleOrDefault(c => c.DeviceId == deviceId);
+            if (deviceRegistration == null)
+                return null;
+
+            deviceRegistration.Notes = notes;
+            deviceRegistration.NotesCreateDate = DateTime.Now;
+            _context.Entry<DeviceRegistration>(deviceRegistration).State = EntityState.Modified;
+            _context.SaveChanges(true);
+            _log.Log($"Anotações do dispositivo {deviceRegistration.DeviceId} foi criado/alterado.");
+
+            return deviceRegistration;
+        }
+
+        public DeviceRegistration ChangeFieldByDevide(string deviceId, string field, string value)
+        {
+            DeviceRegistration deviceRegistration = _context.DevicesRegistration.AsNoTracking().SingleOrDefault(c => c.DeviceId == deviceId);
+            if (deviceRegistration == null)
+                return null;
+            
+            if (string.IsNullOrWhiteSpace(field))
+                return null;
+
+            if (string.IsNullOrWhiteSpace(value))
+                return null;
+
+            if (field.Trim().ToLower().Equals("ed1"))
+                deviceRegistration.Ed1 = value;
+            else if (field.Trim().ToLower().Equals("ed2"))
+                deviceRegistration.Ed2 = value;
+            else if (field.Trim().ToLower().Equals("ed3"))
+                deviceRegistration.Ed3 = value;
+            else if (field.Trim().ToLower().Equals("ed4"))
+                deviceRegistration.Ed4 = value;
+            else if (field.Trim().ToLower().Equals("sd1"))
+                deviceRegistration.Sd1 = value;
+            else if (field.Trim().ToLower().Equals("sd2"))
+                deviceRegistration.Sd2 = value;
+            else if (field.Trim().ToLower().Equals("ea10"))
+                deviceRegistration.Ea10 = value;
+            else if (field.Trim().ToLower().Equals("sa3"))
+                deviceRegistration.Sa3 = value;
+            
+            _context.Entry<DeviceRegistration>(deviceRegistration).State = EntityState.Modified;
+            _context.SaveChanges(true);
+            _log.Log($"Anotações do dispositivo {deviceRegistration.DeviceId} foi criado/alterado.");
+
+            return deviceRegistration;
         }
         
     }

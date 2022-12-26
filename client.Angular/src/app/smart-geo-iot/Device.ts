@@ -1,4 +1,4 @@
-import { Project } from './project';
+import { Project, ProjectEnum } from './project';
 import { Package } from './package';
 import { Bits } from './Bits';
 
@@ -46,30 +46,59 @@ export class DeviceRegistration {
     package: Package;
     projectUId: string;
     project: Project;
+    model: string;
+    serialNumber: string;
+    notes: string;
 
     get getUrlRouterLinkProject(): string {
+        if (this.project.code === ProjectEnum.B972) {
+            return ('radiodados/dashboard/clampon/' + this.deviceId);
+        }
+        if (this.project.code === ProjectEnum.B978) {
+            return ('radiodados/dashboard/b978/' + this.deviceId);
+        }
+        if (this.project.code === ProjectEnum.B982_S) {
+            return ('radiodados/dashboard/aguamon83/' + this.deviceId);
+        }
+        if (this.project.code === ProjectEnum.B987) {
+            return ('radiodados/dashboard/b987/' + this.deviceId);
+        }
+
         if (this.package.type === '10') {
-            return ('sgi/dashboard/aguamon/' + this.deviceId);
+            return ('radiodados/dashboard/aguamon/' + this.deviceId);
         }
         if (this.package.type === '12') {
-            return ('sgi/dashboard/djrf/' + this.deviceId);
+            return ('radiodados/dashboard/djrf/' + this.deviceId);
         }
         if (this.package.type === '81') {
-            return ('sgi/dashboard/aguamon81/' + this.deviceId);
+            return ('radiodados/dashboard/aguamon81/' + this.deviceId);
         }
-        if (this.package.type === '83') {
-            return ('sgi/dashboard/aguamon83/' + this.deviceId);
-        }
+        
         if (this.package.type === '21') {
-            return ('sgi/dashboard/aguamon21/' + this.deviceId);
+            return ('radiodados/dashboard/aguamon21/' + this.deviceId);
         }
-        if (this.package.type === '23') {
-            return ('sgi/dashboard/trm23/' + this.deviceId);
+        if (this.project.code === ProjectEnum.B972_P) {
+            return ('radiodados/dashboard/trm23/' + this.deviceId);
         }
-        return ('sgi/dashboard/' + this.deviceId);
+        
+        return ('radiodados/dashboard/' + this.deviceId);
     }
 
     get getGraphicUrlRouterLinkProject(): string {
+        if (this.project.code === ProjectEnum.B972) {
+            // return ('radiodados/dashboard/trm23/' + this.deviceId);
+            return '/';
+        }
+        // if (this.project.code === ProjectEnum.B978) {
+        //     return ('b978/' + this.deviceId);
+        // }
+        if (this.project.code === ProjectEnum.B978) {
+            return ('trm/' + this.deviceId);
+        }
+        if (this.project.code === ProjectEnum.B987) {
+            return ('b987/' + this.deviceId);
+        }
+        
         if (this.package.type === '10') {
             return ('aguamon/' + this.deviceId);
         }
@@ -80,7 +109,7 @@ export class DeviceRegistration {
             return ('pqa/' + this.deviceId);
         }
         if (this.package.type === '83') {
-            return ('aguamon83/' + this.deviceId);
+            return ('tsp/' + this.deviceId);
         }
         if (this.package.type === '21') {
             return ('trm/' + this.deviceId);

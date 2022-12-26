@@ -89,12 +89,18 @@ export class GraphicTrmDetailComponent implements OnInit {
     return this.form.get('filter').value;
   }
 
+  getTitleName(fieldName: string): string {
+    if (this.reports === null || this.reports.length === 0){
+      return fieldName;
+    }
+
+    return this.reports.map(t => t[fieldName.toLowerCase()])[0].toString();
+  }
+
   public getDataGraphic(): void {
     this.messageService.blockUI();
     let startPeriod: Date = null;
     let endPeriod: Date = null;
-
-    console.log(this.filter);
 
     if (this.form.get('startPeriod').value != null) {
       startPeriod = this.form.get('startPeriod').value;
@@ -122,34 +128,27 @@ export class GraphicTrmDetailComponent implements OnInit {
           this.showGraphic = true;
         }
 
-        // this.lineChartData[0] = this.chartConfig.chartDataSetsOptions;
         this.lineChartData[0].data = this.reports.map(t => Number(t[this.filter].replace(',', '.')));
         this.lineChartLabels = [];
 
+        //title
+        if (this.filter === 'entradaAnalogica') {
+          this.lineChartData[0].label = this.getTitleName('ea10');
+        } else {
+          this.lineChartData[0].label = this.getTitleName('sa3');
+        }
+
         this.reports.forEach((r) => {
           const day = new Date(r.date);
-          const _day = day.getUTCDate() < 10 ? `0${day.getUTCDate()}` : day.getUTCDate();
-          const _month = day.getUTCMonth() + 1 < 10 ? `0${day.getUTCMonth() + 1}` : day.getUTCMonth() + 1;
-          const label = `${_day}/${_month}`;
+
+          const _day = day.getDate() < 10 ? `0${day.getDate()}` : day.getDate();
+          const _month = day.getMonth() + 1 < 10 ? `0${day.getMonth() + 1}` : day.getMonth() + 1;
+          const _hour = day.getHours() < 10 ? `0${day.getHours()}` : day.getHours();
+          const _minute = day.getMinutes();
+          const label = `${_day}/${_month} ${_hour}:${_minute}`;
+          
           this.lineChartLabels.push(label);
         });
-
-
-        // this.lineChartLabels = [ '176.4',
-        //  '176.0'
-        //   , '175.5'
-        //   , '175.0'
-        //   ,'174.6'
-        //   ,'174.1'
-        //   ,'173.2'
-        //   ,'172.7'
-        //   ,'172.2'
-        //   ,'171.8'
-        //   ,'171.3'
-        //   ,'170.8'
-        //   ,'170.8'
-        //   ,'170.3'
-        //   ];
 
         this.lineChartColors = this.chartConfig.lineChartColors;
       });

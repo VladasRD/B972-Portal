@@ -8,6 +8,7 @@ import { MessageService } from '../../common/message.service';
 import { String } from 'typescript-string-operations';
 import { Bits } from '../Bits';
 import { GenericYesNoDialogComponent } from '../../common/generic-yes-no-dialog/generic-yes-no-dialog.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-dashboard-aguamon21-detail',
@@ -47,7 +48,7 @@ export class DashboardAguamon21DetailComponent implements OnInit {
   initializeSetTimeout() {
     (async () => {
       while (this.initialSetTimeout === 0) {
-        await new Promise(resolve => setTimeout(resolve, 10000));
+        await new Promise(resolve => setTimeout(resolve, environment.TIMEOUT_REQUEST_DASHBOARD));
         this.getDashboard();
       }
     })();

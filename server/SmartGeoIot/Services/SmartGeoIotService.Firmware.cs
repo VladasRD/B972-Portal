@@ -11,7 +11,7 @@ using SmartGeoIot.ViewModels;
 
 namespace SmartGeoIot.Services
 {
-    public partial class SmartGeoIotService
+    public partial class RadiodadosService
     {
         public FirmwareViewModels GetFirmware(string id)
         {
@@ -22,7 +22,7 @@ namespace SmartGeoIot.Services
                             .FirstOrDefault(w => w.DeviceId == id && w.Data.Substring(0, 2) == "52");
 
             // deviceMessage51.Data = "51090614010102030400007F";
-            // deviceMessage52.Data = "5214621500170000000000F4";
+            // deviceMessage52.Data = "521462150017FFAA80030020";
             return CreateDashboard_Pack51_52ViewModel(deviceMessage51, deviceMessage52);
         }
 
@@ -40,6 +40,7 @@ namespace SmartGeoIot.Services
             firmwareViewModels.Placa = deviceMessage_52.Placa;
             firmwareViewModels.VPlaca = deviceMessage_52.VPlaca;
             firmwareViewModels.NAplic = deviceMessage_52.NAplic;
+            firmwareViewModels.Id = deviceMessage_52.ID;
 
             return firmwareViewModels;
         }

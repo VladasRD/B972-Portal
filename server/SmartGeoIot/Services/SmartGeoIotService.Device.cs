@@ -9,7 +9,7 @@ using SmartGeoIot.Models;
 
 namespace SmartGeoIot.Services
 {
-    public partial class SmartGeoIotService
+    public partial class RadiodadosService
     {
         public IEnumerable<Device> GetDevices(ClaimsPrincipal user, int skip = 0, int top = 0, string filter = null, OptionalOutTotalCount totalCount = null, bool isFullAcess = false, string scope = null)
         {
@@ -146,7 +146,7 @@ namespace SmartGeoIot.Services
             }
 
             if (project != null && project != "null")
-                devices = devices.Where(c => c.Package.Type.Equals(project));
+                devices = devices.Where(c => c.Project.Code.ToLower() == project.ToLower());
 
             // ordernação
             devices = devices.OrderBy(o => o.DeviceId);
@@ -165,6 +165,22 @@ namespace SmartGeoIot.Services
             var clientUsers = _context.ClientsUsers.Where(c => c.ApplicationUserId == userId);
             var userDevices = _context.ClientsDevices.Where(a => clientUsers.Any(b => b.ClientUId == a.ClientUId));
             return userDevices.ToArray();
+        }
+
+        public void SaveLastStatusDevice(string deviceId)
+        {
+            DeviceRegistration devicesQuery = _context.DevicesRegistration
+                .Include(i => i.Device)
+                .Include(i => i.Package)
+                .Include(i => i.Project)
+                .SingleOrDefault(w => w.Device.Activable && w.DeviceId == deviceId);
+
+            if (devicesQuery.Project.Code == Utils.EnumToAnnotationText(ProjectCode.B987))
+            {
+
+            }
+
+
         }
 
     }

@@ -14,7 +14,7 @@
 .icon-text {
     position: absolute;
     margin-top: 3px;
-    margin-left: 0px;
+    /* margin-left: 0px; */
     font-size: 14px;
 }
 
@@ -382,4 +382,9 @@ td > span {color: #FFF;}
 }
 .estado-red {
     color:#ff0000;
+}
+
+::ng-deep .mat-tooltip {
+    font-size: 16px;
+    white-space: pre;
 }

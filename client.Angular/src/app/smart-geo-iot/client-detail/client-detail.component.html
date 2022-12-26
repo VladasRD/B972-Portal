@@ -4,7 +4,7 @@
     <section class="body-wrapper">
 
       <div class="headline" fxLayout>
-        <button mat-icon-button routerLink="/sgi/clientes">
+        <button mat-icon-button routerLink="/radiodados/clientes">
           <mat-icon>arrow_back</mat-icon>
         </button>
         <div class="mat-h1">{{pageTitle}}</div>
@@ -111,18 +111,42 @@
 
         </mat-tab>
 
+        <!-- MÍDIA -->
+        <!-- <mat-tab label="Mídia">
+          <h2>Imagem do cliente</h2>
+          <section class="body-wrapper">
+            <div fxLayout fxLayoutGap="24px">
+              <div fxLayout="column" fxLayoutGap="16px" fxFlex="1 1 100%">
+                <div>
+                  <lib-media-picker 
+                    fxFlex="620px"
+                    label="Escolha ou arraste um arquivo"
+                    controlName="file"
+                    folder="client-files"
+                    [formGroup]="form"
+                    [uploadService]="cmsService" 
+                    [mediaGallery]="mediaGallery"
+                    mediaGalleryPlaceHolder="usar galeria">                    
+                  </lib-media-picker>
+                </div>
+              </div>
+            </div>
+          </section>
+
+        </mat-tab> -->
+
+
         <!-- NOTIFICAÇÕES -->
         <mat-tab label="Notificação">
           <h2>Selecione os canais de recebimento de notificação</h2>
-
           <section class="notification-section">
             <mat-checkbox class="notification-margin" [checked]="emailNotification" (change)="changeNotification('emailNotification')">E-mail</mat-checkbox>
             <mat-checkbox class="notification-margin" [checked]="smsNotification" (change)="changeNotification('smsNotification')">SMS</mat-checkbox>
             <mat-checkbox class="notification-margin" [checked]="whatsAppNotification" (change)="changeNotification('whatsAppNotification')">WhatsApp</mat-checkbox>
             <!-- <mat-checkbox class="notification-margin" [checked]="pushNotification">Push (notificação no próprio aplicativo)</mat-checkbox> -->
           </section>
-
         </mat-tab>
+
 
         <!-- DISPOSITIVOS -->
         <mat-tab label="Dispositivos">
@@ -157,6 +181,7 @@
           </div>
         </mat-tab>
 
+
         <!-- USUÁRIOS -->
         <mat-tab label="Usuários">
 
@@ -183,6 +208,7 @@
               usuário</button>
           </div>
         </mat-tab>
+
 
         <!-- FATURAMENTO -->
         <mat-tab label="Faturamento">
@@ -313,7 +339,7 @@
     <svg class="mark">
       <circle cx="16" cy="16" r="16" /></svg>
     <button mat-raised-button color="primary" type="submit" fxFlexLayout="start">salvar</button>
-    <button mat-button fxFlexLayout="start" type="button" routerLink="/sgi/clientes">voltar</button>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="/radiodados/clientes">voltar</button>
   </section>
 
 </form>

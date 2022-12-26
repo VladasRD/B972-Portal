@@ -16,7 +16,7 @@ import { Utils } from '../utils';
 })
 export class ReportListComponent extends GrudList<Report> implements OnInit {
   form: FormGroup;
-  displayedColumns: string[] = ['data', 'nivel', 'luz', 'temperatura', 'umidade', 'oxigenio', 'ph', 'condutividade'];
+  displayedColumns: string[] = ['data', 'hour', 'nivel', 'luz', 'temperatura', 'umidade', 'oxigenio', 'ph', 'condutividade'];
   isExporting = false;
   listDevicesFilter: DeviceRegistration[] = [];
 
@@ -60,7 +60,7 @@ export class ReportListComponent extends GrudList<Report> implements OnInit {
     if (this.form.get('endPeriod').value != null) {
       endPeriod = this.form.get('endPeriod').value;
     }
-    return this.sgiService.getReports(this.deviceFilter, startPeriod != null ? startPeriod.toJSON() : <string>null, endPeriod != null ? endPeriod.toJSON() : <string>null, this._skip, this._pageSize, false, c => { this._totalCount = c; });
+    return this.sgiService.getReports(this.deviceFilter, startPeriod != null ? startPeriod.toJSON() : <string>null, endPeriod != null ? endPeriod.toJSON() : <string>null, this._skip, this._pageSize, false, 0, c => { this._totalCount = c; });
   }
 
   searchReports(): void {

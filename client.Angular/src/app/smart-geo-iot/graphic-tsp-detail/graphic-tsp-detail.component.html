@@ -1,0 +1,70 @@
+<form novalidate class="container" [formGroup]="form" autocomplete="off">
+  <div class="body-content-top">
+    <section class="body-wrapper">
+      <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="/radiodados/grafico">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1">{{pageTitle}}</div>
+        <div class="buttonBoxArea right">
+          <button mat-button color="primary" (click)="printGraphic()" [disabled]="!isShowGraphic">
+            <mat-icon>print</mat-icon>
+            <span>Imprimir PDF</span>
+          </button>
+          <button type="submit" mat-raised-button type="button" color="primary" (click)="getDataGraphic()" [disabled]="!canViewGraphic">
+          <mat-icon>visibility</mat-icon>
+          <span>Visualizar</span>
+        </button>
+        </div>
+      </div>
+
+      <form [formGroup]="form" class="container filterBoxArea preserve-margin" fxLayout
+        fxLayoutGap="10px" fxLayout.xs="column">
+
+        <mat-form-field appearance="outline" fxFlex="15%">
+          <mat-label>Filtrar por</mat-label>
+          <mat-select formControlName="filter" placeholder="Selecione o tipo de informação que deseja visualizar">
+            <mat-option value="vazao">Vazão Instantânea</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-card-content fxLayout="row" fxLayoutGap="10px" fxLayout.xs="column">
+          <mat-form-field appearance="outline">
+            <mat-label>De</mat-label>
+            <mat-datepicker-toggle matPrefix [for]="startPicker"></mat-datepicker-toggle>
+            <input matInput [matDatepicker]="startPicker" formControlName="startPeriod">
+            <mat-datepicker #startPicker></mat-datepicker>
+          </mat-form-field>
+  
+          <mat-form-field appearance="outline">
+            <mat-label>Até</mat-label>
+            <mat-datepicker-toggle matPrefix [for]="endPicker"></mat-datepicker-toggle>
+            <input matInput [matDatepicker]="endPicker" formControlName="endPeriod" placeholder="Até">
+            <mat-datepicker #endPicker></mat-datepicker>
+          </mat-form-field>
+        </mat-card-content>
+      </form>
+
+      <div *ngIf="showGraphic">
+        <canvas baseChart style="margin-top: 40px;max-height:420px;"
+          [datasets]="lineChartData"
+          [labels]="lineChartLabels"
+          [options]="lineChartOptions"
+          [colors]="lineChartColors"
+          [legend]="lineChartLegend"
+          [chartType]="lineChartType"
+          [plugins]="lineChartPlugins">
+        </canvas>
+      </div>
+
+      <h2 *ngIf="reports.length==0">Nenhuma informação encontrada. Tente alterar sua pesquisa.</h2>
+
+    </section>
+  </div>
+
+  <section class="body-wrapper body-content-bottom section-back" fxLayout="row" fxLayoutGap="16px">
+    <svg class="mark">
+      <circle cx="16" cy="16" r="16" /></svg>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="">voltar</button>
+  </section>
+</form>

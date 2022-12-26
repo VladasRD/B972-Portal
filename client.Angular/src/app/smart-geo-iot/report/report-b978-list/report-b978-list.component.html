@@ -1,0 +1,149 @@
+<div class="body-content">
+  <section class="body-wrapper">
+
+    <div class="headline" fxLayout>
+      <!-- <button mat-icon-button routerLink="/radiodados/relatorio">
+        <mat-icon>arrow_back</mat-icon>
+      </button> -->
+      <div class="mat-h1">Relatório</div>
+      <div class="buttonBoxArea right">
+        <button mat-button type="button" color="primary" (click)="cleanFilterDate()" [disabled]="!form.valid">
+          <mat-icon>clear</mat-icon>
+          <span>Limpar datas</span>
+        </button>
+        <button mat-button color="primary" (click)="printReport()" [disabled]="!form.valid || results.length==0">
+          <mat-icon>print</mat-icon>
+          <span>Imprimir</span>
+        </button>
+        <button mat-button type="button" color="primary" (click)="exportToExcel()"
+          [disabled]="!form.valid || results.length==0">
+          <mat-icon>cloud_download</mat-icon>
+          <span>Exportar</span>
+        </button>
+        <button type="submit" mat-raised-button type="button" color="primary" (click)="searchReports()"
+          [disabled]="!form.valid">
+          <mat-icon>visibility</mat-icon>
+          <span>Visualizar</span>
+        </button>
+        <button mat-button color="primary" class="filterBoxAreaButton" title="filter"
+          (click)="showFilters = !showFilters;">
+          <mat-icon>tune</mat-icon>
+          <span>filter</span>
+        </button>
+      </div>
+    </div>
+    <p>Informe os campos obrigatórios e depois clique em <b>Visualizar</b> para ver o relatório.</p>
+
+    <form *ngIf="showFilters" [formGroup]="form" class="container filterBoxArea preserve-margin" fxLayout
+      fxLayoutGap="10px" fxLayout.xs="column">
+
+      <app-device-select project="{{currentProject}}" [control]="form.controls.deviceFilter"></app-device-select>
+
+      <mat-card-content fxLayout="row" fxLayoutGap="10px" fxLayout.xs="column">
+        <mat-form-field appearance="outline">
+          <mat-label>De</mat-label>
+          <mat-datepicker-toggle matPrefix [for]="startPicker"></mat-datepicker-toggle>
+          <input matInput [matDatepicker]="startPicker" formControlName="startPeriod">
+          <mat-datepicker #startPicker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Até</mat-label>
+          <mat-datepicker-toggle matPrefix [for]="endPicker"></mat-datepicker-toggle>
+          <input matInput [matDatepicker]="endPicker" formControlName="endPeriod" placeholder="Até">
+          <mat-datepicker #endPicker></mat-datepicker>
+        </mat-form-field>
+      </mat-card-content>
+    </form>
+
+    <div *ngIf="results.length > 0" class="container">
+      <mat-table [dataSource]="results" class="mat-elevation-z4" style="margin-bottom: 20px; clear:both;">
+
+
+        <!-- RELATÓRIO ANALÍTICO -->
+        <ng-container matColumnDef="data">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef>Data</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element">
+            {{element.date | date: 'dd/MM/yyyy'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="hour">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef>Hora</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element">
+            {{element.date | date: 'HH:mm:ss'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ed1">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">{{getTitleName('ED1')}}</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
+            {{element.bits.bed1 ? '1' : '0'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ed2">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">{{getTitleName('ED2')}}
+          </mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
+            {{element.bits.bed2 ? '1' : '0'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ed3">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">{{getTitleName('ED3')}}
+          </mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
+            {{element.bits.bed3 ? '1' : '0'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ed4">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">{{getTitleName('ED4')}}
+          </mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
+            {{element.bits.bed4 ? '1' : '0'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="sd1">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">{{getTitleName('SD1')}}
+          </mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
+            {{element.bits.bsd1 ? '1' : '0'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="sd2">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">{{getTitleName('SD2')}}</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
+            {{element.bits.bsd2 ? '1' : '0'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="ea10">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">{{getTitleName('EA10')}}</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
+            {{element.entradaAnalogica}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="sa3">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">{{getTitleName('SA3')}}</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
+            {{element.saidaAnalogica}}
+          </mat-cell>
+        </ng-container>
+
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+    </div>
+
+    <h2 *ngIf="results.length==0 && !firstSearch">Nenhum resultado encontrado. Tente alterar sua pesquisa.</h2>
+
+    <app-pagination [skip]="skip" [pageSize]="pageSize" [totalCount]="totalCount" (pageChanged)="pageChanged($event)">
+    </app-pagination>
+  </section>
+</div>

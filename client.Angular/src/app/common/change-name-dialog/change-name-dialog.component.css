@@ -1,0 +1,19 @@
+.field-change {
+    border: solid 1px;
+    padding: 10px;
+}
+::ng-deep .cdk-overlay-pane {
+    /* max-height: 440px!important; */
+    max-width: 40vw!important;
+}
+
+@media screen and (max-width: 600px) {
+    ::ng-deep .cdk-overlay-pane {
+        /* max-height: 440px!important; */
+        max-width: 80vw!important;
+    }
+
+    .field-change {
+        width: 90%;
+    }
+}

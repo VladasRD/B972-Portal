@@ -20,14 +20,14 @@ export class SmartGeoIotMenus extends ModuleMenus {
 
   get moduleLinks(): AppLink[] {
     return [
-      { place: 'SECURITY', route: 'sgi/configuracoes', name: 'Cadastros', requiredRoles: [
+      { place: 'SECURITY', route: 'radiodados/configuracoes', name: 'Cadastros', requiredRoles: [
         'SGI-CLIENT.READ', 'SGI-CLIENT.WRITE'
       ] },
-      { place: 'SECURITY', route: 'sgi/ajuda', name: 'Ajuda', requiredRoles: [] },
+      { place: 'SECURITY', route: 'radiodados/ajuda', name: 'Ajuda', requiredRoles: [] },
       { place: 'TOP', route: '/', name: 'Dashboard', requiredRoles: ['SGI-DASHBOARD.READ'] },
-      { place: 'TOP', route: 'sgi/relatorio', name: 'Relatório', requiredRoles: ['SGI-REPORT.READ'] },
-      { place: 'TOP', route: 'sgi/grafico', name: 'Gráfico', requiredRoles: ['SGI-GRAPHIC.READ'] },
-      { place: 'TOP', route: 'sgi/sub-clientes', name: 'Clientes', requiredRoles: ['SGI-SUBCLIENT.READ'] }
+      { place: 'TOP', route: 'radiodados/relatorio', name: 'Relatório', requiredRoles: ['SGI-REPORT.READ'] },
+      { place: 'TOP', route: 'radiodados/grafico', name: 'Gráfico', requiredRoles: ['SGI-GRAPHIC.READ'] },
+      { place: 'TOP', route: 'radiodados/sub-clientes', name: 'Clientes', requiredRoles: ['SGI-SUBCLIENT.READ'] }
     ];
   }
 

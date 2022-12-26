@@ -23,14 +23,14 @@
           <mat-card-header fxFlex="75%" style="margin-bottom: 20px;">
             <div class="title-page">
               <p>
-                <strong>{{clientByDevice.name}}</strong>
+                <strong>{{userName}}</strong>
               </p>
               <p *ngIf="showDashboard">
                 <strong>Informações de Campo</strong>
               </p>
               <p class="icon-text" *ngIf="showDashboard">
                 <mat-icon style="vertical-align: bottom;">timelapse</mat-icon>
-                <label style="margin-left: 5px;">{{dashboard.date | date: 'dd/MM/yyyy HH:mm:ss'}}</label>
+                <label style="margin-left: 5px;">Última Atualização {{dashboard.date | date: 'dd/MM/yyyy HH:mm:ss'}}</label>
               </p>
               <p>
                 <strong *ngIf="!showDashboard" style="color: red; font-size: 16px;">Nenhuma informação encontrada para o dispositivo selecionado.</strong>
@@ -55,13 +55,32 @@
 
         </mat-card>
 
+        <app-serial-model [deviceId]="deviceId"></app-serial-model>
+
+        <!-- <div>
+          <mat-form-field class="example-full-width" appearance="fill">
+            <mat-label>Número de série</mat-label>
+            <input matInput placeholder="Número de série" [value]="serialNumber">
+          </mat-form-field>
+        </div> -->
+
+        <!-- <div>
+          <mat-form-field appearance="fill">
+            <mat-label>Número de série</mat-label>
+            <input matInput>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+          </mat-form-field>
+        </div> -->
+
         <div *ngIf="showDashboard">
 
           <div class="container resultsContainer info-block-a" fxLayout="row wrap" fxLayout.xs="column">
             <mat-card class="card-info">
-              <mat-card-header style="overflow: hidden" fxFlex="100%">
+              <mat-card-header style="overflow: hidden" fxFlex="100%" matTooltip="Vazão atual, em litros por hora">
                 <mat-card-title>
-                  <h5 class="title-info">Consumo L/Min</h5>
+                  <h5 class="title-info">Vazão atual, em litros por hora</h5>
                 </mat-card-title>
                 <mat-card-subtitle style="margin-top: 0px;">
                   <strong class="value-info">{{dashboard.fluxoAgua}}</strong>
@@ -76,47 +95,9 @@
                 </div>
               </div>
             </mat-card>
-  
-            <mat-card class="card-info">
-              <mat-card-header style="overflow: hidden" fxFlex="100%">
-                <mat-card-title>
-                  <h5 class="title-info">Média Últ Hora L/Min</h5>
-                </mat-card-title>
-                <mat-card-subtitle style="margin-top: 0px;">
-                  <strong class="value-info">{{dashboard.consumoAgua}}</strong>
-                </mat-card-subtitle>
-              </mat-card-header>
-  
-              <div class="position">
-                <div class="header">
-                  <div mat-card-avatar>
-                    <img src="../../../assets/mediaConsumo.jpg" class="image-avatar" />
-                  </div>
-                </div>
-              </div>
-            </mat-card>
 
             <mat-card class="card-info">
-              <mat-card-header style="overflow: hidden" fxFlex="100%">
-                <mat-card-title>
-                  <h5 class="title-info">Modo</h5>
-                </mat-card-title>
-                <mat-card-subtitle style="margin-top: 0px;">
-                  <strong class="value-info">{{dashboard.modo}}</strong>
-                </mat-card-subtitle>
-              </mat-card-header>
-  
-              <div class="position">
-                <div class="header">
-                  <div mat-card-avatar>
-                    <img src="../../../assets/{{dashboard.modoImage}}.png" class="image-avatar" />
-                  </div>
-                </div>
-              </div>
-            </mat-card>
-  
-            <mat-card class="card-info">
-              <mat-card-header style="overflow: hidden" fxFlex="100%">
+              <mat-card-header style="overflow: hidden" fxFlex="100%" matTooltip="Estado">
                 <mat-card-title>
                   <h5 class="title-info">Estado</h5>
                 </mat-card-title>
@@ -135,9 +116,30 @@
                 </div>
               </div>
             </mat-card>
+  
+           
+
+            <mat-card class="card-info">
+              <mat-card-header style="overflow: hidden" fxFlex="100%" matTooltip="Modo">
+                <mat-card-title>
+                  <h5 class="title-info">Modo</h5>
+                </mat-card-title>
+                <mat-card-subtitle style="margin-top: 0px;">
+                  <strong class="value-info">{{dashboard.modo}}</strong>
+                </mat-card-subtitle>
+              </mat-card-header>
+  
+              <div class="position">
+                <div class="header">
+                  <div mat-card-avatar>
+                    <img src="../../../assets/{{dashboard.modoImage}}.png" class="image-avatar" />
+                  </div>
+                </div>
+              </div>
+            </mat-card>
 
             <mat-card class="card-info card-info-final">
-              <mat-card-header style="overflow: hidden" fxFlex="100%">
+              <mat-card-header style="overflow: hidden" fxFlex="100%" matTooltip="Válvula">
                 <mat-card-title>
                   <h5 class="title-info">Válvula</h5>
                 </mat-card-title>
@@ -152,6 +154,90 @@
                 <div class="header">
                   <div mat-card-avatar>
                     <img src="../../../assets/{{dashboard.estadoImage}}.png" class="image-avatar" />
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+  
+            
+
+            <mat-card class="card-info">
+              <mat-card-header style="overflow: hidden" fxFlex="100%" matTooltip="Consumo na última hora, em litros">
+                <mat-card-title>
+                  <h5 class="title-info">Consumo na última hora, em litros</h5>
+                </mat-card-title>
+                <mat-card-subtitle style="margin-top: 0px;">
+                  <strong class="value-info">{{dashboard.consumoAgua}}</strong>
+                </mat-card-subtitle>
+              </mat-card-header>
+  
+              <div class="position">
+                <div class="header">
+                  <div mat-card-avatar>
+                    <img src="../../../assets/mediaConsumo.jpg" class="image-avatar" />
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+
+            <mat-card class="card-info">
+              <mat-card-header style="overflow: hidden" fxFlex="100%" matTooltip="Consumo no dia, em litros">
+                <mat-card-title>
+                  <h5 class="title-info">Consumo no dia, em litros</h5>
+                </mat-card-title>
+                <mat-card-subtitle style="margin-top: 0px;">
+                  <strong class="value-info {{dashboard.consumoDia}}">
+                    {{dashboard.consumoDia}}
+                  </strong>
+                </mat-card-subtitle>
+              </mat-card-header>
+  
+              <div class="position">
+                <div class="header">
+                  <div mat-card-avatar>
+                    <!-- <img src="../../../assets/{{dashboard.estadoImage}}.png" class="image-avatar" /> -->
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+
+            <mat-card class="card-info">
+              <mat-card-header style="overflow: hidden" fxFlex="100%" matTooltip="Consumo na semana, em litros">
+                <mat-card-title>
+                  <h5 class="title-info">Consumo na semana, em litros</h5>
+                </mat-card-title>
+                <mat-card-subtitle style="margin-top: 0px;">
+                  <strong class="value-info {{dashboard.consumoSemana}}">
+                    {{dashboard.consumoSemana}}
+                  </strong>
+                </mat-card-subtitle>
+              </mat-card-header>
+  
+              <div class="position">
+                <div class="header">
+                  <div mat-card-avatar>
+                    <!-- <img src="../../../assets/{{dashboard.estadoImage}}.png" class="image-avatar" /> -->
+                  </div>
+                </div>
+              </div>
+            </mat-card>
+
+            <mat-card class="card-info card-info-final">
+              <mat-card-header style="overflow: hidden" fxFlex="100%" matTooltip="Consumo no mês, em litros">
+                <mat-card-title>
+                  <h5 class="title-info">Consumo no mês, em litros</h5>
+                </mat-card-title>
+                <mat-card-subtitle style="margin-top: 0px;">
+                  <strong class="value-info">
+                    {{dashboard.consumoMes}}
+                  </strong>
+                </mat-card-subtitle>
+              </mat-card-header>
+  
+              <div class="position">
+                <div class="header">
+                  <div mat-card-avatar>
+                    <!-- <img src="../../../assets/{{dashboard.estadoImage}}.png" class="image-avatar" /> -->
                   </div>
                 </div>
               </div>

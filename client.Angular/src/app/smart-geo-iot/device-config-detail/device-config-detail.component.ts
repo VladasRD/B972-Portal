@@ -98,7 +98,7 @@ export class DeviceConfigDetailComponent implements OnInit {
 
     this.sgiService.saveDeviceRegistration(this.deviceRegistration)
       .subscribe(() => {
-        this.router.navigate(['./sgi/dispositivos']);
+        this.router.navigate(['./radiodados/dispositivos']);
         this.messageService.add('Dispositivo salvo.');
       },
         err => {
@@ -110,7 +110,7 @@ export class DeviceConfigDetailComponent implements OnInit {
     this.sgiService.deleteDeviceRegistration(this.deviceRegistration.deviceCustomUId)
       .subscribe(() => {
         this.messageService.add('Dispositivo removido.');
-        this.router.navigate(['./sgi/dispositivos']);
+        this.router.navigate(['./radiodados/dispositivos']);
       },
         err => {
           this.messageService.addError(err.message + ' (removendo dispositivo)');

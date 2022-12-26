@@ -10,16 +10,16 @@ using SmartGeoIot.ViewModels;
 
 namespace SmartGeoIot.Services
 {
-    public partial class SmartGeoIotService
+    public partial class RadiodadosService
     {
-        public IEnumerable<DashboardViewModels> GetReports(string id, ClaimsPrincipal user, string typePackage, int skip = 0, int top = 0, string de = null, string ate = null, OptionalOutTotalCount totalCount = null, string orderBy = null, bool blocked = false, bool isCallByGraphic = false)
+        public IEnumerable<DashboardViewModels> GetReports(string id, ClaimsPrincipal user, string typePackage, int skip = 0, int top = 0, string de = null, string ate = null, OptionalOutTotalCount totalCount = null, string orderBy = null, bool blocked = false, bool isCallByGraphic = false, ReportResilType reportType = ReportResilType.Analitico)
         {
             // Projeto Aguamon
             if (typePackage.Equals("10"))
                 return GetReportDataAguamon(id, skip, top, totalCount);
 
             // Projeto Aguamon-2
-            if (typePackage.Equals("81"))
+            if (int.Parse(typePackage) == (int)PackagesEnum.TQA)
                 return GetReportDataPQA(id, skip, top, de, ate, totalCount, isCallByGraphic);
 
             // Projeto Hidroponia
@@ -31,12 +31,20 @@ namespace SmartGeoIot.Services
                 return GetReportDataDJRF(id, skip, top, de, ate, blocked, totalCount, isCallByGraphic);
 
             // Projeto TRM
-            if (typePackage.Equals("21"))
-                return GetReportDataTRM(id, skip, top, de, ate, totalCount);
+            // if (typePackage.Equals("21"))
+            //     return GetReportDataTRM(id, skip, top, de, ate, totalCount);
 
             // Projeto TRM-10
             if (typePackage.Equals("23"))
-                return GetReportDataTRM10(id, skip, top, de, ate, totalCount, isCallByGraphic);
+                return GetReportDataTRM10_23_24(id, skip, top, de, ate, totalCount, isCallByGraphic, reportType);
+
+            // Projeto TSP
+            if (typePackage.Equals("83"))
+                return GetReportDataTSP_83_24(id, skip, top, de, ate, totalCount, isCallByGraphic);
+
+            // Projeto TRM-11
+            if (int.Parse(typePackage) == (int)PackagesEnum.B978)
+                return GetReportDataB978(id, skip, top, de, ate, totalCount);
 
             return null;
         }
@@ -246,7 +254,7 @@ namespace SmartGeoIot.Services
             IQueryable<Message> messages = _context.Messages
             .AsNoTracking()
             .Include(i => i.Device)
-            .Where(w => w.DeviceId == id && (w.TypePackage.Equals("81") || w.TypePackage.Equals("82")))
+            .Where(w => w.DeviceId == id && (w.TypePackage.Equals(((int)PackagesEnum.TQA).ToString()) || w.TypePackage.Equals(((int)PackagesEnum.TQA_S).ToString())))
             .OrderByDescending(o => o.Time);
 
             try
@@ -254,12 +262,12 @@ namespace SmartGeoIot.Services
                 if (!de.Equals("null"))
                 {
                     DateTime firstDate = Convert.ToDateTime(de).ToUniversalTime();
-                    messages = messages.Where(c => c.OperationDate.Value.Year >= firstDate.Year && c.OperationDate.Value.Month >= firstDate.Month && c.OperationDate.Value.Day >= firstDate.Day);
+                    messages = messages.Where(c => c.OperationDate.Value.AddHours(-3).Year >= firstDate.Year && c.OperationDate.Value.AddHours(-3).Month >= firstDate.Month && c.OperationDate.Value.AddHours(-3).Day >= firstDate.Day);
                 }
                 if (!ate.Equals("null"))
                 {
                     var lastDate = Convert.ToDateTime(ate).ToUniversalTime();
-                    messages = messages.Where(c => c.OperationDate.Value.Year <= lastDate.Year && c.OperationDate.Value.Month <= lastDate.Month && c.OperationDate.Value.Day <= lastDate.Day);
+                    messages = messages.Where(c => c.OperationDate.Value.AddHours(-3).Year <= lastDate.Year && c.OperationDate.Value.AddHours(-3).Month <= lastDate.Month && c.OperationDate.Value.AddHours(-3).Day <= lastDate.Day);
                 }
 
                 if (messages == null)
@@ -272,11 +280,12 @@ namespace SmartGeoIot.Services
                 if (isCallByGraphic)
                     top = totalCount.Value;
 
-                while (tmpMessages.Count() > 0 && newData.Count() <= top)
+                // while (tmpMessages.Count() > 0 && newData.Count() <= top)
+                while (tmpMessages.Count() > 0)
                 {
                     DashboardViewModels newItem = new DashboardViewModels();
-                    var message81 = tmpMessages.FirstOrDefault(w => w.TypePackage.Equals("81"));
-                    var message82 = tmpMessages.FirstOrDefault(w => w.TypePackage.Equals("82"));
+                    var message81 = tmpMessages.FirstOrDefault(w => w.TypePackage.Equals(((int)PackagesEnum.TQA).ToString()));
+                    var message82 = tmpMessages.FirstOrDefault(w => w.TypePackage.Equals(((int)PackagesEnum.TQA_S).ToString()));
 
                     // Convertendo os dados para pacote 81
                     if (message81 != null)
@@ -289,39 +298,56 @@ namespace SmartGeoIot.Services
                         newItem.Country = message81.Country;
                         newItem.Lqi = message81.Lqi;
 
-                        if (isCallByGraphic)
+                        newItem.Temperature = message81.Temperature == "0" ? "0,00" : message81.Temperature;
+                        newItem.Ph = message81.Ph == "0" ? "0,00" : message81.Ph;
+
+                        newItem.Fluor = message81.Fluor;
+                        newItem.Cloro = message81.Cloro == ",00" ? "0,00" : message81.Cloro;
+                        newItem.Turbidez = message81.Turbidez;
+
+                        if (message82 != null)
                         {
-                            newItem.Temperature = message81.Temperature.Length > 2 ? $"{message81.Temperature.Substring(0, 2)},{message81.Temperature.Substring(2, message81.Temperature.Length - 2)}" : message81.Temperature;
+                            newItem.ReleBoolean = message82.ReleBoolean;
                         }
-                        else
-                        {
-                            newItem.Temperature = message81.Temperature.Length > 2 ? $"{message81.Temperature.Substring(0, 2)},{message81.Temperature.Substring(2, message81.Temperature.Length - 2)}" : message81.Temperature;
-                            newItem.Ph = message81.Ph;
-                            newItem.Fluor = message81.Fluor;
-                            newItem.Cloro = message81.Cloro;
-                            newItem.Turbidez = message81.Turbidez;
-                        }
+
+                        // if (isCallByGraphic)
+                        // {
+                        //     newItem.Temperature = message81.Temperature.Length > 2 ? $"{message81.Temperature.Substring(0, 2)},{message81.Temperature.Substring(2, message81.Temperature.Length - 2)}" : message81.Temperature;
+                        // }
+                        // else
+                        // {
+                        //     newItem.Temperature = message81.Temperature.Length > 2 ? $"{message81.Temperature.Substring(0, 2)},{message81.Temperature.Substring(2, message81.Temperature.Length - 2)}" : message81.Temperature;
+                        //     newItem.Ph = message81.Ph;
+                        //     newItem.Fluor = message81.Fluor;
+                        //     newItem.Cloro = message81.Cloro;
+                        //     newItem.Turbidez = message81.Turbidez;
+                        // }
                     }
 
                     // Convertendo os dados para pacote 82
-                    if (message82 != null && !isCallByGraphic)
-                    {
-                        newItem.Rele = new Rele()
-                        {
-                            Rele1 = Utils.HexaToDecimal(message82.Package.Substring(0, 2)).ToString(),
-                            Rele2 = Utils.HexaToDecimal(message82.Package.Substring(2, 2)).ToString(),
-                            Rele3 = Utils.HexaToDecimal(message82.Package.Substring(4, 2)).ToString(),
-                            Rele4 = Utils.HexaToDecimal(message82.Package.Substring(6, 2)).ToString(),
-                            Rele5 = Utils.HexaToDecimal(message82.Package.Substring(8, 2)).ToString()
-                        };
-                    }
+                    // if (message82 != null && !isCallByGraphic)
+                    // {
+                    //     newItem.Rele = new Rele()
+                    //     {
+                    //         Rele1 = Utils.HexaToDecimal(message82.Package.Substring(0, 2)).ToString(),
+                    //         Rele2 = Utils.HexaToDecimal(message82.Package.Substring(2, 2)).ToString(),
+                    //         Rele3 = Utils.HexaToDecimal(message82.Package.Substring(4, 2)).ToString(),
+                    //         Rele4 = Utils.HexaToDecimal(message82.Package.Substring(6, 2)).ToString(),
+                    //         Rele5 = Utils.HexaToDecimal(message82.Package.Substring(8, 2)).ToString()
+                    //     };
+                    // }
 
                     if (!isCallByGraphic)
-                        newData.Add(newItem);
+                    {
+                        if (newItem.Date != default(DateTime) && newItem.Temperature != null)
+                            newData.Add(newItem);
+                    }
                     else
                     {
-                        if (!message81.TemperatureIsZero)
+                        if (newItem.Date != default(DateTime) && newItem.Temperature != null)
                             newData.Add(newItem);
+                        // if (!message81.TemperatureIsZero)
+                        //     newData.Add(newItem);
                     }
 
                     tmpMessages.Remove(message81);
@@ -411,6 +437,83 @@ namespace SmartGeoIot.Services
             }
         }
 
+        public IEnumerable<DashboardViewModels> GetReportDataB978(string id, int skip = 0, int top = 0, string de = null, string ate = null, OptionalOutTotalCount totalCount = null)
+        {
+            List<DashboardViewModels> newData = new List<DashboardViewModels>();
+            IQueryable<Message> reportsQuery = _context.Messages.AsNoTracking().Include(i => i.Device).Where(w => w.DeviceId == id && (w.TypePackage.Equals("21"))).OrderByDescending(o => o.Id);
+            DeviceRegistration deviceRegistration = _context.DevicesRegistration.Include(i => i.Package).Include(i => i.Project).SingleOrDefault(r => r.DeviceId == id);
+
+            try
+            {
+                if (!de.Equals("null"))
+                {
+                    DateTime firstDate = Convert.ToDateTime(de).ToUniversalTime();
+                    reportsQuery = reportsQuery.Where(c => c.OperationDate.Value.Year >= firstDate.Year && c.OperationDate.Value.Month >= firstDate.Month && c.OperationDate.Value.Day >= firstDate.Day);
+                }
+                if (!ate.Equals("null"))
+                {
+                    DateTime lastDate = Convert.ToDateTime(ate).ToUniversalTime();
+                    reportsQuery = reportsQuery.Where(c => c.OperationDate.Value.Year <= lastDate.Year && c.OperationDate.Value.Month <= lastDate.Month && c.OperationDate.Value.Day <= lastDate.Day);
+                }
+
+                if (totalCount != null)
+                    totalCount.Value = reportsQuery.Count();
+
+                if (skip != 0)
+                    reportsQuery = reportsQuery.Skip(skip);
+
+                if (top != 0)
+                    reportsQuery = reportsQuery.Take(top);
+
+                foreach (var report in reportsQuery)
+                {
+                    DashboardViewModels newItem = new DashboardViewModels();
+                    newItem.DeviceId = report.DeviceId;
+                    newItem.Name = report.Device.Name;
+                    newItem.Package = report.Data;
+                    newItem.TypePackage = report.TypePackage;
+                    newItem.Date = report.Date;
+                    newItem.Country = report.Country;
+                    newItem.Lqi = report.Lqi;
+                    newItem.Bits = report.Bits;
+                    newItem.Lqi = report.Lqi;
+                    newItem.SeqNumber = report.SeqNumber;
+                    newItem.Time = report.Time;
+
+                    if (deviceRegistration != null)
+                    {
+                        newItem.SerialNumber = deviceRegistration.SerialNumber;
+                        newItem.Model = deviceRegistration.Model;
+                        newItem.Notes = deviceRegistration.Notes;
+                        newItem.NotesCreateDate = deviceRegistration.NotesCreateDate.HasValue ? deviceRegistration.NotesCreateDate.Value.ToShortDateString() : null;
+                        newItem.Ed1 = deviceRegistration.Ed1;
+                        newItem.Ed2 = deviceRegistration.Ed2;
+                        newItem.Ed3 = deviceRegistration.Ed3;
+                        newItem.Ed4 = deviceRegistration.Ed4;
+                        newItem.Sd1 = deviceRegistration.Sd1;
+                        newItem.Sd2 = deviceRegistration.Sd2;
+                        newItem.Ea10 = deviceRegistration.Ea10;
+                        newItem.Sa3 = deviceRegistration.Sa3;
+                    }
+
+                    var _entradaAnalogica = Utils.FromFloatSafe(report.EntradaAnalogica);
+                    var _saidaAnalogica = Utils.FromFloatSafe(report.SaidaAnalogica);
+
+                    newItem.EntradaAnalogica = String.Format("{0:0.0}", _entradaAnalogica);
+                    newItem.SaidaAnalogica = String.Format("{0:0.0}", _saidaAnalogica);
+
+                    newData.Add(newItem);
+                }
+
+                return newData.OrderByDescending(o => o.Date).ToArray();
+            }
+            catch (System.Exception ex)
+            {
+                _log.Log("Erro GetReportDataTRM.", ex.Message, true);
+                return newData;
+            }
+        }
+
         public IEnumerable<DashboardViewModels> GetReportDataTRM(string id, int skip = 0, int top = 0, string de = null, string ate = null, OptionalOutTotalCount totalCount = null)
         {
             List<DashboardViewModels> newData = new List<DashboardViewModels>();
@@ -450,8 +553,8 @@ namespace SmartGeoIot.Services
                     newItem.Lqi = report.Lqi;
                     newItem.Bits = report.Bits;
 
-                    var _entradaAnalogica = FromFloatSafe(report.EntradaAnalogica);
-                    var _saidaAnalogica = FromFloatSafe(report.SaidaAnalogica);
+                    var _entradaAnalogica = Utils.FromFloatSafe(report.EntradaAnalogica);
+                    var _saidaAnalogica = Utils.FromFloatSafe(report.SaidaAnalogica);
 
                     newItem.EntradaAnalogica = String.Format("{0:0.0}", _entradaAnalogica);
                     newItem.SaidaAnalogica = String.Format("{0:0.0}", _saidaAnalogica);
@@ -468,64 +571,381 @@ namespace SmartGeoIot.Services
             }
         }
 
-        public IEnumerable<DashboardViewModels> GetReportDataTRM10(string id, int skip = 0, int top = 0, string de = null, string ate = null, OptionalOutTotalCount totalCount = null, bool isCallByGraphic = false)
+        public IEnumerable<DashboardViewModels> GetReportDataTRM10_23_24(string id, int skip = 0, int top = 0, string de = null, string ate = null, OptionalOutTotalCount totalCount = null, bool isCallByGraphic = false, ReportResilType reportType = ReportResilType.Analitico)
         {
             List<DashboardViewModels> newData = new List<DashboardViewModels>();
-            IQueryable<Message> reportsQuery = _context.Messages.AsNoTracking().Include(i => i.Device).Where(w => w.DeviceId == id && (w.TypePackage.Equals("23"))).OrderByDescending(o => o.Id);
+            List<ReportResil> reports = null;
+
+            if (reportType == ReportResilType.Hora)
+                reports = _context.ReportResil.Where(c => c.DeviceId == id && c.FAtualizaHora).ToList();
+            
+            if (reportType == ReportResilType.Dia)
+                reports = _context.ReportResil.Where(c => c.DeviceId == id && c.FAtualizaDia).ToList();
+
+            if (reportType == ReportResilType.Mes)
+                reports = _context.ReportResil.Where(c => c.DeviceId == id && c.FAtualizaMes).ToList();
+
+            if (reportType == ReportResilType.Semana)
+                reports = _context.ReportResil.Where(c => c.DeviceId == id && c.FAtualizaSem).ToList();
+
+            if (!de.Equals("null"))
+            {
+                var firstDate = Convert.ToDateTime(de).ToUniversalTime().AddHours(-3);
+                reports = reports.Where(c => c.Date >= firstDate).ToList();
+            }
+            if (!ate.Equals("null"))
+            {
+                var lastDate = Convert.ToDateTime(ate).ToUniversalTime().AddDays(1).AddHours(-3).AddMinutes(-1);
+                reports = reports.Where(c => c.Date <= lastDate).ToList();
+            }
+            
+            foreach (var dados in reports)
+            {
+                newData.Add(new DashboardViewModels()
+                {   
+                    DeviceId = dados.DeviceId,
+                    Date = dados.Date.AddHours(-3),//.AddDays(-1),
+                    FluxoAgua = String.Format("{0:0.0}", dados.Fluxo),
+                    ConsumoAgua = String.Format("{0:0.0}", dados.ConsumoHora),
+                    ConsumoDia = String.Format("{0:0.0}", dados.ConsumoDia),
+                    ConsumoMes = String.Format("{0:0.0}", dados.ConsumoMes),
+                    ConsumoSemana = String.Format("{0:0.0}", dados.ConsumoSemana),
+                    Estado = dados.Estado,
+                    Valvula = dados.Valvula,
+                    Modo = dados.Modo,
+                    DateWeekName = ""//$"Semana de {start.AddDays(1).ToShortDateString()} à {end.ToShortDateString()}"
+                });
+            }
+
+            if (totalCount != null)
+                totalCount.Value = newData.Count();
+
+            newData = newData.OrderByDescending(o => o.Date).ToList();
+
+            if (isCallByGraphic)
+                newData = newData.Take(top).OrderBy(o => o.Date).ToList();
+
+            if (skip != 0)
+                newData = newData.Skip(skip).ToList();
+
+            if (top != 0)
+                newData = newData.Take(top).ToList();
+
+            return newData.ToArray();
+        }
+
+        public IEnumerable<DashboardViewModels> GetReportDataTRM10_23_24_OLD(string id, int skip = 0, int top = 0, string de = null, string ate = null, OptionalOutTotalCount totalCount = null, bool isCallByGraphic = false, ReportResilType reportType = ReportResilType.Analitico)
+        {
+            List<DashboardViewModels> newData = new List<DashboardViewModels>();
+
+            List<ReportResil> reports = null;
+            if (reportType != ReportResilType.Analitico)
+            {
+                if (reportType != ReportResilType.Mes)
+                {
+                    reports = _context.ReportResil.Where(c => c.DeviceId == id).ToList();
+
+                    if (!de.Equals("null"))
+                    {
+                        var firstDate = Convert.ToDateTime(de).ToUniversalTime().AddHours(-3);
+                        reports = reports.Where(c => c.Date >= firstDate).ToList();
+                    }
+                    if (!ate.Equals("null"))
+                    {
+                        var lastDate = Convert.ToDateTime(ate).ToUniversalTime().AddHours(-3).AddDays(1);
+                        reports = reports.Where(c => c.Date <= lastDate).ToList();
+                    }
+                }
+            }
+
+            // SEMANA
+            if (reportType == ReportResilType.Semana)
+            {
+                List<string> mensagem = new List<string>();
+                DateTime dayInitial = reports.Min(m => m.Date);
+                DateTime dayFinal = reports.Max(m => m.Date);
+
+                DateTime start = dayInitial.Date.AddDays(-(int)dayInitial.DayOfWeek);
+                start = start.AddDays(1);
+                DateTime end = start.AddDays(6);
+
+                for (DateTime i = start; i <= dayFinal; i.AddDays(1))
+                {
+                    ReportResil dados = null;
+                    dados = reports.OrderByDescending(o => o.Date).FirstOrDefault(c => c.Month == end.Month && c.Year == end.Year && c.Day == end.Day);
+                    if (dados == null)
+                    {
+                        DateTime tmpStart = start;
+                        DateTime tmpEnd = end;
+                        while (dados == null && tmpStart < tmpEnd)
+                        {
+                            tmpEnd = tmpEnd.AddDays(-1);
+                            dados = reports.OrderByDescending(o => o.Date).FirstOrDefault(c => c.Month == tmpEnd.Month && c.Year == tmpEnd.Year && c.Day == tmpEnd.Day);
+                        }
+                    }
+
+                    if (dados == null)
+                    {
+                        i = start = end;
+                        end = end.AddDays(7);
+                        continue;
+                    }
+
+                    newData.Add(new DashboardViewModels()
+                    {   
+                        DeviceId = dados.DeviceId,
+                        Date = dados.Date.AddHours(-3),
+                        FluxoAgua = String.Format("{0:0.0}", dados.Fluxo),
+                        ConsumoAgua = String.Format("{0:0.0}", dados.ConsumoHora),
+                        ConsumoDia = String.Format("{0:0.0}", dados.ConsumoDia),
+                        ConsumoMes = String.Format("{0:0.0}", dados.ConsumoMes),
+                        ConsumoSemana = String.Format("{0:0.0}", dados.ConsumoSemana),
+                        Estado = dados.Estado,
+                        Valvula = dados.Valvula,
+                        Modo = dados.Modo,
+                        DateWeekName = $"Semana de {start.AddDays(1).ToShortDateString()} à {end.ToShortDateString()}"
+                    });
+
+                    i = start = end;
+                    end = end.AddDays(7);
+                }
+
+                if (totalCount != null)
+                    totalCount.Value = newData.Count();
+
+                newData = newData.OrderByDescending(o => o.Date).ToList();
+
+                if (skip != 0)
+                    newData = newData.Skip(skip).ToList();
+
+                if (top != 0)
+                    newData = newData.Take(top).ToList();
+
+                return newData.ToArray();
+            }
+
+            // MÊS
+            if (reportType == ReportResilType.Mes)
+            {
+                reports = _context.ReportResil.Where(c => c.DeviceId == id && c.Date >= c.Date.AddDays(-365)).ToList();
+                DateTime dayInitial = reports.Min(m => m.Date);
+                DateTime dayFinal = reports.Max(m => m.Date);
+                for (DateTime x = dayInitial; x <= dayFinal.AddMonths(1); x = x.AddMonths(1))
+                {
+                    var dados = reports.OrderByDescending(o => o.Date).FirstOrDefault(c => c.Month == x.Month && c.Year == x.Year);
+                    if (dados == null)
+                        continue;
+
+                    newData.Add(new DashboardViewModels()
+                    {   
+                        DeviceId = dados.DeviceId,
+                        Date = dados.Date.AddHours(-3),
+                        FluxoAgua = String.Format("{0:0.0}", dados.Fluxo),
+                        ConsumoAgua = String.Format("{0:0.0}", dados.ConsumoHora),
+                        ConsumoDia = String.Format("{0:0.0}", dados.ConsumoDia),
+                        ConsumoMes = String.Format("{0:0.0}", dados.ConsumoMes),
+                        ConsumoSemana = String.Format("{0:0.0}", dados.ConsumoSemana),
+                        Estado = dados.Estado,
+                        Valvula = dados.Valvula,
+                        Modo = dados.Modo
+                    });
+                }
+
+                if (totalCount != null)
+                    totalCount.Value = newData.Count();
+
+                newData = newData.OrderByDescending(o => o.Date).ToList();
+
+                if (skip != 0)
+                    newData = newData.Skip(skip).ToList();
+
+                if (top != 0)
+                    newData = newData.Take(top).ToList();
+
+                return newData.ToArray();
+            }
+
+            // DIA
+            if (reportType == ReportResilType.Dia)
+            {
+                DateTime dayInitial = reports.Min(m => m.Date);
+                DateTime dayFinal = reports.Max(m => m.Date);
+                for (DateTime x = dayInitial; x <= dayFinal.AddDays(1); x = x.AddDays(1))
+                {
+                    var dados = reports.OrderByDescending(o => o.Date).FirstOrDefault(c => c.Day == x.Day && c.Month == x.Month && c.Year == x.Year);
+                    if (dados == null)
+                        continue;
+                    newData.Add(new DashboardViewModels()
+                    {   
+                        DeviceId = dados.DeviceId,
+                        Date = dados.Date.AddHours(-3),
+                        FluxoAgua = String.Format("{0:0.0}", dados.Fluxo),
+                        ConsumoAgua = String.Format("{0:0.0}", dados.ConsumoHora),
+                        ConsumoDia = String.Format("{0:0.0}", dados.ConsumoDia),
+                        ConsumoMes = String.Format("{0:0.0}", dados.ConsumoMes),
+                        ConsumoSemana = String.Format("{0:0.0}", dados.ConsumoSemana),
+                        Estado = dados.Estado,
+                        Valvula = dados.Valvula,
+                        Modo = dados.Modo
+                    });
+                }
+
+                if (totalCount != null)
+                    totalCount.Value = newData.Count();
+
+                newData = newData.OrderByDescending(o => o.Date).ToList();
+
+                if (skip != 0)
+                    newData = newData.Skip(skip).ToList();
+
+                if (top != 0)
+                    newData = newData.Take(top).ToList();
+
+                return newData.ToArray();
+            }
+
+            // HORA
+            if (reportType != ReportResilType.Analitico)
+            {
+                if (totalCount != null)
+                    totalCount.Value = reports.Count();
+
+                reports = reports.OrderByDescending(o => o.Date).ToList();
+
+                if (skip != 0)
+                    reports = reports.Skip(skip).ToList();
+
+                if (top != 0)
+                    reports = reports.Take(top).ToList();
+
+                return reports.Select(dados => new DashboardViewModels()
+                {   
+                    DeviceId = dados.DeviceId,
+                    Date = dados.Date.AddHours(-3),
+                    FluxoAgua = String.Format("{0:0.0}", dados.Fluxo),
+                    ConsumoAgua = String.Format("{0:0.0}", dados.ConsumoHora),
+                    ConsumoDia = String.Format("{0:0.0}", dados.ConsumoDia),
+                    ConsumoMes = String.Format("{0:0.0}", dados.ConsumoMes),
+                    ConsumoSemana = String.Format("{0:0.0}", dados.ConsumoSemana),
+                    Estado = dados.Estado,
+                    Valvula = dados.Valvula,
+                    Modo = dados.Modo
+                });
+            }
+
+
+            IQueryable<Message> messages = _context.Messages.AsNoTracking()
+            .Include(i => i.Device)
+            .Where(w => w.DeviceId == id && (w.TypePackage.Equals("23")) || (w.TypePackage.Equals("24")))
+            .OrderByDescending(o => o.Id);
 
             try
             {
                 if (!de.Equals("null"))
                 {
-                    DateTime firstDate = Convert.ToDateTime(de).ToUniversalTime();
-                    reportsQuery = reportsQuery.Where(c => c.OperationDate.Value.Year >= firstDate.Year && c.OperationDate.Value.Month >= firstDate.Month && c.OperationDate.Value.Day >= firstDate.Day);
+                    var firstDate = Convert.ToDateTime(de).ToUniversalTime().AddHours(-3);
+                    messages = messages.Where(c => c.Date >= firstDate);
                 }
                 if (!ate.Equals("null"))
                 {
-                    var lastDate = Convert.ToDateTime(ate).ToUniversalTime();
-                    reportsQuery = reportsQuery.Where(c => c.OperationDate.Value.Year <= lastDate.Year && c.OperationDate.Value.Month <= lastDate.Month && c.OperationDate.Value.Day <= lastDate.Day);
+                    var lastDate = Convert.ToDateTime(ate).ToUniversalTime().AddHours(-3).AddDays(1);
+                    messages = messages.Where(c => c.Date <= lastDate);
                 }
 
+                if (messages == null)
+                    return null;
+    
+                List<Message> tmpMessages = messages.ToList();
                 if (totalCount != null)
-                    totalCount.Value = reportsQuery.Count();
+                    totalCount.Value = tmpMessages.Count();
 
-                if (skip != 0)
-                    reportsQuery = reportsQuery.Skip(skip);
+                if (isCallByGraphic)
+                    top = totalCount.Value;
 
-                if (top != 0)
-                    reportsQuery = reportsQuery.Take(top);
-
-                foreach (var report in reportsQuery)
+                while (tmpMessages.Count() > 0 && newData.Count() <= top)
                 {
-                    DashboardViewModels newItem = new DashboardViewModels();
-                    newItem.DeviceId = report.DeviceId;
-                    newItem.Name = report.Device.Name;
-                    newItem.Package = report.Data;
-                    newItem.TypePackage = report.TypePackage;
-                    newItem.Date = report.Date;
-                    newItem.Country = report.Country;
-                    newItem.Lqi = report.Lqi;
-                    newItem.Bits = report.Bits;
+                    DashboardViewModels newItem = null;
+                    var message23 = tmpMessages.FirstOrDefault(w => w.TypePackage.Equals("23"));
+                    var message24 = tmpMessages.FirstOrDefault(w => w.TypePackage.Equals("24"));
 
-                    var _fluxoAgua = FromFloatSafe(report.FluxoAgua);
-                    var _consumoAgua = FromFloatSafe(report.ConsumoAgua);
-
-                    newItem.FluxoAgua = String.Format("{0:0.0}", _fluxoAgua);
-                    newItem.ConsumoAgua = String.Format("{0:0.0}", _consumoAgua);
-
-                    if (!isCallByGraphic)
+                    // Convertendo os dados para pacote 23
+                    if (message23 != null)
                     {
+                        newItem = new DashboardViewModels();
+                        newItem.DeviceId = message23.DeviceId;
+                        newItem.Name = message23.Device.Name;
+                        newItem.Package = message23.Data;
+                        newItem.TypePackage = message23.TypePackage;
+                        newItem.Date = message23.Date;
+                        newItem.Country = message23.Country;
+                        newItem.Lqi = message23.Lqi;
+                        newItem.Bits = message23.Bits;
+                        newItem.SeqNumber = message23.SeqNumber;
+
+                        var _fluxoAgua = Utils.FromFloatSafe(message23.FluxoAgua);
+                        var _consumoAgua = Utils.FromFloatSafe(message23.ConsumoAgua);
+
+                        newItem.FluxoAgua = String.Format("{0:0.0}", _fluxoAgua);
+                        newItem.ConsumoAgua = String.Format("{0:0.0}", _consumoAgua);
+
                         var _display = Consts.GetDisplayTRM10(newItem.Bits.BAlertaMax, newItem.Bits.ModoFechado, newItem.Bits.ModoAberto);
                         newItem.Modo = _display.DisplayModo; // modo
                         newItem.Estado = _display.DisplayEstado; // alerta
-                        newItem.Valvula = _display.DisplayValvula; // válvula
+                        newItem.EstadoImage = _display.EstadoImage;
+                        newItem.ModoImage = _display.ModoImage;
+                        newItem.Valvula = _display.DisplayValvula;
                         newItem.EstadoColor = _display.EstadoColor;
+
+                        if (message24 != null)
+                        {
+                            var _consumoDia = Utils.FromFloatSafe(message24.ConsumoDia);
+                            var _consumoSemana = Utils.FromFloatSafe(message24.ConsumoSemana);
+
+                            newItem.ConsumoDia = String.Format("{0:0,0}", _consumoDia);
+                            newItem.ConsumoSemana = String.Format("{0:0,0}", _consumoSemana);
+                            newItem.ConsumoMes = String.Format("{0:0,0}", message24.ConsumoMes);
+                        }
                     }
 
-                    newData.Add(newItem);
+                    // Convertendo os dados para pacote 24
+
+                    if (newItem != null)
+                        newData.Add(newItem);
+
+                    tmpMessages.Remove(message23);
+                    tmpMessages.Remove(message24);
                 }
 
-                return newData.OrderBy(o => o.Date).ToArray();
+                totalCount.Value = newData.Count();
+
+                if (skip != 0 && top != 0)
+                {
+                    if (isCallByGraphic)
+                        return newData.Skip(skip).Take(top).OrderBy(o => o.Date).ToArray();
+
+                    return newData.Skip(skip).Take(top).OrderByDescending(o => o.Date).ToArray();
+                }
+
+                if (skip != 0 && top == 0)
+                {
+                    if (isCallByGraphic)
+                        return newData.Skip(skip).OrderBy(o => o.Date).ToArray();
+
+                    return newData.Skip(skip).OrderByDescending(o => o.Date).ToArray();
+                }
+
+                if (skip == 0 && top != 0)
+                {
+                    if (isCallByGraphic)
+                        return newData.Take(top).OrderBy(o => o.Date).ToArray();
+
+                    return newData.Take(top).OrderByDescending(o => o.Date).ToArray();
+                }
+
+                if (isCallByGraphic)
+                    return newData.OrderBy(o => o.Date).ToArray();
+
+                return newData.OrderByDescending(o => o.Date).ToArray();
             }
             catch (System.Exception ex)
             {
@@ -533,6 +953,135 @@ namespace SmartGeoIot.Services
                 return newData;
             }
         }
+
+        public IEnumerable<DashboardViewModels> GetReportDataTSP_83_24(string id, int skip = 0, int top = 0, string de = null, string ate = null, OptionalOutTotalCount totalCount = null, bool isCallByGraphic = false)
+        {
+            List<DashboardViewModels> newData = new List<DashboardViewModels>();
+            IQueryable<Message> messages = _context.Messages.AsNoTracking()
+            .Include(i => i.Device)
+            .Where(w => w.DeviceId == id && w.TypePackage.Equals("83"))
+            .OrderByDescending(o => o.Id);
+
+            try
+            {
+                if (!de.Equals("null"))
+                {
+                    var firstDate = Convert.ToDateTime(de).ToUniversalTime().AddHours(-3);
+                    messages = messages.Where(c => c.Date >= firstDate);
+                }
+                if (!ate.Equals("null"))
+                {
+                    var lastDate = Convert.ToDateTime(ate).ToUniversalTime().AddHours(-3).AddDays(1);
+                    messages = messages.Where(c => c.Date <= lastDate);
+                }
+
+                if (messages == null)
+                    return null;
+
+                List<Message> tmpMessages = messages.ToList();
+                if (totalCount != null)
+                    totalCount.Value = tmpMessages.Count();
+
+                if (isCallByGraphic)
+                    top = totalCount.Value;
+
+                while (tmpMessages.Count() > 0 && newData.Count() <= top)
+                {
+                    DashboardViewModels newItem = new DashboardViewModels();
+                    var message83 = tmpMessages.FirstOrDefault(w => w.TypePackage.Equals("83"));
+                    // var message24 = tmpMessages.FirstOrDefault(w => w.TypePackage.Equals("24"));
+
+                    // Convertendo os dados para pacote 23
+                    if (message83 != null)
+                    {
+                        newItem.DeviceId = message83.DeviceId;
+                        newItem.Name = message83.Device.Name;
+                        newItem.Package = message83.Data;
+                        newItem.TypePackage = message83.TypePackage;
+                        newItem.Date = message83.Date;
+                        newItem.Country = message83.Country;
+                        newItem.Lqi = message83.Lqi;
+                        newItem.Bits = message83.Bits;
+                        newItem.SeqNumber = message83.SeqNumber;
+
+                        // var _vazao = Utils.FromFloatSafe(message83.Vazao);
+                        // var _totalizacao = Utils.FromFloatSafe(message83.Totalizacao);
+                        // newItem.Vazao = String.Format("{0:0.000}", _vazao);
+                        double _vazao = 0;
+                        if (message83.Operator != null)
+                        {
+                            // double currentOperator = Convert.ToDouble(message83.Operator);
+                            // newItem.Vazao = String.Format("{0:0.000}", currentOperator);
+                            newItem.Vazao = message83.Operator.Replace(".", ",");
+                            newItem.Date = Utils.Timestamp_Milisecodns_ToDateTime_UTC(message83.Time);
+                        }
+                        else
+                        {
+                            _vazao = Utils.FromFloatSafe(message83.Vazao);
+                            newItem.Vazao = String.Format("{0:0.000}", _vazao);
+                        }
+
+                        // newItem.Totalizacao = String.Format("{0:0.0}", _totalizacao);
+                        var _totalizacao = Utils.FromFloatSafe(message83.Totalizacao); // total
+                        newItem.Totalizacao = String.Format("{0:0}", _totalizacao);
+
+                        newItem.Calha = message83.Calha;
+                        newItem.CalhaAlerta = message83.CalhaAlerta;
+                    }
+
+                    // Convertendo os dados para pacote 24
+                    // if (message24 != null)
+                    // {
+                    //     // var _consumoDia = Utils.FromFloatSafe(message24.ConsumoDia);
+                    //     var _consumoSemana = Utils.FromFloatSafe(message24.ConsumoSemana);
+
+                    //     // newItem.ConsumoDia = String.Format("{0:0,0}", _consumoDia);
+                    //     newItem.ConsumoSemana = String.Format("{0:0,0}", _consumoSemana);
+                    //     // newItem.ConsumoMes = String.Format("{0:0,0}", message24.ConsumoMes);
+                    // }
+
+                    newData.Add(newItem);
+
+                    tmpMessages.Remove(message83);
+                    // tmpMessages.Remove(message24);
+                }
+
+                if (skip != 0 && top != 0)
+                {
+                    if (isCallByGraphic)
+                        return newData.Skip(skip).Take(top).OrderBy(o => o.Date).ToArray();
+
+                    return newData.Skip(skip).Take(top).OrderByDescending(o => o.Date).ToArray();
+                }
+
+                if (skip != 0 && top == 0)
+                {
+                    if (isCallByGraphic)
+                        return newData.Skip(skip).OrderBy(o => o.Date).ToArray();
+
+                    return newData.Skip(skip).OrderByDescending(o => o.Date).ToArray();
+                }
+
+                if (skip == 0 && top != 0)
+                {
+                    if (isCallByGraphic)
+                        return newData.Take(top).OrderBy(o => o.Date).ToArray();
+
+                    return newData.Take(top).OrderByDescending(o => o.Date).ToArray();
+                }
+
+                if (isCallByGraphic)
+                    return newData.OrderBy(o => o.Date).ToArray();
+
+                return newData.OrderByDescending(o => o.Date).ToArray();
+            }
+            catch (System.Exception ex)
+            {
+                _log.Log("Erro GetReportDataTSP.", ex.Message, true);
+                return newData;
+            }
+        }
+
 
 
 

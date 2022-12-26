@@ -19,6 +19,100 @@ namespace SmartGeoIot.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("SmartGeoIot.Models.B972", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("DeviceId")
+                        .HasMaxLength(20);
+
+                    b.Property<string>("Flags")
+                        .HasMaxLength(8);
+
+                    b.Property<decimal?>("Flow");
+
+                    b.Property<int?>("Iq");
+
+                    b.Property<int>("Lqi");
+
+                    b.Property<long?>("Pack86Time");
+
+                    b.Property<long?>("Pack87Time");
+
+                    b.Property<decimal?>("Partial");
+
+                    b.Property<int>("Position");
+
+                    b.Property<decimal?>("Quality");
+
+                    b.Property<string>("RSSI")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Source")
+                        .HasMaxLength(100);
+
+                    b.Property<decimal?>("Temperature");
+
+                    b.Property<long>("Time");
+
+                    b.Property<decimal?>("Total");
+
+                    b.Property<decimal?>("Velocity");
+
+                    b.Property<long?>("VelocityTime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("B972s");
+                });
+
+            modelBuilder.Entity("SmartGeoIot.Models.B982_S", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Calha")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("CalhaAlerta")
+                        .HasMaxLength(200);
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("DeviceId")
+                        .HasMaxLength(20);
+
+                    b.Property<decimal>("Flow");
+
+                    b.Property<int?>("Iq");
+
+                    b.Property<int>("Lqi");
+
+                    b.Property<string>("OriginPack")
+                        .HasMaxLength(30);
+
+                    b.Property<decimal>("Partial");
+
+                    b.Property<string>("RSSI")
+                        .HasMaxLength(100);
+
+                    b.Property<string>("Source")
+                        .HasMaxLength(100);
+
+                    b.Property<long>("Time");
+
+                    b.Property<decimal>("Total");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("B982_S");
+                });
+
             modelBuilder.Entity("SmartGeoIot.Models.Client", b =>
                 {
                     b.Property<string>("ClientUId")
@@ -263,15 +357,41 @@ namespace SmartGeoIot.Migrations
 
                     b.Property<string>("DeviceId");
 
+                    b.Property<string>("Ea10");
+
+                    b.Property<string>("Ed1");
+
+                    b.Property<string>("Ed2");
+
+                    b.Property<string>("Ed3");
+
+                    b.Property<string>("Ed4");
+
+                    b.Property<string>("Model")
+                        .HasMaxLength(50);
+
                     b.Property<string>("Name")
                         .HasMaxLength(250);
 
                     b.Property<string>("NickName")
                         .HasMaxLength(100);
 
+                    b.Property<string>("Notes");
+
+                    b.Property<DateTime?>("NotesCreateDate");
+
                     b.Property<string>("PackageUId");
 
                     b.Property<string>("ProjectUId");
+
+                    b.Property<string>("Sa3");
+
+                    b.Property<string>("Sd1");
+
+                    b.Property<string>("Sd2");
+
+                    b.Property<string>("SerialNumber")
+                        .HasMaxLength(80);
 
                     b.HasKey("DeviceCustomUId");
 
@@ -284,16 +404,64 @@ namespace SmartGeoIot.Migrations
                     b.ToTable("DevicesRegistration");
                 });
 
+            modelBuilder.Entity("SmartGeoIot.Models.MCond", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("DeviceId")
+                        .HasMaxLength(20);
+
+                    b.Property<bool>("InfAlarmLevelMax");
+
+                    b.Property<bool>("InfAlarmLevelMin");
+
+                    b.Property<double>("InfLevel");
+
+                    b.Property<string>("PackInf")
+                        .HasMaxLength(40);
+
+                    b.Property<string>("PackPort")
+                        .HasMaxLength(40);
+
+                    b.Property<string>("PackSup")
+                        .HasMaxLength(40);
+
+                    b.Property<bool>("PortFireAlarm");
+
+                    b.Property<bool>("PortFireState");
+
+                    b.Property<bool>("PortIvaAlarm");
+
+                    b.Property<bool>("PortIvaState");
+
+                    b.Property<bool>("SupAlarmLevelMax");
+
+                    b.Property<bool>("SupAlarmLevelMin");
+
+                    b.Property<double>("SupLevel");
+
+                    b.Property<bool>("SupStateBomb");
+
+                    b.Property<long>("Time");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MConds");
+                });
+
             modelBuilder.Entity("SmartGeoIot.Models.Message", b =>
                 {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
+                    b.Property<string>("Id");
+
+                    b.Property<string>("DeviceId");
 
                     b.Property<string>("Country");
 
                     b.Property<string>("Data");
-
-                    b.Property<string>("DeviceId");
 
                     b.Property<int>("Lqi");
 
@@ -309,7 +477,9 @@ namespace SmartGeoIot.Migrations
 
                     b.Property<long>("Time");
 
-                    b.HasKey("Id");
+                    b.Property<bool>("WasProcessed");
+
+                    b.HasKey("Id", "DeviceId");
 
                     b.HasIndex("DeviceId");
 
@@ -382,6 +552,9 @@ namespace SmartGeoIot.Migrations
                         .HasColumnType("char(36)")
                         .HasMaxLength(36);
 
+                    b.Property<string>("Code")
+                        .HasMaxLength(50);
+
                     b.Property<string>("Description")
                         .HasMaxLength(400);
 
@@ -391,6 +564,150 @@ namespace SmartGeoIot.Migrations
                     b.HasKey("ProjectUId");
 
                     b.ToTable("Projects");
+                });
+
+            modelBuilder.Entity("SmartGeoIot.Models.ProjectDevice", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Code")
+                        .HasMaxLength(50);
+
+                    b.Property<string>("DeviceId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("VW_DevicesByProjectCode");
+                });
+
+            modelBuilder.Entity("SmartGeoIot.Models.ReportResil", b =>
+                {
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal?>("ConsumoDia");
+
+                    b.Property<decimal?>("ConsumoHora");
+
+                    b.Property<decimal?>("ConsumoMes");
+
+                    b.Property<decimal?>("ConsumoSemana");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<int>("Day");
+
+                    b.Property<string>("DeviceId");
+
+                    b.Property<string>("Estado");
+
+                    b.Property<bool>("FAtualizaDia");
+
+                    b.Property<bool>("FAtualizaHora");
+
+                    b.Property<bool>("FAtualizaMes");
+
+                    b.Property<bool>("FAtualizaSem");
+
+                    b.Property<decimal?>("Fluxo");
+
+                    b.Property<int>("Hour");
+
+                    b.Property<int>("Minute");
+
+                    b.Property<string>("Modo");
+
+                    b.Property<int>("Month");
+
+                    b.Property<long>("Time");
+
+                    b.Property<string>("Valvula");
+
+                    b.Property<int>("Year");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ReportResil");
+                });
+
+            modelBuilder.Entity("SmartGeoIot.Models.ResetTotalPartial", b =>
+                {
+                    b.Property<string>("DeviceId")
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(50);
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("EmailUser")
+                        .HasMaxLength(100);
+
+                    b.Property<decimal>("LastValue");
+
+                    b.HasKey("DeviceId");
+
+                    b.ToTable("ResetTotalPartials");
+                });
+
+            modelBuilder.Entity("SmartGeoIot.Models.VW_Outgoing", b =>
+                {
+                    b.Property<string>("OutgoingUId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("AverageForClient")
+                        .HasColumnType("decimal(38, 2)");
+
+                    b.Property<decimal>("AverageForLicenseClient")
+                        .HasColumnType("decimal(38, 2)");
+
+                    b.Property<decimal>("AverageLicensesActived")
+                        .HasColumnType("decimal(38, 2)");
+
+                    b.Property<int>("ClientsActive");
+
+                    b.Property<decimal>("DataCenterValue")
+                        .HasColumnType("decimal(38, 2)");
+
+                    b.Property<decimal>("DataCenterValueYear")
+                        .HasColumnType("decimal(38, 2)");
+
+                    b.Property<string>("Description");
+
+                    b.Property<decimal>("DevelopmentValue")
+                        .HasColumnType("decimal(38, 2)");
+
+                    b.Property<decimal>("DevelopmentValueYear")
+                        .HasColumnType("decimal(38, 2)");
+
+                    b.Property<int>("LicensesActive");
+
+                    b.Property<int>("LicensesActiveYear");
+
+                    b.Property<int>("Month");
+
+                    b.Property<decimal>("OperationValue")
+                        .HasColumnType("decimal(38, 2)");
+
+                    b.Property<decimal>("OperationValueYear")
+                        .HasColumnType("decimal(38, 2)");
+
+                    b.Property<decimal>("OperationsWNDValue")
+                        .HasColumnType("decimal(38, 2)");
+
+                    b.Property<decimal>("OperationsWNDValueYear")
+                        .HasColumnType("decimal(38, 2)");
+
+                    b.Property<decimal>("TotalBilling")
+                        .HasColumnType("decimal(38, 2)");
+
+                    b.Property<decimal>("TotalBillingYear")
+                        .HasColumnType("decimal(38, 2)");
+
+                    b.Property<int>("Year");
+
+                    b.HasKey("OutgoingUId");
+
+                    b.ToTable("VW_Outgoings");
                 });
 
             modelBuilder.Entity("SmartGeoIot.Models.ClientBilling", b =>
@@ -437,7 +754,8 @@ namespace SmartGeoIot.Migrations
                 {
                     b.HasOne("SmartGeoIot.Models.Device", "Device")
                         .WithMany()
-                        .HasForeignKey("DeviceId");
+                        .HasForeignKey("DeviceId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

@@ -7,7 +7,7 @@ using SmartGeoIot.Models;
 
 namespace SmartGeoIot.Services
 {
-    public partial class SmartGeoIotService
+    public partial class RadiodadosService
     {
         public IEnumerable<Outgoing> GetOutgoings(int skip = 0, int top = 0, string filter = null, int month = 0, int year = 0, OptionalOutTotalCount totalCount = null)
         {

@@ -9,7 +9,7 @@
         <div class="mat-h1">{{pageTitle}}</div>
 
         <div class="buttonBoxArea right" *ngIf="dashboard.deviceId!=''">
-          <button mat-raised-button color="primary" (click)="updateData()">
+          <button mat-raised-button color="primary" (click)="cleanUpdateData()">
             <mat-icon>autorenew</mat-icon>
             <span>Atualizar informações</span>
           </button>
@@ -18,30 +18,106 @@
 
       <div fxLayout="column">
 
-        <mat-card>
-          <mat-card-header fxFlex="75%">
+        <!-- MOBILE -->
+        <mat-card *ngIf="isMobile">
+          <mat-card-header fxFlex="100%">
+            <div style="padding-right: 35px;">
+              <img src="{{'../../../assets/' + getNameLogoClient + '.png'}}" class="image-avatar" />
+            </div>
             <div class="title-page">
-              <span><strong>Informações de Estado</strong></span>
+              <p>
+                <strong>{{userName}}</strong>
+              </p>
+              <p *ngIf="showDashboard">
+                <strong>Informações de Campo</strong>
+              </p>
             </div>
+            <p>
+              <strong *ngIf="!showDashboard" style="color: red; font-size: 16px;">Nenhuma informação encontrada para o dispositivo selecionado.</strong>
+            </p>
           </mat-card-header>
+        </mat-card>
 
-          <div class="position">
-            <div class="header">
-              <mat-icon>timelapse</mat-icon>
-              <span class="icon-text">{{dashboard.date | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
-            </div>
+        <!-- MOBILE -->
+        <mat-card *ngIf="isMobile" style="margin-top: 15px;height: 170px;">
+          <div class="title-page">
+            <p class="icon-text" *ngIf="showDashboard">
+              <mat-icon style="vertical-align: bottom;">timelapse</mat-icon>
+              <label style="margin-left: 5px;">Última Atualização {{dashboard.date | date: 'dd/MM/yyyy HH:mm:ss'}}</label>
+            </p>
+          </div>
+
+          <mat-form-field floatLabel="never" appearance="outline" fxFlex="270px" style="bottom: -35px;">
+            <mat-label style="font-size: 14px;">Selecione uma data</mat-label>
+            <lib-datetime-picker readonly formControlName="dateFilter"></lib-datetime-picker>
+          </mat-form-field>
+
+          <div class="buttons_back_forward_mobile">
+            <button mat-raised-button color="primary" (click)="back()" class="button_back">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+
+            <button mat-raised-button color="primary" (click)="next()">
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
           </div>
         </mat-card>
 
+
+        <!-- DESKTOP -->
+        <mat-card *ngIf="!isMobile">
+          <mat-card-header fxFlex="75%" style="margin-bottom: 20px;">
+
+            <div style="padding-right: 35px; margin-top: 22px;">
+              <img src="{{'../../../assets/' + getNameLogoClient + '.png'}}" class="image-avatar" />
+            </div>
+
+            <div class="title-page">
+              <p>
+                <strong>{{userName}}</strong>
+              </p>
+              <p *ngIf="showDashboard">
+                <strong>Informações de Campo</strong>
+              </p>
+              <p class="icon-text" *ngIf="showDashboard">
+                <mat-icon style="vertical-align: bottom;">timelapse</mat-icon>
+                <label style="margin-left: 5px;">Última Atualização {{dashboard.date | date: 'dd/MM/yyyy HH:mm:ss'}}</label>
+              </p>
+              <p>
+                <strong *ngIf="!showDashboard" style="color: red; font-size: 16px;">Nenhuma informação encontrada para o dispositivo selecionado.</strong>
+              </p>
+            </div>
+          </mat-card-header>
+
+          <mat-form-field floatLabel="never" appearance="outline" fxFlex="270px">
+            <mat-label style="font-size: 14px;">Selecione uma data</mat-label>
+            <lib-datetime-picker readonly formControlName="dateFilter"></lib-datetime-picker>
+          </mat-form-field>
+
+          <div class="buttons_back_forward">
+            <button mat-raised-button color="primary" (click)="back()" class="button_back">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+
+            <button mat-raised-button color="primary" (click)="next()">
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+
+        </mat-card>
+
+        <app-serial-model [deviceId]="deviceId"></app-serial-model>
+
         <div class="container resultsContainer info-block-a" fxLayout="row wrap" fxLayout.xs="column">
-          <mat-card class="card-info-last">
-            <mat-card-header style="overflow: hidden" fxFlex="75%">
+          
+          <mat-card class="card-info">
+            <mat-card-header style="overflow: hidden" fxFlex="75%" matTooltip="Vazão Instantânea">
               <mat-card-title>
-                <h5 class="title-info">Vazão</h5>
+                <h5 class="title-info">Vazão Instantânea</h5>
               </mat-card-title>
               <mat-card-subtitle>
                 <strong class="value-info">{{dashboard.vazao}}</strong>
-                <span class="format-info">mA</span>
+                <span class="format-info">m³/h</span>
               </mat-card-subtitle>
             </mat-card-header>
 
@@ -54,61 +130,69 @@
             </div>
           </mat-card>
 
-          <mat-card class="card-info-last">
-            <mat-card-header style="overflow: hidden" fxFlex="75%">
-              <mat-card-title>
-                <h5 class="title-info">Totalização Parcial</h5>
-              </mat-card-title>
-              <mat-card-subtitle>
-                <strong class="value-info">{{dashboard.totalizacaoParcial}}</strong>
-                <span class="format-info">Unid</span>
+          <mat-card class="card-info">
+            <mat-card-header style="overflow: hidden" fxFlex="75%" matTooltip="Totalização">
+              <mat-card-subtitle style="margin-top: 15px;">
+                <h5 class="title-info">Totalização 1</h5>
+                <strong class="value-info">{{dashboard.partial}}</strong>
+                <span class="format-info">m³/h</span>
               </mat-card-subtitle>
-            </mat-card-header>
 
-            <div class="position">
-              <div class="header">
-                <div mat-card-avatar>
-                  <img src="../../../assets/total.png" class="image-avatar" />
-                </div>
-              </div>
-            </div>
-          </mat-card>
-
-          <mat-card class="card-info-last">
-            <mat-card-header style="overflow: hidden" fxFlex="75%">
               <mat-card-title>
-                <h5 class="title-info">Totalização</h5>
-              </mat-card-title>
-              <mat-card-subtitle>
+                <h5 class="title-info">Totalização 2</h5>
                 <strong class="value-info">{{dashboard.totalizacao}}</strong>
-                <span class="format-info">Unid</span>
-              </mat-card-subtitle>
+                <span class="format-info">m³</span>
+              </mat-card-title>
             </mat-card-header>
 
             <div class="position">
+              <button mat-raised-button color="primary" (click)="cleanPartial()" style="top: 15px;right: 15px;">
+                <span>Zerar</span>
+              </button>
+
               <div class="header">
-                <div mat-card-avatar>
-                  <img src="../../../assets/total.png" class="image-avatar" />
+                <div mat-card-avatar style="margin-top: 40px;">
+                  <img src="../../../assets/totalizadores.png" class="image-avatar" />
                 </div>
               </div>
             </div>
           </mat-card>
 
-          <mat-card class="card-info-last card-info-final">
-            <mat-card-header style="overflow: hidden" fxFlex="75%">
+          <mat-card class="card-info">
+            <mat-card-header style="overflow: hidden" fxFlex="75%" matTooltip="Calha">
               <mat-card-title>
-                <h5 class="title-info">Tempo Parcial</h5>
+                <h5 class="title-info">Calha</h5>
               </mat-card-title>
               <mat-card-subtitle>
-                <strong class="value-info">{{dashboard.tempoParcial}}</strong>
-                <span class="format-info">seg</span>
+                <strong class="value-info">{{dashboard.calha}}</strong>
+                <!-- <span class="format-info">Unid</span> -->
               </mat-card-subtitle>
             </mat-card-header>
 
             <div class="position">
               <div class="header">
                 <div mat-card-avatar>
-                  <img src="../../../assets/relogio.png" class="image-avatar" />
+                  <img src="../../../assets/{{dashboard.calhaImage}}.png" class="image-avatar"/>
+                </div>
+              </div>
+            </div>
+          </mat-card>
+
+          <mat-card class="card-info card-info-final">
+            <mat-card-header style="overflow: hidden" fxFlex="75%" matTooltip="Alerta">
+              <mat-card-title>
+                <h5 class="title-info">Alerta</h5>
+              </mat-card-title>
+              <mat-card-subtitle>
+                <strong class="value-info">{{dashboard.calhaAlerta}}</strong>
+                <!-- <span class="format-info">seg</span> -->
+              </mat-card-subtitle>
+            </mat-card-header>
+
+            <div class="position">
+              <div class="header">
+                <div mat-card-avatar>
+                  <img src="../../../assets/calhaAlerta.png" class="image-avatar" />
                 </div>
               </div>
             </div>

@@ -33,41 +33,6 @@ namespace SmartGeoIot.Services
         private WorksheetPart worksheetPart;
         private SheetData sheetData;
 
-        private void AddPositionTableHeader(){            
-            //2º Linha
-            var row = new Row();
-            AddCell("Cliente", row, style: SGICellStyles.TableHeader);
-            AddCell("Reg.", row, style: SGICellStyles.TableHeader);
-            AddCell("Faixa", row, style: SGICellStyles.TableHeader);
-
-            AddCell("TOTAL", row, style: SGICellStyles.TableHeader);            
-            AddCell("", row, style: SGICellStyles.TableHeader);
-            AddCell("", row, style: SGICellStyles.TableHeader);
-            AddCell("COMERCIAL", row, style: SGICellStyles.TableHeader);           
-            AddCell("", row, style: SGICellStyles.TableHeader);
-            AddCell("", row, style: SGICellStyles.TableHeader);
-            AddCell("TÉCNICA", row, style: SGICellStyles.TableHeader);
-            AddCell("", row, style: SGICellStyles.TableHeader);
-            AddCell("", row, style: SGICellStyles.TableHeader);
-            sheetData.AppendChild(row);
-
-            //3º Linha
-            row = new Row();
-            AddCell("", row, style: SGICellStyles.TableHeader);
-            AddCell("", row, style: SGICellStyles.TableHeader);
-            AddCell("", row, style: SGICellStyles.TableHeader);
-            AddCell("Meta", row, style: SGICellStyles.TableHeader);
-            AddCell("Real", row, style: SGICellStyles.TableHeader);
-            AddCell("%", row, style: SGICellStyles.TableHeader);
-            AddCell("Meta", row, style: SGICellStyles.TableHeader);
-            AddCell("Real", row, style: SGICellStyles.TableHeader);
-            AddCell("%", row, style: SGICellStyles.TableHeader);
-            AddCell("Meta", row, style: SGICellStyles.TableHeader);
-            AddCell("Real", row, style: SGICellStyles.TableHeader);
-            AddCell("%", row, style: SGICellStyles.TableHeader);            
-            sheetData.AppendChild(row);
-        }
-
         #region GENERIC HELPS
 
         /// <summary>
@@ -91,7 +56,7 @@ namespace SmartGeoIot.Services
             var row = new Row();
             sheetData.AppendChild(row);
             row = new Row();
-            AddCell("Arquivo gerado em " + DateTime.Now.ToString(), row, CellValues.String);
+            AddCell("Arquivo gerado em " + DateTime.Now.AddHours(-3).ToString(), row, CellValues.String);
             sheetData.AppendChild(row);
         }
 

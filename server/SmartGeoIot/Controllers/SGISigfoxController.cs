@@ -4,6 +4,8 @@ using Box.Security.Services;
 using Box.Common.Services;
 using SmartGeoIot.Data;
 using SmartGeoIot.Services;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace SmartGeoIot.Controllers
 {
@@ -11,18 +13,23 @@ namespace SmartGeoIot.Controllers
     {
         private readonly SecurityService _securityService;
         private readonly IConfiguration _configuration;
+        private readonly SmartGeoIot.SgiSettings _sgiSettings;
         private readonly SmartGeoIotContext _context;
         private LogService _log { get; set; }
         private readonly IEmailSender _emailSender;
-        SmartGeoIotService _sgiService;
+        RadiodadosService _sgiService;
+        private string[] _sigfoxLogins;
+        private string[] _sigfoxPasswords;
+        
 
         public SGISigfoxController(
             SecurityService securityService,
             IConfiguration configuration,
             SmartGeoIotContext context,
             LogService log,
+            IOptions<SmartGeoIot.SgiSettings> sgiSettings,
             IEmailSender emailSender,
-            SmartGeoIotService sgiService)
+            RadiodadosService sgiService)
         {
             _securityService = securityService;
             _configuration = configuration;
@@ -31,10 +38,14 @@ namespace SmartGeoIot.Controllers
             _securityService = securityService;
             _emailSender = emailSender;
             _sgiService = sgiService;
+            _sgiSettings = sgiSettings.Value;
+
+            _sigfoxLogins = _sgiSettings.SIG_FOX_LOGIN.Split(";");
+            _sigfoxPasswords = _sgiSettings.SIG_FOX_PASSWORD.Split(";");
         }
 
         #region MESSAGES
-        public void DownloadMessagesSigfox()
+        public async Task DownloadMessagesSigfox()
         {
             try
             {
@@ -45,63 +56,87 @@ namespace SmartGeoIot.Controllers
                 {
                     foreach (var device in devices)
                     {
-                        _log.Log($"Baixando dados do dispositivo {device.Id} - {device.Name}.");
-                        var messages = _sgiService.SigfoxGetMessagesByDevice(device.Id);
+                        try
+                        {    
+                            _log.Log($"Baixando dados do dispositivo {device.Id} - {device.Name}.");
 
-                        if (messages.data.Length > 0)
-                            _sgiService.SigfoxSaveMessages(messages);
+                            for (int i = 0; i < _sigfoxLogins.Length; i++)
+                            {
+                                var messages = await _sgiService.SigfoxGetMessagesByDevice(device.Id, _sigfoxLogins[i], _sigfoxPasswords[i]);
+
+                                if (messages == null)
+                                    continue;
+
+                                if (messages.data.Length > 0)
+                                    _sgiService.SigfoxSaveMessages(messages);
+                            }
+                        }
+                        catch (System.Exception ex)
+                        {
+                            _log.Log($"Erro download dos dados do dispositivo {device.Id}. Error: {ex.Message.ToString().Substring(1, 300)}");
+                            continue;
+                        }
                     }
                 }
 
-                try
-                {
-                    _log.Log("Iniciando atualização da data de operação.");
-                    _sgiService.UpdateOperationDateFromMessages();
-                    _log.Log("Finalizando atualização da data de operação.");
-                }
-                catch (System.Exception error)
-                {
-                    _log.Log("Erro na atualização da data de operação.", error.Message);
-                }
+                // try
+                // {
+                //     // _log.Log("Iniciando atualização da data de operação.");
+                //     _sgiService.UpdateOperationDateFromMessages();
+                //     // _log.Log("Finalizando atualização da data de operação.");
+                // }
+                // catch (System.Exception error)
+                // {
+                //     _log.Log("Erro na atualização da data de operação.", error.Message);
+                // }
 
                 _log.Log("Finalizado download dos dados dos dispositivos.");
             }
             catch (System.Exception ex)
             {
-                _log.Log($"Erro download dos dados dos dispositivos. Error: {ex.Message}");
+                _log.Log($"Erro download dos dados dos dispositivos. Error: {ex.Message.ToString().Substring(1, 300)}");
             }
         }
 
-        public void DownloadMessagesSigfoxFromDevice(string deviceId)
+        public async Task DownloadMessagesSigfoxFromDevice(string id)
         {
             try
             {
-                _log.Log($"Baixando dados do dispositivo {deviceId}.");
+                _log.Log($"Baixando dados do dispositivo {id}.");
+                Models.SigfoxMessage messages = null;
 
-                var messages = _sgiService.SigfoxGetMessagesByDevice(deviceId);
-                if (messages.data.Length > 0)
-                    _sgiService.SigfoxSaveMessages(messages);
+                for (int i = 0; i < _sigfoxLogins.Length; i++)
+                {
+                    messages = await _sgiService.SigfoxGetMessagesByDevice(id, _sigfoxLogins[i], _sigfoxPasswords[i]);
 
-                try
-                {
-                    _log.Log("Iniciando atualização da data de operação.");
-                    _sgiService.UpdateOperationDateFromMessages();
-                    _log.Log("Finalizando atualização da data de operação.");
-                }
-                catch (System.Exception error)
-                {
-                    _log.Log("Erro na atualização da data de operação.", error.Message);
+                    if (messages != null)
+                    {
+                        if (messages.data.Length > 0)
+                            _sgiService.SigfoxSaveMessages(messages);
+                    }
                 }
 
-                _log.Log($"Finalizado download de dados do dispositivo {deviceId}.");
+
+                // try
+                // {
+                //     // _log.Log("Iniciando atualização da data de operação.");
+                //     _sgiService.UpdateOperationDateFromMessages();
+                //     // _log.Log("Finalizando atualização da data de operação.");
+                // }
+                // catch (System.Exception error)
+                // {
+                //     _log.Log("Erro na atualização da data de operação.", error.Message);
+                // }
+
+                _log.Log($"Finalizado download de dados do dispositivo {id}.");
             }
             catch (System.Exception ex)
             {
-                _log.Log($"Erro download de dados do dispositivo {deviceId}. Error: {ex.Message}");
+                _log.Log($"Erro download de dados do dispositivo {id}. Error: {ex.Message.ToString().Substring(1, 300)}");
             }
         }
 
-        public void DownloadOLDMessagesSigfox()
+        public async Task DownloadOLDMessagesSigfox()
         {
             try
             {
@@ -111,7 +146,7 @@ namespace SmartGeoIot.Controllers
                     foreach (var device in devices)
                     {
                         _log.Log($"Baixando dados do dispositivo {device.Id} - {device.Name}.");
-                        Models.SigfoxMessage messages = GetMessagesByDevice(device.Id);
+                        Models.SigfoxMessage messages = await GetMessagesByDevice(device.Id);
 
                         bool continueUpdatingMessages = messages != null;
                         while (continueUpdatingMessages)
@@ -121,7 +156,7 @@ namespace SmartGeoIot.Controllers
 
                             continueUpdatingMessages = !string.IsNullOrWhiteSpace(messages.paging.next);
                             if (continueUpdatingMessages)
-                                messages = GetMessagesByDevice(device.Id, messages.paging.next);
+                                messages = await GetMessagesByDevice(device.Id, messages.paging.next);
                         }
 
                         // var messages = _sgiService.SigfoxGetMessagesByDevice(device.Id);
@@ -134,13 +169,13 @@ namespace SmartGeoIot.Controllers
             }
             catch (System.Exception ex)
             {
-                _log.Log($"Erro DownloadOLDMessagesSigfox. Error: {ex.Message}");
+                _log.Log($"Erro DownloadOLDMessagesSigfox. Error: {ex.Message.ToString().Substring(1, 300)}");
             }
         }
         #endregion
 
         #region DEVICES
-        public void DownloadDevicesSigfox()
+        public async Task DownloadDevicesSigfox()
         {
             try
             {
@@ -156,23 +191,36 @@ namespace SmartGeoIot.Controllers
             try
             {
                 _log.Log("Iniciando download dos dispositivos.");
+                Models.SigfoxDevice devices = null;
 
-                var devices = _sgiService.SigfoxGetDevices();
-                if (devices.data.Length > 0)
-                    _sgiService.SigfoxSaveDevices(devices);
+                for (int i = 0; i < _sigfoxLogins.Length; i++)
+                {
+                    devices = await _sgiService.SigfoxGetDevices(_sigfoxLogins[i], _sigfoxPasswords[i]);
+
+                    if (devices.data.Length > 0)
+                        _sgiService.SigfoxSaveDevices(devices);
+                }
+
 
                 _log.Log("Finalizado download dos dispositivos.");
             }
             catch (System.Exception ex)
             {
-                _log.Log($"Erro download dos dispositivos. Error: {ex.Message}");
+                _log.Log($"Erro download dos dispositivos. Error: {ex.Message.ToString().Substring(1, 300)}");
             }
         }
         #endregion
 
-        public Models.SigfoxMessage GetMessagesByDevice(string deviceId, string next = null)
+        public async Task<Models.SigfoxMessage> GetMessagesByDevice(string deviceId, string next = null)
         {
-            return _sgiService.SigfoxGetMessagesByDevice(deviceId, "0", "100", next);
+            Models.SigfoxMessage messageReturn = null;
+
+            for (int i = 0; i < _sigfoxLogins.Length; i++)
+            {
+                messageReturn = await _sgiService.SigfoxGetMessagesByDevice(deviceId, _sigfoxLogins[i], _sigfoxPasswords[i], "0", "100", next);
+            }
+
+            return messageReturn;
         }
 
         public void SaveLogs(string action, string error = null)

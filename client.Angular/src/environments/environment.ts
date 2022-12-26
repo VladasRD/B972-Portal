@@ -26,6 +26,8 @@ export const environment = {
     return 'https://www.google.com/maps/@?api=1&map_action=map&center=';
   },
 
-  REQUIRE_HTTPS: false
+  REQUIRE_HTTPS: false,
+
+  TIMEOUT_REQUEST_DASHBOARD: 30000
 
 };

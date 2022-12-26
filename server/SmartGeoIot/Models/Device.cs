@@ -73,6 +73,22 @@ namespace SmartGeoIot.Models
         [MaxLength(50)]
         public string DataDownloadLink { get; set; }
 
+        [MaxLength(80)]
+        public string SerialNumber { get; set; }
+        
+        [MaxLength(50)]
+        public string Model { get; set; }
+        public string Notes { get; set; }
+        public DateTime? NotesCreateDate { get; set; }
+        public string Ed1 { get; set; }
+        public string Ed2 { get; set; }
+        public string Ed3 { get; set; }
+        public string Ed4 { get; set; }
+        public string Sd1 { get; set; }
+        public string Sd2 { get; set; }
+        public string Ea10 { get; set; }
+        public string Sa3 { get; set; }
+
         [NotMapped]
         public string Envio
         {

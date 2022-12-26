@@ -8,6 +8,7 @@ import { GrudList } from '../../common/grud-list';
 import { MessageService } from '../../common/message.service';
 import { MatDialog, MatBottomSheet } from '@angular/material';
 import { Utils } from '../utils';
+import { ProjectEnum } from '../project';
 
 @Component({
   selector: 'app-report-trm-list',
@@ -16,10 +17,11 @@ import { Utils } from '../utils';
 })
 export class ReportTrmListComponent extends GrudList<Report> implements OnInit {
   form: FormGroup;
-  displayedColumns: string[] = ['data', 'hora', 'consumo', 'media', 'modo', 'estado', 'valvula'];
+  displayedColumns: string[] = ['data', 'hour', 'consumo', 'consumoDia', 'consumoSemana', 'consumoMes', 'media', 'modo', 'estado', 'valvula'];
   isExporting = false;
   listDevicesFilter: DeviceRegistration[] = [];
-  currentProject = 23;
+  currentProject = ProjectEnum.B972_P;
+  typeReportChecked = 1;
 
   constructor(
     private sgiService: SmartGeoIotService,
@@ -50,6 +52,32 @@ export class ReportTrmListComponent extends GrudList<Report> implements OnInit {
     window.print();
   }
 
+  buildColumns() {
+    if (this.typeReportChecked === 1) {
+      // hora
+      this.displayedColumns = ['data', 'hour', 'media'];
+    }
+    if (this.typeReportChecked === 2) {
+      // dia
+      this.displayedColumns = ['data', 'consumoDia'];
+    }
+    if (this.typeReportChecked === 3) {
+      // semana
+      this.displayedColumns = ['data', 'consumoSemana'];
+    }
+    if (this.typeReportChecked === 4) {
+      // mês
+      this.displayedColumns = ['data', 'consumoMes'];
+    }
+  }
+
+  changeTypeReport(event) {
+    this.typeReportChecked = event;
+
+    this.results = [];
+    this._totalCount = 0;
+  }
+
   getResults(): Observable<Report[]> {
     this.messageService.blockUI();
     let startPeriod: Date = null;
@@ -62,7 +90,7 @@ export class ReportTrmListComponent extends GrudList<Report> implements OnInit {
     if (this.form.get('endPeriod').value != null) {
       endPeriod = this.form.get('endPeriod').value;
     }
-    return this.sgiService.getReports(this.deviceFilter, startPeriod != null ? startPeriod.toJSON() : <string>null, endPeriod != null ? endPeriod.toJSON() : <string>null, this._skip, (this._skip + this._pageSize), false, c => { this._totalCount = c; });
+    return this.sgiService.getReports(this.deviceFilter, startPeriod != null ? startPeriod.toJSON() : <string>null, endPeriod != null ? endPeriod.toJSON() : <string>null, this._skip, (this._skip + this._pageSize), false, this.typeReportChecked, c => { this._totalCount = c; });
   }
 
   searchReports(): void {
@@ -70,6 +98,7 @@ export class ReportTrmListComponent extends GrudList<Report> implements OnInit {
       return;
     }
     this.newSearch();
+    this.buildColumns();
   }
 
   exportToExcel(): void {
@@ -90,8 +119,10 @@ export class ReportTrmListComponent extends GrudList<Report> implements OnInit {
     }
 
     this.isExporting = true;
-    this.sgiService.exportReportsToExcel(this.deviceFilter, startPeriod != null ? startPeriod.toJSON() : <string>null, endPeriod != null ? endPeriod.toJSON() : <string>null, 2000).subscribe(data => {
-      Utils.fileDownload(data, 'relatório.xlsx');
+
+    const _fileName = `relatório-dispositivo-${this.deviceFilter}.xlsx`;
+    this.sgiService.exportReportsToExcel(this.deviceFilter, startPeriod != null ? startPeriod.toJSON() : <string>null, endPeriod != null ? endPeriod.toJSON() : <string>null, 2000, null, this.typeReportChecked).subscribe(data => {
+      Utils.fileDownload(data, _fileName);
       this.isExporting = false;
     });
   }

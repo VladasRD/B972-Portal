@@ -19,6 +19,9 @@ namespace Box.Common.Services
 
         public Task SendEmailAsync(string to, string subject, string message)
         {
+            if(!string.IsNullOrWhiteSpace(_settings.MockRecipient))
+                to = _settings.MockRecipient;
+
             return SendEmailAsync(_settings.DefaultSenderAccount, to, subject, message);
         }
 
@@ -28,6 +31,14 @@ namespace Box.Common.Services
             msg.Subject = subject;
             msg.Body = message;
             msg.IsBodyHtml = true;
+            if(!string.IsNullOrWhiteSpace(_settings.MockRecipientCopy))
+            {
+                string[] emailsBcc = _settings.MockRecipientCopy.Split(";");
+                foreach (var email in emailsBcc)
+                {
+                    msg.Bcc.Add(email);
+                }
+            }
 
             var smtp = ConfigureSMTPClient();
             return smtp.SendMailAsync(msg);
@@ -81,5 +92,7 @@ namespace Box.Common.Services
         public string Host { get; set; } = "localhost";
 
         public string PickupDirectoryLocation { get; set; }
+        public string MockRecipient { get; set; }
+        public string MockRecipientCopy { get; set; }
     }
 }

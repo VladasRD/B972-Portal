@@ -89,7 +89,7 @@ export class CommercialReportDetailComponent implements OnInit {
 
     this.sgiService.saveOutgoing(this.outgoing)
       .subscribe(() => {
-        this.router.navigate(['./sgi/relatorio-comercial']);
+        this.router.navigate(['./radiodados/relatorio-comercial']);
         this.messageService.add('Configuração salva.');
       },
         err => {
@@ -101,7 +101,7 @@ export class CommercialReportDetailComponent implements OnInit {
     this.sgiService.deleteOutgoing(this.outgoing.outgoingUId)
       .subscribe(() => {
         this.messageService.add('Configuração removida.');
-        this.router.navigate(['./sgi/relatorio-comercial']);
+        this.router.navigate(['./radiodados/relatorio-comercial']);
       },
         err => {
           this.messageService.addError(err.message + ' (removendo configuração)');

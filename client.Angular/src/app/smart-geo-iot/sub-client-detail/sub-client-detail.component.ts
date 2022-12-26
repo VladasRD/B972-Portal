@@ -325,6 +325,10 @@ export class SubClientDetailComponent implements OnInit {
     this.client.whatsAppNotification = this.whatsAppNotification;
     this.client.pushNotification = this.pushNotification;
 
+    if (this.isNewClient) {
+      this.changeClientStatus();
+    }
+
     // Tratamento de virgula e ponto nos valores
     if (this.client.value !== null) {
       this.client.value = Number(this.client.value.toString().replace(',', '.'));
@@ -333,7 +337,7 @@ export class SubClientDetailComponent implements OnInit {
     this.messageService.blockUI();
     this.sgiService.saveClient(this.client, true)
       .subscribe(() => {
-        this.router.navigate(['./sgi/sub-clientes']);
+        this.router.navigate(['./radiodados/sub-clientes']);
         this.messageService.add('Cliente salvo.');
       },
         err => {
@@ -345,7 +349,7 @@ export class SubClientDetailComponent implements OnInit {
     this.sgiService.deleteClient(this.client.clientUId)
       .subscribe(() => {
         this.messageService.add('Cliente removido.');
-        this.router.navigate(['./sgi/sub-clientes']);
+        this.router.navigate(['./radiodados/sub-clientes']);
       },
         err => {
           this.messageService.addError(err.message + ' (removendo cliente)');

@@ -12,7 +12,7 @@ import { Observable } from 'rxjs';
 })
 export class DeviceConfigListComponent extends GrudList<Object> implements OnInit {
   form: FormGroup;
-  displayedColumns: string[] = ['name', 'description', 'device', 'package', 'project'];
+  displayedColumns: string[] = ['name', 'description', 'device', 'package', 'project', 'deviceId'];
 
   constructor(private sgiService: SmartGeoIotService) {
     super();

@@ -34,7 +34,7 @@ export class ReportComponent extends GrudList<Object> implements OnInit {
         return acum + 1;
       }, 0);
       if (quantity === 1) {
-        this.router.navigate([`./sgi/relatorio/${s[0].getUrlReportLink}`]);
+        this.router.navigate([`./radiodados/relatorio/${s[0].getUrlReportLink}`]);
       } else {
         this.isVisible = true;
       }

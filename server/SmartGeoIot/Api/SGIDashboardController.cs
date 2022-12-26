@@ -13,8 +13,8 @@ namespace SmartGeoIot.Api
     [Route("api/[controller]")]
     public class SGIDashboardController : Controller
     {
-        protected readonly SmartGeoIot.Services.SmartGeoIotService _sgiService;
-        public SGIDashboardController(SmartGeoIot.Services.SmartGeoIotService sgiService)
+        protected readonly SmartGeoIot.Services.RadiodadosService _sgiService;
+        public SGIDashboardController(SmartGeoIot.Services.RadiodadosService sgiService)
         {
             _sgiService = sgiService;
         }
@@ -37,20 +37,20 @@ namespace SmartGeoIot.Api
         }
 
         [HttpGet("{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "SGI-DASHBOARD.READ")]
-        public DashboardViewModels Get(string id, [FromQuery] DateTime? date = null, [FromQuery] int seqNumber = 0, [FromQuery] string navigation = null)
+        // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "SGI-DASHBOARD.READ")]
+        public DashboardViewModels Get(string id, [FromQuery] DateTime? date = null, [FromQuery] long seqNumber = 0, [FromQuery] string navigation = null, [FromQuery] long seqNumberb = 0, [FromQuery] string project = null)
         {
             if (id == null)
                 throw new Box.Common.BoxLogicException("É necessário informar o id do dispositivo.");
 
-            if (!User.IsInRole("SGI.MASTER"))
-            {
-                var userDevices = _sgiService.GetUserDevices(User.GetId());
-                if (!userDevices.Any(c => c.Id == id))
-                    throw new Box.Common.BoxLogicException("Usuário não tem permissão para acessar dados deste dispositivo.");
-            }
+            // if (!User.IsInRole("SGI.MASTER"))
+            // {
+            //     var userDevices = _sgiService.GetUserDevices(User.GetId());
+            //     if (!userDevices.Any(c => c.Id == id))
+            //         throw new Box.Common.BoxLogicException("Usuário não tem permissão para acessar dados deste dispositivo.");
+            // }
             // var dashboard = _sgiService.GetDashboard(id, (date != null ? date.Value.AddHours(-3) : date), seqNumber);
-            var dashboard = _sgiService.GetDashboard(id, date, seqNumber, navigation);
+            var dashboard = _sgiService.GetDashboard(id, date, seqNumber, navigation, seqNumberb, project);
 
             return dashboard;
         }
@@ -60,6 +60,13 @@ namespace SmartGeoIot.Api
         {
             var device = _sgiService.GetDevice(id);
             this._sgiService.SigfoxSendChangesDeviceTypes(device, numeroEnvios, tempoTransmissao, tipoEnvio, tensaoMinima);
+        }
+
+        [HttpPut("clean-partial/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "SGI-DASHBOARD.READ")]
+        public void Put(string id, [FromQuery] decimal partial)
+        {
+            this._sgiService.CleanPartial(id, partial, User);
         }
         
     }

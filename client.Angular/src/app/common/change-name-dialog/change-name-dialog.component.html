@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>{{data.title}}</h2>
+<mat-dialog-content>
+  <p>
+      {{data.message}}
+  </p>
+
+  <mat-card-content fxLayout="row" fxLayoutGap="16px" fxLayout.xs="column">
+    <!-- <label class="top-margin">Nome do campo</label> -->
+    <input matInput class="field-change" autocomplete="off" type="text" cdkFocusInitial="true" placeholder="Digite aqui o novo nome..." [(ngModel)]="data.textMessage">
+  </mat-card-content>
+
+
+  <p *ngIf="data.subMessage">{{data.subMessage}}</p>
+</mat-dialog-content>
+
+<mat-dialog-actions>  
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+
+  <div *ngIf="!data.isWarn">
+      <button mat-raised-button color="primary" mat-dialog-close i18n="@@No" cdkFocusInitial="true">No</button>
+      <button mat-button [mat-dialog-close]="closeReturn" i18n="@@Yes">Yes</button>  
+  </div>
+
+  <div *ngIf="data.isWarn">
+    <button mat-button mat-dialog-close i18n="@@No" cdkFocusInitial="true">No</button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="closeReturn" i18n="@@Yes">Yes</button>  
+  </div>
+
+  
+</mat-dialog-actions>

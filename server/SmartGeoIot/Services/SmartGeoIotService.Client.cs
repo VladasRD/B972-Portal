@@ -11,7 +11,7 @@ using SmartGeoIot.ViewModels;
 
 namespace SmartGeoIot.Services
 {
-    public partial class SmartGeoIotService
+    public partial class RadiodadosService
     {
         public IEnumerable<Client> GetClients(ClaimsPrincipal user, int skip = 0, int top = 0, string filter = null, bool? statusClient = null, bool isSubClient = false, OptionalOutTotalCount totalCount = null)
         {
@@ -102,7 +102,7 @@ namespace SmartGeoIot.Services
 
         public Client GetClientOfUser(string userId)
         {
-            return _context.Clients.Include(i => i.Users).FirstOrDefault(c => c.Users.Any(a => a.ApplicationUserId == userId));
+            return _context.Clients.Include(i => i.Users).SingleOrDefault(c => c.Users.Any(a => a.ApplicationUserId == userId));
         }
 
         public Client SaveClient(Client client, ClaimsPrincipal _user, bool isSubClient = false)
@@ -233,7 +233,7 @@ namespace SmartGeoIot.Services
             return _context.Clients
             .Include(i => i.Devices)
             .AsNoTracking()
-            .Where(c => c.Devices.Any(a => a.Id == deviceId && a.Active) && c.Active);
+            .Where(c => c.Devices.Any(a => a.Id == deviceId && a.Active) && c.Active && c.EmailNotification);
         }
 
         public void AddClientUser(string id, ApplicationUser user)

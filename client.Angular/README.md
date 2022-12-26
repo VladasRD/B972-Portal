@@ -46,10 +46,11 @@ https://github.com/manfredsteyer/angular-oauth2-oidc
 
 ## Client Deploy
 Run `ng build --base-href /client/ --configuration=stage-pt`
-Run `ng build --base-href /client/ --configuration=production-pt`
+Run `ng build --base-href / --configuration=production-pt`
 
 ## Local Deploy
 ng build --configuration=stage-pt
+ng build --configuration=production-pt
 
 
 

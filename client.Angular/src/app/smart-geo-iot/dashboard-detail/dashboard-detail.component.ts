@@ -9,6 +9,7 @@ import { FormUtil } from '../../common/form-util';
 import { String } from 'typescript-string-operations';
 import { DocumentType } from '../documentType';
 import { Bits } from '../Bits';
+import { ProjectEnum } from '../project';
 
 @Component({
   selector: 'app-dashboard-detail',
@@ -52,7 +53,7 @@ export class DashboardDetailComponent implements OnInit {
 
   private getDashboard(): void {
     this._deviceId = this.route.snapshot.paramMap.get('id');
-    this.sgiService.getDashboard(this._deviceId).subscribe(d => {
+    this.sgiService.getDashboard(this._deviceId, null, 0, null, 0, ProjectEnum.Hidroleg).subscribe(d => {
       this.dashboard = Object.assign(new Dashboard(), d);
       this.form.patchValue(this.dashboard);
       this.form.updateValueAndValidity();

@@ -67,7 +67,7 @@ export class CommercialReportListComponent extends GrudList<Object> implements O
 
   showReport(outgoingUId: string, event) {
     event.stopPropagation();
-    this.router.navigate([`./sgi/relatorio-comercial-show/${outgoingUId}`]);
+    this.router.navigate([`./radiodados/relatorio-comercial-show/${outgoingUId}`]);
   }
 
 }

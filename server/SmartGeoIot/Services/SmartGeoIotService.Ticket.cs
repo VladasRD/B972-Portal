@@ -5,7 +5,7 @@ using static SmartGeoIot.ViewModels.GerenciaNetViewModels;
 
 namespace SmartGeoIot.Services
 {
-    public partial class SmartGeoIotService
+    public partial class RadiodadosService
     {
         public dynamic CreateBillet(Client client, ClientBilling clientBilling)
         {

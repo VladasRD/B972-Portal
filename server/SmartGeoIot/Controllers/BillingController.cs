@@ -17,7 +17,7 @@ namespace SmartGeoIot.Controllers
         private readonly SmartGeoIotContext _context;
         private LogService _log { get; set; }
         private readonly IEmailSender _emailSender;
-        SmartGeoIotService _sgiService;
+        RadiodadosService _sgiService;
 
         public BillingController(
             SecurityService securityService,
@@ -25,7 +25,7 @@ namespace SmartGeoIot.Controllers
             SmartGeoIotContext context,
             LogService log,
             IEmailSender emailSender,
-            SmartGeoIotService sgiService)
+            RadiodadosService sgiService)
         {
             _securityService = securityService;
             _configuration = configuration;

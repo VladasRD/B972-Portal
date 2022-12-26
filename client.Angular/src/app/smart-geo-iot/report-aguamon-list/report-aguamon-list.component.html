@@ -2,7 +2,7 @@
   <section class="body-wrapper">
 
     <div class="headline" fxLayout>
-      <!-- <button mat-icon-button routerLink="/sgi/relatorio">
+      <!-- <button mat-icon-button routerLink="/radiodados/relatorio">
         <mat-icon>arrow_back</mat-icon>
       </button> -->
       <div class="mat-h1">Relatório</div>
@@ -61,14 +61,21 @@
         <ng-container matColumnDef="data">
           <mat-header-cell fxFlex="16%" *matHeaderCellDef>Data</mat-header-cell>
           <mat-cell fxFlex="16%" *matCellDef="let element" class="small-font">
-            {{element.date | date: 'short'}}
+            {{element.date | date: 'dd/MM/yyyy'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="hour">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef>Hora</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="small-font">
+            {{element.date | date: 'HH:mm'}}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="temperatura">
-          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Temperatura</mat-header-cell>
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Temperatura (°C)</mat-header-cell>
           <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
-            {{element.temperature == 0 ? '-' : element.temperature + '°C'}}
+            {{element.temperature == 0 ? '-' : element.temperature}}
           </mat-cell>
         </ng-container>
 
@@ -101,37 +108,37 @@
         </ng-container>
 
         <ng-container matColumnDef="rele1">
-          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 1</mat-header-cell>
+          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 1 (%)</mat-header-cell>
           <mat-cell fxFlex="8%" *matCellDef="let element" class="small-font align-center">
-            {{element.rele === null ? '-' : element.rele?.rele1 + '%'}}
+            {{element.rele === null ? '-' : element.rele?.rele1}}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="rele2">
-          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 2</mat-header-cell>
+          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 2 (%)</mat-header-cell>
           <mat-cell fxFlex="8%" *matCellDef="let element" class="small-font align-center">
-            {{element.rele === null ? '-' : element.rele?.rele2 + '%'}}
+            {{element.rele === null ? '-' : element.rele?.rele2}}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="rele3">
-          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 3</mat-header-cell>
+          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 3 (%)</mat-header-cell>
           <mat-cell fxFlex="8%" *matCellDef="let element" class="small-font align-center">
-            {{element.rele === null ? '-' : element.rele?.rele3 + '%'}}
+            {{element.rele === null ? '-' : element.rele?.rele3}}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="rele4">
-          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 4</mat-header-cell>
+          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 4 (%)</mat-header-cell>
           <mat-cell fxFlex="8%" *matCellDef="let element" class="small-font align-center">
-            {{element.rele === null ? '-' : element.rele?.rele4 + '%'}}
+            {{element.rele === null ? '-' : element.rele?.rele4}}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="rele5">
-          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 5</mat-header-cell>
+          <mat-header-cell fxFlex="8%" *matHeaderCellDef class="align-center">Rele 5 (%)</mat-header-cell>
           <mat-cell fxFlex="8%" *matCellDef="let element" class="small-font align-center">
-            {{element.rele === null ? '-' : element.rele?.rele5 + '%'}}
+            {{element.rele === null ? '-' : element.rele?.rele5}}
           </mat-cell>
         </ng-container>
 

@@ -36,7 +36,7 @@
     <form *ngIf="showFilters" [formGroup]="form" class="container filterBoxArea preserve-margin" fxLayout
       fxLayoutGap="10px" fxLayout.xs="column">
 
-      <app-device-select project="12" [control]="form.controls.deviceFilter"></app-device-select>
+      <app-device-select project="{{currentProject}}" [control]="form.controls.deviceFilter"></app-device-select>
 
       <mat-form-field appearance="outline" fxFlex="15%">
         <mat-label>Status</mat-label>
@@ -69,7 +69,14 @@
         <ng-container matColumnDef="data">
           <mat-header-cell fxFlex="10%" *matHeaderCellDef>Data</mat-header-cell>
           <mat-cell fxFlex="10%" *matCellDef="let element" class="small-font">
-            {{element.date | date: 'short'}}
+            {{element.date | date: 'dd/MM/yyyy'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="hour">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef>Hora</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="small-font">
+            {{element.date | date: 'HH:mm'}}
           </mat-cell>
         </ng-container>
 
@@ -81,16 +88,16 @@
         </ng-container>
 
         <ng-container matColumnDef="alimentacao">
-          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Alimentação</mat-header-cell>
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Alimentação (V)</mat-header-cell>
           <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
-            {{element.alimentacao != null ? element.alimentacao + ' V': 'N/A'}}
+            {{element.alimentacao != null ? element.alimentacao: 'N/A'}}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="temperatura">
-          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Temperatura</mat-header-cell>
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Temperatura (°C)</mat-header-cell>
           <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
-            {{element.temperature != null ? element.temperature + ' °C' : 'N/A'}}
+            {{element.temperature != null ? element.temperature : 'N/A'}}
           </mat-cell>
         </ng-container>
 

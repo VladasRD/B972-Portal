@@ -252,7 +252,7 @@ export class ClientDetailComponent implements OnInit {
     this.messageService.blockUI();
     this.sgiService.saveClient(this.client, false)
       .subscribe(() => {
-        this.router.navigate(['./sgi/clientes']);
+        this.router.navigate(['./radiodados/clientes']);
         this.messageService.add('Cliente salvo.');
       },
         err => {
@@ -264,7 +264,7 @@ export class ClientDetailComponent implements OnInit {
     this.sgiService.deleteClient(this.client.clientUId)
       .subscribe(() => {
         this.messageService.add('Cliente removido.');
-        this.router.navigate(['./sgi/clientes']);
+        this.router.navigate(['./radiodados/clientes']);
       },
         err => {
           this.messageService.addError(err.message + ' (removendo cliente)');

@@ -3,6 +3,7 @@ import { DeviceLocation } from './../Device';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-maps-view',
@@ -18,6 +19,7 @@ export class MapsViewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private sgiService: SmartGeoIotService,
+    private location: Location,
     private sanitizer: DomSanitizer
     ) {
       this.deviceLoc = new DeviceLocation();
@@ -26,6 +28,15 @@ export class MapsViewComponent implements OnInit {
 
   ngOnInit() {
     this.getDeviceLocation();
+  }
+
+  back(event) {
+    event.stopPropagation();
+    this.location.back();
+  }
+
+  close() {
+    window.close();
   }
 
   private getDeviceLocation(): void {

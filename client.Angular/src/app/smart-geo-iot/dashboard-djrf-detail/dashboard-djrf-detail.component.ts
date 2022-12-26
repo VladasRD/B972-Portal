@@ -8,6 +8,8 @@ import { SmartGeoIotService } from './../smartgeoiot.service';
 import { MessageService } from '../../common/message.service';
 import { String } from 'typescript-string-operations';
 import { Bits } from '../Bits';
+import { environment } from '../../../environments/environment';
+import { ProjectEnum } from '../project';
 
 @Component({
   selector: 'app-dashboard-djrf-detail',
@@ -59,7 +61,7 @@ export class DashboardDjrfDetailComponent implements OnInit, OnDestroy {
   initializeSetTimeout() {
     (async () => {
       while (this.initialSetTimeout === 0) {
-        await new Promise(resolve => setTimeout(resolve, 10000));
+        await new Promise(resolve => setTimeout(resolve, environment.TIMEOUT_REQUEST_DASHBOARD));
         this.getDashboard();
       }
     })();
@@ -80,7 +82,7 @@ export class DashboardDjrfDetailComponent implements OnInit, OnDestroy {
     }
     this.sgiService.sendChangesDevice(this._deviceId, data.numeroEnvios, data.tempoTransmissao, data.tipoEnvio, data.tensaoMinima)
       .subscribe(() => {
-        // this.router.navigate(['./sgi/dashboard']);
+        // this.router.navigate(['./radiodados/dashboard']);
         this.getDashboard();
         this.messageService.add('Alteração no dispositivo enviada.');
       },
@@ -132,7 +134,7 @@ export class DashboardDjrfDetailComponent implements OnInit, OnDestroy {
 
   private getDashboard(): void {
     this._deviceId = this.route.snapshot.paramMap.get('id');
-    this.sgiService.getDashboard(this._deviceId).subscribe(d => {
+    this.sgiService.getDashboard(this._deviceId, null, 0, null, 0, ProjectEnum.DJRFleg).subscribe(d => {
       this.dashboard = Object.assign(new Dashboard(), d);
 
       this.form.get('numeroEnvios').setValue(d.envio);
@@ -162,7 +164,7 @@ export class DashboardDjrfDetailComponent implements OnInit, OnDestroy {
   }
 
   sendMaps() {
-    this.router.navigate([`./sgi/maps/${this._deviceId}`]);
+    this.router.navigate([`./radiodados/maps/${this._deviceId}`]);
     // window.open(this.dashboard.linkMaps, '_blank');
   }
 

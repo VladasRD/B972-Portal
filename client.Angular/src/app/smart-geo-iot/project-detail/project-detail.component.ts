@@ -32,8 +32,9 @@ export class ProjectDetailComponent implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      'name': new FormControl(null, [Validators.required, Validators.maxLength(500)]),
-      'description': new FormControl(null, [Validators.required]),
+      'code': new FormControl(null, [Validators.required, Validators.maxLength(200)]),
+      'name': new FormControl(null, [Validators.required, Validators.maxLength(50)]),
+      'description': new FormControl(null, [Validators.required, Validators.maxLength(400)])
     });
 
     this.getProject();
@@ -77,12 +78,13 @@ export class ProjectDetailComponent implements OnInit {
     FormUtil.updateModel(this.form, this.project);
 
     // updates the model
+    this.project.code = this.form.get('code').value;
     this.project.name = this.form.get('name').value;
     this.project.description = this.form.get('description').value;
 
     this.sgiService.saveProject(this.project)
       .subscribe(() => {
-        this.router.navigate(['./sgi/projetos']);
+        this.router.navigate(['./radiodados/projetos']);
         this.messageService.add('Projeto salvo.');
       },
         err => {
@@ -94,7 +96,7 @@ export class ProjectDetailComponent implements OnInit {
     this.sgiService.deleteProject(this.project.projectUId)
       .subscribe(() => {
         this.messageService.add('Projeto removido.');
-        this.router.navigate(['./sgi/projetos']);
+        this.router.navigate(['./radiodados/projetos']);
       },
         err => {
           this.messageService.addError(err.message + ' (removendo projeto)');

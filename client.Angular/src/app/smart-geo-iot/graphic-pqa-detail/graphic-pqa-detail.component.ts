@@ -53,7 +53,8 @@ export class GraphicPqaDetailComponent implements OnInit {
 
     this.form = new FormGroup({
       'startPeriod': new FormControl(null),
-      'endPeriod': new FormControl(null)
+      'endPeriod': new FormControl(null),
+      'filter': new FormControl('temperature')
     });
   }
 
@@ -61,11 +62,15 @@ export class GraphicPqaDetailComponent implements OnInit {
   }
 
   get pageTitle(): string {
-    return String.Format('Gráfico do dispositivo {0} (DJRF)', this._deviceId);
+    return String.Format('Gráfico do dispositivo {0} (Nivetec Analítica PQA)', this._deviceId);
   }
 
   printGraphic() {
     window.print();
+  }
+
+  get filter() {
+    return this.form.get('filter').value;
   }
 
   get canViewGraphic(): boolean {
@@ -82,6 +87,22 @@ export class GraphicPqaDetailComponent implements OnInit {
 
   get finalDateFilter() {
     return this.form.get('endPeriod').value;
+  }
+
+  get nameFilter() {
+    if(this.filter === 'ph') {
+      return 'Ph';
+    }
+    if(this.filter === 'fluor') {
+      return 'Flúor';
+    }
+    if(this.filter === 'cloro') {
+      return 'Cloro';
+    }
+    if(this.filter === 'turbidez') {
+      return 'Turbidez';
+    }
+    return 'Temperatura';
   }
 
   public getDataGraphic(): void {
@@ -106,7 +127,7 @@ export class GraphicPqaDetailComponent implements OnInit {
         this.reports = [];
 
         d.forEach(r => {
-          if (r.temperature !== null) {
+          if (r[this.filter] !== null) {
             this.reports.push(r);
           }
         });
@@ -116,14 +137,23 @@ export class GraphicPqaDetailComponent implements OnInit {
         }
 
         // this.lineChartData[0] = this.chartConfig.chartDataSetsOptions;
-        this.lineChartData[0].data = this.reports.map(t => Number(t.temperature.replace(',', '.')));
+        this.lineChartData[0].label = this.nameFilter;
+        this.lineChartData[0].data = this.reports.map(t => Number(t[this.filter].replace(',', '.')));
+        
         this.lineChartLabels = [];
 
         this.reports.forEach((r) => {
           const day = new Date(r.date);
-          const _day = day.getUTCDate() < 10 ? `0${day.getUTCDate()}` : day.getUTCDate();
-          const _month = day.getUTCMonth() + 1 < 10 ? `0${day.getUTCMonth() + 1}` : day.getUTCMonth() + 1;
-          const label = `${_day}/${_month}`;
+          // const _day = day.getUTCDate() < 10 ? `0${day.getUTCDate()}` : day.getUTCDate();
+          // const _month = day.getUTCMonth() + 1 < 10 ? `0${day.getUTCMonth() + 1}` : day.getUTCMonth() + 1;
+          // const label = `${_day}/${_month}`;
+
+          const _day = day.getDate() < 10 ? `0${day.getDate()}` : day.getDate();
+          const _month = day.getMonth() + 1 < 10 ? `0${day.getMonth() + 1}` : day.getMonth() + 1;
+          const _hour = day.getHours() < 10 ? `0${day.getHours()}` : day.getHours();
+          const _minute = day.getMinutes();
+          const label = `${_day}/${_month} ${_hour}:${_minute}`;
+
           this.lineChartLabels.push(label);
         });
 

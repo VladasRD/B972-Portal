@@ -2,13 +2,13 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
+using System.Linq;
 using SmartGeoIot.Extensions;
 
 namespace SmartGeoIot.Models
 {
     public class Message
     {
-        [Key]
         public string Id { get; set; }
         public string DeviceId { get; set; }
         public long Time { get; set; }
@@ -20,6 +20,7 @@ namespace SmartGeoIot.Models
         public string Country { get; set; }
         public int Lqi { get; set; }
         public DateTime? OperationDate { get; set; }
+        public bool WasProcessed { get; set; }
 
         [ForeignKey("DeviceId")]
         public Device Device { get; set; }
@@ -71,12 +72,41 @@ namespace SmartGeoIot.Models
                 return Convert.ToBoolean(int.Parse(bits.Substring(4, 1)));
             }
         }
+        
+        [NotMapped]
+        public ViewModels.ReleBoolean ReleBoolean
+        {
+            get
+            {
+                var _bitsByteToBinary = GetBitsByteToBinary(5);
+                return new ViewModels.ReleBoolean()
+                {
+                    Rele1 = Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(7, 1))),
+                    Rele2 = Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(6, 1))),
+                    Rele3 = Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(5, 1))),
+                    Rele4 = Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(4, 1))),
+                    Rele5 = Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(3, 1))),
+                    Rele6 = Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(2, 1))),
+                    Rele7 = Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(1, 1)))
+                };
+            }
+        }
 
         [NotMapped]
         public ViewModels.Bits Bits
         {
             get
             {
+                if (this.TypePackage.Equals("53"))
+                {
+                    return new ViewModels.Bits()
+                    {
+                        EstadoAlimentacao = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(5, 1))),
+                        BaseTempoUpLink = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(6, 1))),
+                        TipoEnvio = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(7, 1)))
+                    };
+                }
+
                 if (this.TypePackage.Equals("10"))
                 {
                     return new ViewModels.Bits()
@@ -123,7 +153,7 @@ namespace SmartGeoIot.Models
 
                         Btxev = Convert.ToBoolean(int.Parse(_bitsByteToBinary2.Substring(7, 1))),
                         BAlertaMin = Convert.ToBoolean(int.Parse(_bitsByteToBinary2.Substring(6, 1))),
-                        BAlertaMax = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(5, 1)))
+                        BAlertaMax = Convert.ToBoolean(int.Parse(_bitsByteToBinary2.Substring(5, 1)))
                      };
                  }
 
@@ -133,7 +163,12 @@ namespace SmartGeoIot.Models
                       {
                             BAlertaMax = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(7, 1))),
                             ModoFechado = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(6, 1))),
-                            ModoAberto = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(5, 1)))
+                            ModoAberto = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(5, 1))),
+                            SincHora = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(4, 1))),
+                            FAtualizaHora = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(3, 1))),
+                            FAtualizaDia = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(2, 1))),
+                            FAtualizaSem = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(1, 1))),
+                            FAtualizaMes = Convert.ToBoolean(int.Parse(BitsByteToBinary.Substring(0, 1)))
                       };
                  }
 
@@ -156,7 +191,7 @@ namespace SmartGeoIot.Models
         {
             get
             {
-                return $"{PackageToByteArray[0]} de {Utils.GetMonthName(PackageToByteArray[1])} de 20{PackageToByteArray[2]}";
+                return $"{PackageToByteArray[0]} de {Utils.GetMonthName(PackageToByteArray[1]-1)} de 20{PackageToByteArray[2]}";
             }
         }
 
@@ -226,6 +261,24 @@ namespace SmartGeoIot.Models
                 if (proc == "16")
                     return "F26K42";
 
+                if (proc == "32")
+                    return "STM32L053";
+
+                if (proc == "33")
+                    return "HT32SX";
+
+                if (proc == "17")
+                    return "F56K42";
+
+                if (proc == "18")
+                    return "F18326";
+
+                if (proc == "19")
+                    return "F57K42";
+
+                if (proc == "1A")
+                    return "LF57K42";
+
                 return proc;
             }
         }
@@ -254,14 +307,18 @@ namespace SmartGeoIot.Models
         {
             get
             {
-                string nAplic = this.Package.Substring(6, 4);
-                if (nAplic == "0017")
-                    return "AguaMon";
+                string nAplic = this.Package.Substring(6, 4).ToUpper();
+                return Consts.GetFirmwareName(nAplic);
+            }
+        }
 
-                if (nAplic == "0018")
-                    return "DJRF";
-
-                return nAplic;
+        [NotMapped]
+        public string ID
+        {
+            get
+            {
+                string id = this.Package.Substring(10, 8).ToUpper();
+                return $"{Utils.HexaToDecimal(id.Substring(0, 2))}.{Utils.HexaToDecimal(id.Substring(2, 2))}.{Utils.HexaToDecimal(id.Substring(4, 2))}.{Utils.HexaToDecimal(id.Substring(6, 2))}";
             }
         }
 
@@ -359,7 +416,7 @@ namespace SmartGeoIot.Models
             get
             {
                 string tempPh = null;
-                if (!TypePackage.Equals("23") || !TypePackage.Equals("81"))
+                if (!TypePackage.Equals("23") && !TypePackage.Equals("81"))
                     return string.Empty;
 
                 if (TypePackage.Equals("81"))
@@ -405,6 +462,8 @@ namespace SmartGeoIot.Models
                 else if (this.TypePackage.Equals("10"))
                     return Utils.HexaToDecimal(this.Package.Substring(2, 4)).ToString();
                 else if (this.TypePackage.Equals("12"))
+                    return Utils.HexaToDecimal(this.Package.Substring(4, 4)).ToString();
+                else if (this.TypePackage.Equals("53"))
                     return Utils.HexaToDecimal(this.Package.Substring(4, 4)).ToString();
                 else
                     return string.Empty;
@@ -537,7 +596,8 @@ namespace SmartGeoIot.Models
                 decimal _cloro = Utils.HexaToDecimal(this.Package.Substring(12, 4));
                 string cloro = String.Format(Utils.GetFormatDecimalToString(_cloro.ToString()), _cloro);
                 string _secondValue = cloro.Substring(cloro.Length - 2, 1).Length > 1 ? cloro.Substring(cloro.Length - 2, 2) : $"{cloro.Substring(cloro.Length - 2, 1)}0";
-                return $"{cloro.Substring(0, cloro.Length - 2)},{_secondValue}";
+                string firstValue = string.IsNullOrWhiteSpace(cloro.Substring(0, cloro.Length - 2)) ? "0" : cloro.Substring(0, cloro.Length - 2);
+                return $"{firstValue},{_secondValue}";
             }
         }
 
@@ -554,12 +614,294 @@ namespace SmartGeoIot.Models
         }
 
         [NotMapped]
-        public string Vazao
+        public long Vazao
         {
             get
             {
-                var _vazao = Utils.HexaToDecimal(this.Package.Substring(0, 4)).ToString();
-                return $"{_vazao.Substring(0, _vazao.Length - 1)},{_vazao.Substring(_vazao.Length - 1, 1)}";
+                // return Utils.HexaToLong(this.Package.Substring(0, 8));
+                var _value = this.Package.Substring(0, 8);
+                return Utils.HexaToLong($"{_value.ToString().Substring(6,2)}{_value.ToString().Substring(4,2)}{_value.ToString().Substring(2,2)}{_value.ToString().Substring(0,2)}");
+            }
+        }
+
+        [NotMapped]
+        public decimal VazaoTempo1
+        {
+            get
+            {
+                var _value = this.Package.Substring(0, 4);
+                return Utils.HexaToDecimal(_value);
+            }
+        }
+
+        [NotMapped]
+        public decimal VazaoTempo2
+        {
+            get
+            {
+                var _value = this.Package.Substring(4, 4);
+                return Utils.HexaToDecimal(_value);
+            }
+        }
+
+        [NotMapped]
+        public decimal VazaoTempo3
+        {
+            get
+            {
+                var _value = this.Package.Substring(8, 4);
+                return Utils.HexaToDecimal(_value);
+            }
+        }
+
+        [NotMapped]
+        public decimal VazaoTempo4
+        {
+            get
+            {
+                var _value = this.Package.Substring(12, 4);
+                return Utils.HexaToDecimal(_value);
+            }
+        }
+
+        [NotMapped]
+        public decimal VazaoTempo5
+        {
+            get
+            {
+                var _value = this.Package.Substring(16, 4);
+                return Utils.HexaToDecimal(_value);
+            }
+        }
+
+        [NotMapped]
+        public decimal VelocidadeTempo1
+        {
+            get
+            {
+                var _value = this.Package.Substring(0, 4);
+                return Utils.HexaToDecimal(_value);
+            }
+        }
+
+        [NotMapped]
+        public decimal VelocidadeTempo2
+        {
+            get
+            {
+                var _value = this.Package.Substring(4, 4);
+                return Utils.HexaToDecimal(_value);
+            }
+        }
+
+        [NotMapped]
+        public decimal VelocidadeTempo3
+        {
+            get
+            {
+                var _value = this.Package.Substring(8, 4);
+                return Utils.HexaToDecimal(_value);
+            }
+        }
+
+        [NotMapped]
+        public decimal VelocidadeTempo4
+        {
+            get
+            {
+                var _value = this.Package.Substring(12, 4);
+                return Utils.HexaToDecimal(_value);
+            }
+        }
+
+        [NotMapped]
+        public decimal VelocidadeTempo5
+        {
+            get
+            {
+                var _value = this.Package.Substring(16, 4);
+                return Utils.HexaToDecimal(_value);
+            }
+        }
+
+        [NotMapped]
+        public string Flags_P982U4
+        {
+            get
+            {
+                return this.BitsByteToBinary;
+            }
+        }
+
+        [NotMapped]
+        public decimal Quality_P982U4
+        {
+            get
+            {
+                var _value = this.Package.Substring(2, 4);
+                return Utils.HexaToDecimal(_value);
+            }
+        }
+
+        [NotMapped]
+        public decimal Temperatura_P982U4
+        {
+            get
+            {
+                var _value = this.Package.Substring(16, 4);
+                return Utils.HexaToDecimal(_value);
+            }
+        }
+
+        [NotMapped]
+        public long Total_P982U4
+        {
+            get
+            {
+                var _value = this.Package.Substring(0, 8);
+                return Utils.HexaToLong($"{_value.ToString().Substring(6,2)}{_value.ToString().Substring(4,2)}{_value.ToString().Substring(2,2)}{_value.ToString().Substring(0,2)}");
+            }
+        }
+
+        [NotMapped]
+        public long Parcial_P982U4
+        {
+            get
+            {
+                var _value = this.Package.Substring(8, 8);
+                return Utils.HexaToLong($"{_value.ToString().Substring(6,2)}{_value.ToString().Substring(4,2)}{_value.ToString().Substring(2,2)}{_value.ToString().Substring(0,2)}");
+            }
+        }
+
+        [NotMapped]
+        public long MCondSubtipo
+        {
+            get
+            {
+                return Utils.HexaToLong(this.Package.Substring(12, 8));
+            }
+        }
+
+        [NotMapped]
+        public bool MCond_BombaHidraulica
+        {
+            get
+            {
+                var _value = this.Package.Substring(0, 2);
+                var _bitsByteToBinary = GetBitsByteToBinary(9);
+                return Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(3, 1)));
+            }
+        }
+
+        [NotMapped]
+        public (bool, bool) MCond_NivelBaixoAlto
+        {
+            get
+            {
+                var _value = this.Package.Substring(1, 2);
+                var _bitsByteToBinary = GetBitsByteToBinary(9);
+                return (Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(6, 1))), Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(5, 1))));
+            }
+        }
+
+        [NotMapped]
+        public long MCond_Nivel
+        {
+            get
+            {
+                var _value = this.Package.Substring(4, 8);
+                // return Utils.HexaToLong($"{_value.ToString().Substring(6,2)}{_value.ToString().Substring(4,2)}{_value.ToString().Substring(2,2)}{_value.ToString().Substring(0,2)}");
+                return Utils.HexaToLong(_value);
+            }
+        }
+
+        [NotMapped]
+        public (bool, bool, bool, bool) MCond_AlertaIncendioIVA
+        {
+            get
+            {
+                var _value = this.Package.Substring(0, 2);
+                var _bitsByteToBinary = GetBitsByteToBinary(9);
+                return (Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(6, 1))), Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(5, 1))), Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(4, 1))), Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(3, 1))));
+            }
+        }
+
+        [NotMapped]
+        public string Calha
+        {
+            get
+            {
+                try
+                {     
+                    string _calha = this.Package.Substring(16, 2);
+                    var _bitsByteToBinary = GetBitsByteToBinary(9);
+                    
+                    var _diametroCalha = Consts.GetDiametroCalha(Convert.ToInt32(_calha) == 3 ? 3 : 1,
+                        Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(7, 1))),
+                        Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(6, 1))),
+                        Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(5, 1))),
+                        Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(4, 1)))
+                    );
+
+                    if (_calha.Equals("01"))
+                        return $"Palmer-Bowlus Diâmetro {_diametroCalha.Diametro}";
+                    else if (_calha.Equals("02"))
+                        return $"Palmer-Bowlus Diâmetro/2 {_diametroCalha.Diametro}";
+                    else if (_calha.Equals("04"))
+                        return $"Vertedouro";
+                    else
+                        return $"Parshall Diâmetro {_diametroCalha.Diametro}";
+                }
+                catch (System.Exception)
+                {
+                    return $"Palmer-Bowlus Diâmetro N/A";
+                }
+            }
+        }
+
+        [NotMapped]
+        public string CalhaImage
+        {
+            get
+            {
+                try
+                {     
+                    string _calha = this.Package.Substring(16, 2);
+                    var _bitsByteToBinary = GetBitsByteToBinary(9);
+                    
+                    var _diametroCalha = Consts.GetDiametroCalha(Convert.ToInt32(_calha) == 3 ? 3 : 1,
+                        Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(7, 1))),
+                        Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(6, 1))),
+                        Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(5, 1))),
+                        Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(4, 1)))
+                    );
+
+                    if (_calha.Equals("04"))
+                        return "calha-vertedouro";
+                    else
+                        return "calha";
+                }
+                catch (System.Exception)
+                {
+                    return "calha";
+                }
+            }
+        }
+
+        [NotMapped]
+        public string CalhaAlerta
+        {
+            get
+            {
+                var _bitsByteToBinary = GetBitsByteToBinary(9);
+                var _diametroCalha = Consts.GetAlertaCalha(
+                    Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(3, 1))),
+                    Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(2, 1))),
+                    Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(1, 1))),
+                    Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(0, 1)))
+                );
+
+                return _diametroCalha != null ? _diametroCalha.Alerta : string.Empty;
             }
         }
 
@@ -573,12 +915,14 @@ namespace SmartGeoIot.Models
         }
 
         [NotMapped]
-        public string Totalizacao
+        public long Totalizacao
         {
             get
             {
-                var _totalizacao = Utils.HexaToDecimal(this.Package.Substring(8, 8)).ToString();
-                return $"{_totalizacao.Substring(0, 1)}.{_totalizacao.Substring(1, _totalizacao.Length - 1)}";
+                // return Utils.HexaToLong(this.Package.Substring(8, 8));
+
+                var _value = this.Package.Substring(8, 8);
+                return Utils.HexaToLong($"{_value.ToString().Substring(6,2)}{_value.ToString().Substring(4,2)}{_value.ToString().Substring(2,2)}{_value.ToString().Substring(0,2)}");
             }
         }
 
@@ -626,6 +970,35 @@ namespace SmartGeoIot.Models
             {
                 var _value = this.Package.Substring(10, 8);
                 return Utils.HexaToLong($"{_value.ToString().Substring(6,2)}{_value.ToString().Substring(4,2)}{_value.ToString().Substring(2,2)}{_value.ToString().Substring(0,2)}");
+            }
+        }
+
+        [NotMapped]
+        public long ConsumoDia
+        {
+            get
+            {
+                var _value = this.Package.Substring(0, 8);
+                return Utils.HexaToLong($"{_value.ToString().Substring(6,2)}{_value.ToString().Substring(4,2)}{_value.ToString().Substring(2,2)}{_value.ToString().Substring(0,2)}");
+            }
+        }
+
+        [NotMapped]
+        public long ConsumoSemana
+        {
+            get
+            {
+                var _value = this.Package.Substring(8, 8);
+                return Utils.HexaToLong($"{_value.ToString().Substring(6,2)}{_value.ToString().Substring(4,2)}{_value.ToString().Substring(2,2)}{_value.ToString().Substring(0,2)}");
+            }
+        }
+
+        [NotMapped]
+        public Decimal ConsumoMes
+        {
+            get
+            {
+                return (Utils.HexaToDecimal(this.Package.Substring(16, 4)) * 100);
             }
         }
 

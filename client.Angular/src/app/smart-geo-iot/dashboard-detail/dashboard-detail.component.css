@@ -14,7 +14,7 @@
 .icon-text {
     position: absolute;
     margin-top: 3px;
-    margin-left: 5px;
+    /* margin-left: 5px; */
     font-size: 14px;
 }
 

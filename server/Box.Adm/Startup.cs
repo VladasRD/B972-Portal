@@ -65,7 +65,7 @@ namespace Box.Adm
             services.AddTransient<Box.Security.Services.SecurityService>();
             services.AddTransient<Box.Security.Services.LogService>();
             services.AddTransient<Box.CMS.Services.CMSService>();
-            services.AddTransient<SmartGeoIot.Services.SmartGeoIotService>();
+            services.AddTransient<SmartGeoIot.Services.RadiodadosService>();
 
             // itens adicionados para execução dos hosts de serviços (jobs)
             services.AddHostedService<DeviceHostedService>();

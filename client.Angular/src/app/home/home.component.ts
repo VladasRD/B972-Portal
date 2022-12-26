@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../common/auth.service';
 import { Device, DeviceRegistration } from './../smart-geo-iot/device';
 import { FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { GrudList } from '../common/grud-list';
 import { SmartGeoIotService } from './../smart-geo-iot/smartgeoiot.service';
 
@@ -35,6 +35,10 @@ export class HomeComponent extends GrudList<Object> implements OnInit {
   }
 
   getResults(): Observable<DeviceRegistration[]> {
+    if (!this.authService.isUserSignedIn) {
+      return of (new Document[0]);
+    }
+
     return this.sgiService.getDevicesFromDashboard(this._skip, this._pageSize,
       this.searchFilter$.getValue(), c => { this._totalCount = c; });
   }

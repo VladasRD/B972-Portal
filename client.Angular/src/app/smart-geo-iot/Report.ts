@@ -1,6 +1,11 @@
 import { Bits, Rele } from './Bits';
 import { environment } from '../../environments/environment.stage';
 import { EstadoDJ } from './dashboard';
+import { Utils } from './utils';
+
+export class ReportTypeEnum {
+    static readonly enumNameColumnGraphic = ['', 'consumoAgua', 'consumoDia', 'consumoSemana', 'consumoMes'];
+}
 
 export class Report {
     deviceId: string;
@@ -50,8 +55,14 @@ export class Report {
     estado: string;
     valvula: string;
     estadoColor: string;
+    dateWeekName: string;
 
     get nameEstadoDetector(): string {
         return EstadoDJ.enum[this.estadoDetector];
+    }
+
+    get montYearDisplayName(): string {
+        const data = new Date(this.date);
+        return `${Utils.enumMonths[data.getUTCMonth()+1]}/${data.getUTCFullYear()}`;
     }
 }

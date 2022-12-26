@@ -18,6 +18,7 @@ namespace SmartGeoIot.Models
             public int rolloverCounter { get; set; }
             public int seqNumber { get; set; }
             public Rinfo[] rinfos { get; set; }
+            public object[] satInfos { get; set; }
             public int nbFrames { get; set; }
             public string _operator { get; set; }
             public string country { get; set; }

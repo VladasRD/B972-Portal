@@ -1,0 +1,44 @@
+<form novalidate class="container" [formGroup]="form" autocomplete="off" style="margin-top: 20px;">
+  <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left" class="top-changes">
+    <mat-form-field appearance="outline" fxFlex="40%">
+      <mat-label>Número de série</mat-label>
+      <input matInput autocomplete="off" type="text" formControlName="serialNumber">
+
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="change_edit_serialNumber(1)"
+        *ngIf="!edit_serialNumber">
+        <mat-icon>mode_edit</mat-icon>
+      </button>
+
+      <button matSuffix mat-icon-button aria-label="Clear" *ngIf="edit_serialNumber"
+        (click)="change_edit_serialNumber(2)">
+        <mat-icon>save</mat-icon>
+      </button>
+
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" fxFlex="40%">
+      <mat-label>Modelo</mat-label>
+      <input matInput autocomplete="off" type="text" formControlName="model">
+
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="change_edit_model(1)" *ngIf="!edit_model">
+        <mat-icon>mode_edit</mat-icon>
+      </button>
+
+      <button matSuffix mat-icon-button aria-label="Clear" *ngIf="edit_model" (click)="change_edit_model(2)">
+        <mat-icon>save</mat-icon>
+      </button>
+    </mat-form-field>
+
+
+    <div class="example-button-container" fxFlex="10%" style="text-align: center;">
+      <button mat-fab color="primary" matTooltip="Localização do dispositivo" (click)="goToMaps()">
+        <mat-icon>maps</mat-icon>
+      </button>
+
+      <button mat-fab color="primary" matTooltip="Informações" (click)="goToInfos()" style="margin-left: 15px;">
+        <mat-icon>info</mat-icon>
+      </button>
+    </div>
+
+  </div>
+</form>

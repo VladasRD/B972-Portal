@@ -1,6 +1,8 @@
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Numerics;
+using System.Reflection;
 using System.Text;
 
 namespace SmartGeoIot.Extensions
@@ -12,10 +14,39 @@ namespace SmartGeoIot.Extensions
             DateTime dtDateTime = new DateTime(1970, 1, 1);
             return dtDateTime.AddMilliseconds(valor).ToLocalTime();
         }
+        public static DateTime TimeStampToDateTimeUTC(long valor)
+        {
+            DateTime dtDateTime = new DateTime(1970, 1, 1);
+            return dtDateTime.AddMilliseconds(valor).ToUniversalTime();
+        }
         public static DateTime TimeStampSecondsToDateTime(long valor)
         {
             DateTime dtDateTime = new DateTime(1970, 1, 1);
+            return dtDateTime.AddSeconds(valor).ToLocalTime().AddHours(-3);
+        }
+
+        public static DateTime TimeStampSecondsToDateTimeUTC(long valor)
+        {
+            DateTime dtDateTime = new DateTime(1970, 1, 1);
             return dtDateTime.AddSeconds(valor).ToLocalTime();
+        }
+
+        public static DateTime TimeStampSecondsToDateTimeByTimestapInformed(long valor)
+        {
+            DateTime dtDateTime = new DateTime(1970, 1, 1);
+            return dtDateTime.AddSeconds(valor).AddHours(-3);
+        }
+
+        public static DateTime Timestamp_Milisecodns_ToDateTime(long value)
+        {
+            DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeMilliseconds(value);
+            return dateTimeOffset.UtcDateTime.AddHours(-3);
+        }
+
+        public static DateTime Timestamp_Milisecodns_ToDateTime_UTC(long value)
+        {
+            DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeMilliseconds(value);
+            return dateTimeOffset.UtcDateTime;
         }
         public static byte[] StringToHexadecimalTwoChars(String HexString)
         {
@@ -86,6 +117,14 @@ namespace SmartGeoIot.Extensions
             return bytes;
         }
 
+        public static DateTime ConvertLongToDatetime(long unixDate)
+        {
+            DateTime start = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            DateTime date = start.AddMilliseconds(unixDate).ToUniversalTime().AddHours(-3);
+
+            return date;
+        }
+
         public static string CreateBasicOauth(string login, string password)
         {
             return Convert.ToBase64String(ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", login, password)));
@@ -99,6 +138,11 @@ namespace SmartGeoIot.Extensions
         public static string ZerosForLeft(string value, int quantityNumbers)
         {
             return value.PadLeft(quantityNumbers, '0');
+        }
+
+        public static long TimeZerosForRight(string value, int quantityNumbers)
+        {
+            return long.Parse(value.PadRight(quantityNumbers, '0'));
         }
 
         public static string BinaryStringToHexString(string binary)
@@ -144,6 +188,33 @@ namespace SmartGeoIot.Extensions
         {
             return "{" + $"0:0{"".PadLeft(value.Length > 1 ? value.Length-1 : value.Length, '0')}" + "}";
         }
+
+        public static double FromFloatSafe(long f)
+        {
+            uint fb = Convert.ToUInt32(f);
+            return BitConverter.ToSingle(BitConverter.GetBytes((int) fb), 0);
+        }
         
+        public static long ConvertDoubleToLong(double value)
+        {
+            return Convert.ToInt64(value);
+        }
+
+        public static string ConvertLongToHexa(long value)
+        {
+            return value.ToString("X2");
+        }
+
+        public static String EnumToAnnotationText<T>(T value)
+            where T : struct, IConvertible
+        {
+            return typeof(T)
+                .GetTypeInfo()
+                .DeclaredMembers
+                .SingleOrDefault(x => x.Name == value.ToString())
+                ?.GetCustomAttribute<System.Runtime.Serialization.EnumMemberAttribute>(false)
+                ?.Value;
+        }
+
     }
 }

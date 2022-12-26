@@ -8,6 +8,7 @@ import { GrudList } from '../../common/grud-list';
 import { MessageService } from '../../common/message.service';
 import { MatDialog, MatBottomSheet } from '@angular/material';
 import { Utils } from '../utils';
+import { ProjectEnum } from '../project';
 
 @Component({
   selector: 'app-report-djrf-list',
@@ -16,9 +17,10 @@ import { Utils } from '../utils';
 })
 export class ReportDjrfListComponent extends GrudList<Report> implements OnInit {
   form: FormGroup;
-  displayedColumns: string[] = ['data', 'estado', 'alimentacao', 'temperatura', 'contCarencia', 'contBloqueio', 'tipoEnvio', 'bloqueio'];
+  displayedColumns: string[] = ['data', 'hour', 'estado', 'alimentacao', 'temperatura', 'contCarencia', 'contBloqueio', 'tipoEnvio', 'bloqueio'];
   isExporting = false;
   listDevicesFilter: DeviceRegistration[] = [];
+  currentProject = ProjectEnum.DJRFleg;
 
   constructor(
     private sgiService: SmartGeoIotService,
@@ -71,7 +73,7 @@ export class ReportDjrfListComponent extends GrudList<Report> implements OnInit 
     if (this.form.get('endPeriod').value != null) {
       endPeriod = this.form.get('endPeriod').value;
     }
-    return this.sgiService.getReports(this.deviceFilter, startPeriod != null ? startPeriod.toJSON() : <string>null, endPeriod != null ? endPeriod.toJSON() : <string>null, this._skip, (this._skip + this._pageSize), this.statusFilter, c => { this._totalCount = c; });
+    return this.sgiService.getReports(this.deviceFilter, startPeriod != null ? startPeriod.toJSON() : <string>null, endPeriod != null ? endPeriod.toJSON() : <string>null, this._skip, (this._skip + this._pageSize), this.statusFilter, 0, c => { this._totalCount = c; });
   }
 
   searchReports(): void {

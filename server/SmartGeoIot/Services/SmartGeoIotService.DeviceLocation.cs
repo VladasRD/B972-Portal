@@ -5,7 +5,7 @@ using SmartGeoIot.Models;
 
 namespace SmartGeoIot.Services
 {
-    public partial class SmartGeoIotService
+    public partial class RadiodadosService
     {
         public DeviceLocation GetDeviceLocationByDeviceId(string deviceId)
         {
@@ -58,7 +58,7 @@ namespace SmartGeoIot.Services
 
                         try
                         {
-                            SendEmailLockedDevice(emails, deviceId, time);
+                            SendEmailLockedDevice(emails, deviceId, time).Wait();
                         }
                         catch (System.Exception ex)
                         {
@@ -77,7 +77,7 @@ namespace SmartGeoIot.Services
 
                         try
                         {
-                            SendSMSLockedDevice(numbers, deviceId, time);
+                            // SendSMSLockedDevice(numbers, deviceId, time);
                         }
                         catch (System.Exception ex)
                         {
@@ -96,7 +96,7 @@ namespace SmartGeoIot.Services
 
                         try
                         {
-                            SendWhatsAppLockedDevice(numbers, deviceId, time);
+                            // SendWhatsAppLockedDevice(numbers, deviceId, time);
                         }
                         catch (System.Exception ex)
                         {

@@ -11,8 +11,8 @@ namespace SmartGeoIot.Api
     [Route("api/[controller]")]
     public class SGIFirmwareController : Controller
     {
-        protected readonly SmartGeoIot.Services.SmartGeoIotService _sgiService;
-        public SGIFirmwareController(SmartGeoIot.Services.SmartGeoIotService sgiService)
+        protected readonly SmartGeoIot.Services.RadiodadosService _sgiService;
+        public SGIFirmwareController(SmartGeoIot.Services.RadiodadosService sgiService)
         {
             _sgiService = sgiService;
         }

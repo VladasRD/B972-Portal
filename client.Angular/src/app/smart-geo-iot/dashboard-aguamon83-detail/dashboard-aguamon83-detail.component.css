@@ -14,7 +14,7 @@
 .icon-text {
     position: absolute;
     margin-top: 3px;
-    margin-left: 5px;
+    /* margin-left: 0px; */
     font-size: 14px;
 }
 
@@ -65,9 +65,9 @@
 }
 
 .image-avatar {
-    width: 68px;
-    height: 68px;
-    border-radius: 50%;
+    width: 72px;
+    height: 72px;
+    border-radius: 0%;
     margin-top: -7px;
 }
 
@@ -261,6 +261,30 @@ td > span {color: #FFF;}
     margin-bottom: 8px;
 }
 
+@media screen and (min-width: 621px) and (max-width: 1150px) {
+    .card-info {
+        width: 47%;
+    }
+}
+
+@media screen and (min-width: 1150px) {
+    .card-info {
+        width: 23%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .card-info {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width: 601px) and (max-width: 620px) {
+    .card-info {
+        width: 96%;
+    }
+}
+
 .info-card-bottom {
     padding: 5px 10px 5px 10px;
     margin-top: 15px;
@@ -274,4 +298,54 @@ td > span {color: #FFF;}
 
 .change-device {
     margin-top: 20px;
+}
+.message {
+    height: 90px;
+}
+.active {
+    padding: 5px 10px 5px 10px;
+    border-radius: 10px;
+}
+.small-font {
+    font-size: 13px;
+}
+
+.green-icon {
+    color: #006600;
+}
+
+.red-icon {
+    color: #cc0000;
+}
+
+.buttons_back_forward {
+    display: inline-flex;
+    position: absolute;
+    bottom: 20px;
+    right: 23px;
+}
+.buttons_back_forward_mobile {
+    display: inline-flex;
+    position: absolute;
+    bottom: 6px;
+}
+
+.button_back {
+    margin-right: 10px;
+}
+.estado-green {
+    color: #1fb71f;
+}
+.estado-red {
+    color:#ff0000;
+}
+
+.mat-h1 {
+    white-space: break-spaces;
+    height: auto;
+}
+
+::ng-deep .mat-tooltip {
+    font-size: 16px;
+    white-space: pre;
 }

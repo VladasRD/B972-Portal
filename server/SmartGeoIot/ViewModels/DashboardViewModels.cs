@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using SmartGeoIot.Models;
 
 namespace SmartGeoIot.ViewModels
 {
@@ -40,6 +42,7 @@ namespace SmartGeoIot.ViewModels
         public string Cloro { get; set; }
         public string Turbidez { get; set; }
         public Rele Rele { get; set; }
+        public ReleBoolean ReleBoolean { get; set; }
         public string Vazao { get; set; }
         public string TotalizacaoParcial { get; set; }
         public string Totalizacao { get; set; }
@@ -54,6 +57,41 @@ namespace SmartGeoIot.ViewModels
         public string EstadoImage { get; set; }
         public string EstadoColor { get; set; }
         public string ModoImage { get; set; }
+
+        [NotMapped]
+        public long SeqNumberb { get; set; }
+
+        public DownloadLink DownloadLink { get; set; }
+        public string Calha { get; set; }
+        public string CalhaImage { get; set; }
+        public string CalhaAlerta { get; set; }
+        public string ConsumoDia { get; set; }
+        public string ConsumoSemana { get; set; }
+        public string ConsumoMes { get; set; }
+        public long Time { get; set; }
+
+        [NotMapped]
+        public string DateWeekName { get; set; }
+
+        public string Flow { get; set; }
+        public string Velocity { get; set; }
+        public string Total { get; set; }
+        public string Partial { get; set; }
+        public string Flags { get; set; }
+        public string Quality { get; set; }
+        public string SerialNumber { get; set; }
+        public string Model { get; set; }
+        public string Notes { get; set; }
+        public string NotesCreateDate { get; set; }
+        public string Ed1 { get; set; }
+        public string Ed2 { get; set; }
+        public string Ed3 { get; set; }
+        public string Ed4 { get; set; }
+        public string Sd1 { get; set; }
+        public string Sd2 { get; set; }
+        public string Ea10 { get; set; }
+        public string Sa3 { get; set; }
+        public MCond MCond { get; set; }
     }
 
     public class Rele
@@ -63,6 +101,17 @@ namespace SmartGeoIot.ViewModels
         public string Rele3 { get; set; }
         public string Rele4 { get; set; }
         public string Rele5 { get; set; }
+    }
+
+    public class ReleBoolean
+    {
+        public bool Rele1 { get; set; }
+        public bool Rele2 { get; set; }
+        public bool Rele3 { get; set; }
+        public bool Rele4 { get; set; }
+        public bool Rele5 { get; set; }
+        public bool Rele6 { get; set; }
+        public bool Rele7 { get; set; }
     }
 
     public class Bits
@@ -104,6 +153,19 @@ namespace SmartGeoIot.ViewModels
         public bool BAlertaMax { get; set; }
         public bool ModoFechado { get; set; }
         public bool ModoAberto { get; set; }
+        public bool SincHora { get; set; }
+        public bool FAtualizaHora { get; set; }
+        public bool FAtualizaDia { get; set; }
+        public bool FAtualizaSem { get; set; }
+        public bool FAtualizaMes { get; set; }
+
+        // Clamp-ON
+        public bool Vazao { get; set; }
+        public bool Totalizador { get; set; }
+        public bool Qualidade { get; set; }
+        public bool AlertaVazao { get; set; }
+        public bool AlertaTotalizador { get; set; }
+        public bool AlertaQualidade { get; set; }
     }
 
     public enum EstatusDetector
@@ -114,5 +176,13 @@ namespace SmartGeoIot.ViewModels
         EmCiclos,
         EmBloqueio,
         EmDormencia
+    }
+
+    public class DownloadLink
+    {
+        public int NumeroEnvios { get; set; }
+        public int TempoTransmissao { get; set; }
+        public bool TipoEnvio { get; set; }
+        public string TensaoMinima { get; set; }
     }
 }

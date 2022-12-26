@@ -2,7 +2,7 @@
   <section class="body-wrapper">
 
     <div class="headline" fxLayout>
-      <!-- <button mat-icon-button routerLink="/sgi/relatorio">
+      <!-- <button mat-icon-button routerLink="/radiodados/relatorio">
         <mat-icon>arrow_back</mat-icon>
       </button> -->
       <div class="mat-h1">Relatório</div>
@@ -61,41 +61,48 @@
         <ng-container matColumnDef="data">
           <mat-header-cell fxFlex="16%" *matHeaderCellDef>Data</mat-header-cell>
           <mat-cell fxFlex="16%" *matCellDef="let element" class="small-font">
-            {{element.date | date: 'shortDate'}}
+            {{element.date | date: 'dd/MM/yyyy'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="hour">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef>Hora</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="small-font">
+            {{element.date | date: 'HH:mm'}}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="nivel">
-          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Nível</mat-header-cell>
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Nível (%)</mat-header-cell>
           <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
-            {{element.level}}%
+            {{element.level}}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="luz">
-          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Luz</mat-header-cell>
-          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">{{element.light}}%</mat-cell>
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Luz (%)</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">{{element.light}}</mat-cell>
         </ng-container>
 
 
         <ng-container matColumnDef="temperatura">
-          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Temperatura</mat-header-cell>
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Temperatura (°C)</mat-header-cell>
           <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
-            {{element.temperature}}°C
+            {{element.temperature}}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="umidade">
-          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Umidade</mat-header-cell>
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Umidade (%)</mat-header-cell>
           <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
-            {{element.moisture}}%
+            {{element.moisture}}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="oxigenio">
-          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Oxigênio</mat-header-cell>
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Oxigênio (mg/L)</mat-header-cell>
           <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
-            {{element.oxigenioDissolvido}}mg/L
+            {{element.oxigenioDissolvido}}
           </mat-cell>
         </ng-container>
 
@@ -107,9 +114,9 @@
         </ng-container>
 
         <ng-container matColumnDef="condutividade">
-          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Condutividade</mat-header-cell>
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef class="align-center">Condutividade (μS)</mat-header-cell>
           <mat-cell fxFlex="12%" *matCellDef="let element" class="small-font align-center">
-            {{element.condutividade}}μS
+            {{element.condutividade}}
           </mat-cell>
         </ng-container>
 

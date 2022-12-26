@@ -15,9 +15,9 @@ namespace SmartGeoIot.Api
     [Route("api/[controller]")]
     public class SGIClientController : Controller
     {
-        protected readonly SmartGeoIot.Services.SmartGeoIotService _sgiService;
+        protected readonly SmartGeoIot.Services.RadiodadosService _sgiService;
         private readonly Box.Security.Services.SecurityService _securityService;
-        public SGIClientController(SmartGeoIot.Services.SmartGeoIotService sgiService, Box.Security.Services.SecurityService securityService)
+        public SGIClientController(SmartGeoIot.Services.RadiodadosService sgiService, Box.Security.Services.SecurityService securityService)
         {
             _sgiService = sgiService;
             _securityService = securityService;
@@ -51,7 +51,7 @@ namespace SmartGeoIot.Api
         }
 
         [HttpGet("byDevice/{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "SGI-CLIENT.READ, SGI-SUBCLIENT.READ")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public Client GetClientByDevice(string id)
         {
             var client = _sgiService.GetClientByDevice(id);

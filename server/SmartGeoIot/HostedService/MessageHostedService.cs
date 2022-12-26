@@ -9,10 +9,10 @@ namespace SmartGeoIot.HostedService
     public class MessageHostedService : IHostedService
     {
         private Timer _timer;
-        private int _timerMiliseconds = 3600000;
-        // private string _urlSigfoxGetData = "http://rafaelestevao-001-site2.htempurl.com/sgisigfox";
+        private int _timerMiliseconds = 300000;
+        private string _urlSigfoxGetData = "https://rdportal.com.br/sgisigfox";
         
-        private string _urlSigfoxGetData = "https://radiodadosanalitica.azurewebsites.net/sgisigfox";
+        // private string _urlSigfoxGetData = "https://radiodadosanalitica.azurewebsites.net/sgisigfox";
 
         public Task StartAsync(CancellationToken cancellationToken)
         {

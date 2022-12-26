@@ -1,0 +1,418 @@
+<form novalidate class="container" [formGroup]="form" autocomplete="off">
+  <div class="body-content-top">
+    <section class="body-wrapper">
+
+      <div class="headline" fxLayout>
+        <button mat-icon-button routerLink="">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+        <div class="mat-h1">{{pageTitle}}</div>
+
+        <div class="buttonBoxArea right" *ngIf="dashboard.deviceId!=''">
+          <button mat-raised-button color="primary" (click)="cleanUpdateData()">
+            <mat-icon>autorenew</mat-icon>
+            <span>Atualizar informações</span>
+          </button>
+        </div>
+      </div>
+
+
+      <div fxLayout="column">
+
+        <!-- MOBILE -->
+        <mat-card *ngIf="isMobile">
+          <mat-card-header fxFlex="100%">
+            <div style="padding-right: 35px;">
+              <img src="{{'../../../assets/' + getNameLogoClient + '.png'}}" class="image-avatar" />
+            </div>
+            <div class="title-page">
+              <p>
+                <strong>{{userName}}</strong>
+              </p>
+              <p *ngIf="showDashboard">
+                <strong>Informações de Campo</strong>
+              </p>
+            </div>
+            <p>
+              <strong *ngIf="!showDashboard" style="color: red; font-size: 16px;">Nenhuma informação encontrada para o
+                dispositivo selecionado.</strong>
+            </p>
+          </mat-card-header>
+        </mat-card>
+
+        <!-- MOBILE -->
+        <mat-card *ngIf="isMobile" style="margin-top: 15px;height: 170px;">
+          <div class="title-page">
+            <p class="icon-text" *ngIf="showDashboard">
+              <mat-icon style="vertical-align: bottom;">timelapse</mat-icon>
+              <label style="margin-left: 5px;">Última Atualização {{dashboard.date | date: 'dd/MM/yyyy
+                HH:mm:ss'}}</label>
+            </p>
+          </div>
+
+          <mat-form-field floatLabel="never" appearance="outline" fxFlex="270px" style="bottom: -35px;">
+            <mat-label style="font-size: 14px;">Selecione uma data</mat-label>
+            <lib-datetime-picker readonly formControlName="dateFilter"></lib-datetime-picker>
+          </mat-form-field>
+
+          <div class="buttons_back_forward_mobile">
+            <button mat-raised-button color="primary" (click)="back()" class="button_back">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+
+            <button mat-raised-button color="primary" (click)="next()">
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+        </mat-card>
+
+
+        <!-- DESKTOP -->
+        <mat-card *ngIf="!isMobile">
+          <mat-card-header fxFlex="75%" style="margin-bottom: 20px;">
+
+            <div style="padding-right: 35px; margin-top: 22px;">
+              <img src="{{'../../../assets/' + getNameLogoClient + '.png'}}" class="image-avatar" />
+            </div>
+
+            <div class="title-page">
+              <p>
+                <strong>{{userName}}</strong>
+              </p>
+              <p *ngIf="showDashboard">
+                <strong>Informações de Campo</strong>
+              </p>
+              <p class="icon-text" *ngIf="showDashboard">
+                <mat-icon style="vertical-align: bottom;">timelapse</mat-icon>
+                <label style="margin-left: 5px;">Última Atualização {{dashboard.date | date: 'dd/MM/yyyy
+                  HH:mm:ss'}}</label>
+              </p>
+              <p>
+                <strong *ngIf="!showDashboard" style="color: red; font-size: 16px;">Nenhuma informação encontrada para o
+                  dispositivo selecionado.</strong>
+              </p>
+            </div>
+          </mat-card-header>
+
+          <mat-form-field floatLabel="never" appearance="outline" fxFlex="270px">
+            <mat-label style="font-size: 14px;">Selecione uma data</mat-label>
+            <lib-datetime-picker readonly formControlName="dateFilter"></lib-datetime-picker>
+          </mat-form-field>
+
+          <div class="buttons_back_forward">
+            <button mat-raised-button color="primary" (click)="back()" class="button_back">
+              <mat-icon>arrow_back</mat-icon>
+            </button>
+
+            <button mat-raised-button color="primary" (click)="next()">
+              <mat-icon>arrow_forward</mat-icon>
+            </button>
+          </div>
+
+        </mat-card>
+
+        <app-serial-model [deviceId]="deviceId"></app-serial-model>
+
+        <!-- MOBILE -->
+        <div style="width: 100%;margin-top: 30px;" *ngIf="isMobile">
+          <div class="div-title-alerts" style="width: 100%;">
+            <span class="title-info-group span-ed1">
+              <div class="{{!dashboard.bits.bed1 ? 'alarme-red' : 'alarme-green'}}"></div>
+              <span class="title-info-eds">{{dashboard.ed1 ? dashboard.ed1 : 'ED1'}}</span>
+
+              <button matSuffix mat-icon-button class="edit-name-field ed1" aria-label="Clear"
+                (click)="changeNameField('ED1')">
+                <mat-icon>mode_edit</mat-icon>
+              </button>
+            </span>
+          </div>
+
+          <div class="div-title-alerts" style="width: 100%;">
+            <span class="title-info-group span-ed2">
+              <div class="{{!dashboard.bits.bed2 ? 'alarme-red' : 'alarme-green'}}"></div>
+              <span class="title-info-eds">{{dashboard.ed2 ? dashboard.ed2 : 'ED2'}}</span>
+
+              <button matSuffix mat-icon-button class="edit-name-field ed2" aria-label="Clear"
+                (click)="changeNameField('ED2')">
+                <mat-icon>mode_edit</mat-icon>
+              </button>
+            </span>
+          </div>
+
+          <div class="div-title-alerts" style="width: 100%;">
+            <span class="title-info-group span-ed3">
+              <div class="{{!dashboard.bits.bed3 ? 'alarme-red' : 'alarme-green'}}"></div>
+              <span class="title-info-eds">{{dashboard.ed3 ? dashboard.ed3 : 'ED3'}}</span>
+
+              <button matSuffix mat-icon-button class="edit-name-field ed3" aria-label="Clear"
+                (click)="changeNameField('ED3')">
+                <mat-icon>mode_edit</mat-icon>
+              </button>
+            </span>
+          </div>
+
+          <div class="div-title-alerts" style="width: 100%;">
+            <span class="title-info-group span-ed4">
+              <div class="{{!dashboard.bits.bed4 ? 'alarme-red' : 'alarme-green'}}"></div>
+              <span class="title-info-eds">{{dashboard.ed4 ? dashboard.ed4 : 'ED4'}}</span>
+
+              <button matSuffix mat-icon-button class="edit-name-field ed4" aria-label="Clear"
+                (click)="changeNameField('ED4')">
+                <mat-icon>mode_edit</mat-icon>
+              </button>
+            </span>
+          </div>
+
+          <div class="div-title-alerts" style="width: 100%;">
+            <span class="title-info-group span-sd1">
+              <div class="{{!dashboard.bits.bsd1 ? 'alarme-red' : 'alarme-green'}}"></div>
+              <span class="title-info-eds">{{dashboard.sd1 ? dashboard.sd1 : 'SD1'}}</span>
+
+              <button matSuffix mat-icon-button class="edit-name-field sd1" aria-label="Clear"
+                (click)="changeNameField('SD1')">
+                <mat-icon>mode_edit</mat-icon>
+              </button>
+            </span>
+          </div>
+
+          <div class="div-title-alerts" style="width: 100%;">
+            <span class="title-info-group span-sd2">
+              <div class="{{!dashboard.bits.bsd2 ? 'alarme-red' : 'alarme-green'}}"></div>
+              <span class="title-info-eds">{{dashboard.sd2 ? dashboard.sd2 : 'SD2'}}</span>
+
+              <button matSuffix mat-icon-button class="edit-name-field sd2" aria-label="Clear"
+                (click)="changeNameField('SD2')">
+                <mat-icon>mode_edit</mat-icon>
+              </button>
+            </span>
+          </div>
+
+          <div class="div-title-alerts" style="width: 100%;">
+            <div class="div-title-alerts" style="border: solid black 1px;padding: 10px;width: auto;">
+
+              <div style="width: 100%;display: flex;">
+
+                <div style="width: 50%;display: flex;height: 40px;" class="span-ea10">
+                  <strong class="title-info">{{dashboard.ea10 ? dashboard.ea10 : 'EA10'}}</strong>
+
+                  <button matSuffix mat-icon-button class="edit-name-field ea10" aria-label="Clear"
+                    (click)="changeNameField('EA10')">
+                    <mat-icon>mode_edit</mat-icon>
+                  </button>
+                </div>
+
+                <div style="float: right;display: flex;">
+                  <div class="{{!dashboard.bits.bAlertaMax ? 'alarme-red' : 'alarme-green'}}"></div>
+                  <span style="margin-left: 15px">Alerta Alto</span>
+                </div>
+              </div>
+
+              <div style="width: 100%;display: flex;">
+                <div style="width: 50%;">
+                  <strong class="value-info">{{dashboard.entradaAnalogica}}</strong>
+                </div>
+
+                <div style="float: right;display: flex;">
+                  <div class="{{!dashboard.bits.bAlertaMin ? 'alarme-red' : 'alarme-green'}}"></div>
+                  <span style="margin-left: 15px">Alerta Baixo</span>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="div-title-alerts" style="width: 100%;">
+            <div class="div-title-alerts" style="border: solid black 1px;margin-top: 5px;padding: 10px;width: auto;">
+              <div style="width: 50%;display: flex;height: 40px;" class="span-sa3">
+                <strong class="title-info">{{dashboard.sa3 ? dashboard.sa3 : 'SA3'}}</strong>
+
+                <button matSuffix mat-icon-button class="edit-name-field sa3" aria-label="Clear"
+                  (click)="changeNameField('SA3')">
+                  <mat-icon>mode_edit</mat-icon>
+                </button>
+              </div>
+              <strong class="value-info">{{dashboard.saidaAnalogica}}</strong>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- MOBILE -->
+        <div class="container resultsContainer info-block-a" fxLayout="row wrap" fxLayout.xs="column" *ngIf="isMobile">
+          <div style="width: 100%;">
+            <div>
+              <span *ngIf="dashboard.notesCreateDate !== null">Ultima atualização do texto em {{dashboard.notesCreateDate}}</span>
+              <textarea matInput autocomplete="off" formControlName="notes" placeholder="Notas..."
+                style="border: solid black 2px;height: 150px;padding: 2%;width: 96%;"></textarea>
+            </div>
+          </div>
+        </div>
+        <!-- MOBILE -->
+        <div class="container resultsContainer info-block-a" fxLayout="row wrap" fxLayout.xs="column" *ngIf="isMobile">
+          <button mat-raised-button color="primary" (click)="saveNotes()" style="height: fit-content;">
+            <span>Salvar</span>
+          </button>
+        </div>
+
+
+
+
+        <!-- DESKTOP -->
+        <div style="width: 100%;display: flex;" *ngIf="!isMobile">
+          <div style="width: 50%;">
+
+            <div style="width: 100%;display: flex;">
+              <div class="div-title-alerts" style="width: 50%;">
+                <span class="title-info-group span-ed1">
+                  <div class="{{!dashboard.bits.bed1 ? 'alarme-red' : 'alarme-green'}}"></div>
+                  <span class="title-info-eds">{{dashboard.ed1 ? dashboard.ed1 : 'ED1'}}</span>
+
+                  <button matSuffix mat-icon-button class="edit-name-field ed1" aria-label="Clear"
+                    (click)="changeNameField('ED1')">
+                    <mat-icon>mode_edit</mat-icon>
+                  </button>
+
+                </span>
+                <span class="title-info-group span-ed2">
+                  <div class="{{!dashboard.bits.bed2 ? 'alarme-red' : 'alarme-green'}}"></div>
+                  <span class="title-info-eds">{{dashboard.ed2 ? dashboard.ed2 : 'ED2'}}</span>
+
+                  <button matSuffix mat-icon-button class="edit-name-field ed2" aria-label="Clear"
+                    (click)="changeNameField('ED2')">
+                    <mat-icon>mode_edit</mat-icon>
+                  </button>
+                </span>
+              </div>
+
+              <div class="div-title-alerts" style="width: 50%;">
+                <span class="title-info-group span-sd1">
+                  <div class="{{!dashboard.bits.bsd1 ? 'alarme-red' : 'alarme-green'}}"></div>
+                  <span class="title-info-eds">{{dashboard.sd1 ? dashboard.sd1 : 'SD1'}}</span>
+
+                  <button matSuffix mat-icon-button class="edit-name-field sd1" aria-label="Clear"
+                    (click)="changeNameField('SD1')">
+                    <mat-icon>mode_edit</mat-icon>
+                  </button>
+                </span>
+
+                <span class="title-info-group span-sd2">
+                  <div class="{{!dashboard.bits.bsd2 ? 'alarme-red' : 'alarme-green'}}"></div>
+                  <span class="title-info-eds">{{dashboard.sd2 ? dashboard.sd2 : 'SD2'}}</span>
+
+                  <button matSuffix mat-icon-button class="edit-name-field sd2" aria-label="Clear"
+                    (click)="changeNameField('SD2')">
+                    <mat-icon>mode_edit</mat-icon>
+                  </button>
+                </span>
+              </div>
+            </div>
+
+
+            <div style="width: 100%;display: flex;">
+              <div class="div-title-alerts" style="width: 50%;">
+                <span class="title-info-group span-ed3">
+                  <div class="{{!dashboard.bits.bed3 ? 'alarme-red' : 'alarme-green'}}"></div>
+                  <span class="title-info-eds">{{dashboard.ed3 ? dashboard.ed3 : 'ED3'}}</span>
+
+                  <button matSuffix mat-icon-button class="edit-name-field ed3" aria-label="Clear"
+                    (click)="changeNameField('ED3')">
+                    <mat-icon>mode_edit</mat-icon>
+                  </button>
+                </span>
+                <span class="title-info-group span-ed4">
+                  <div class="{{!dashboard.bits.bed4 ? 'alarme-red' : 'alarme-green'}}"></div>
+                  <span class="title-info-eds">{{dashboard.ed4 ? dashboard.ed4 : 'ED4'}}</span>
+
+                  <button matSuffix mat-icon-button class="edit-name-field ed4" aria-label="Clear"
+                    (click)="changeNameField('ED4')">
+                    <mat-icon>mode_edit</mat-icon>
+                  </button>
+                </span>
+              </div>
+
+              <div class="div-title-alerts" style="width: 50%;"></div>
+            </div>
+          </div>
+
+
+          <div style="width: 50%;">
+            <div class="div-title-alerts" style="border: solid black 1px;padding: 10px;width: 65%;">
+
+              <div style="width: 100%;display: flex;">
+
+                <div style="width: 50%;display: flex;height: 40px;" class="span-ea10">
+                  <strong class="title-info">{{dashboard.ea10 ? dashboard.ea10 : 'EA10'}}</strong>
+
+                  <button matSuffix mat-icon-button class="edit-name-field ea10" aria-label="Clear"
+                    (click)="changeNameField('EA10')">
+                    <mat-icon>mode_edit</mat-icon>
+                  </button>
+                </div>
+
+                <div style="float: right;display: flex;">
+                  <div class="{{!dashboard.bits.bAlertaMax ? 'alarme-red' : 'alarme-green'}}"></div>
+                  <span style="margin-left: 15px">Alerta Alto</span>
+                </div>
+              </div>
+
+              <div style="width: 100%;display: flex;">
+                <div style="width: 50%;">
+                  <strong class="value-info">{{dashboard.entradaAnalogica}}</strong>
+                </div>
+
+                <div style="float: right;display: flex;">
+                  <div class="{{!dashboard.bits.bAlertaMin ? 'alarme-red' : 'alarme-green'}}"></div>
+                  <span style="margin-left: 15px">Alerta Baixo</span>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="div-title-alerts" style="border: solid black 1px;padding: 10px;margin-top: 5px;width: 65%;">
+              <div style="width: 50%;display: flex;height: 40px;" class="span-sa3">
+                <strong class="title-info">{{dashboard.sa3 ? dashboard.sa3 : 'SA3'}}</strong>
+
+                <button matSuffix mat-icon-button class="edit-name-field sa3" aria-label="Clear"
+                  (click)="changeNameField('SA3')">
+                  <mat-icon>mode_edit</mat-icon>
+                </button>
+              </div>
+              <strong class="value-info">{{dashboard.saidaAnalogica}}</strong>
+            </div>
+
+
+          </div>
+        </div>
+
+        <!-- DESKTOP -->
+        <div class="container resultsContainer info-block-a" fxLayout="row wrap" fxLayout.xs="column" *ngIf="!isMobile">
+          <div style="width: 40%;">
+            <div>
+              <span *ngIf="dashboard.notesCreateDate !== null">Ultima atualização do texto em {{dashboard.notesCreateDate}}</span>
+              <textarea matInput autocomplete="off" formControlName="notes" placeholder="Notas..."
+                style="border: solid black 2px;height: 150px;padding: 10px;width: 90%;"></textarea>
+            </div>
+          </div>
+
+          <button mat-raised-button color="primary" (click)="saveNotes()" style="height: fit-content; bottom: -125px;">
+            <span>Salvar</span>
+          </button>
+
+        </div>
+
+
+
+
+      </div>
+    </section>
+  </div>
+
+  <h2 *ngIf="dashboard===null">Nenhuma informação encontrada para o disposivo selecionado.</h2>
+
+  <section class="body-wrapper body-content-bottom" fxLayout="row" fxLayoutGap="16px">
+    <svg class="mark">
+      <circle cx="16" cy="16" r="16" />
+    </svg>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="">voltar</button>
+  </section>
+</form>

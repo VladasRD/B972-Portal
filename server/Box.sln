@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.32510.428
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Box.Security", "Box.Security\Box.Security.csproj", "{FCF0F1C1-00DA-46C7-9C85-2E852E0F5C70}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Box.Common", "Box.Common\Box.Common.csproj", "{ED1B9F0D-42DB-4BA2-A562-06C4F7A50B95}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Box.CMS", "Box.CMS\Box.CMS.csproj", "{398C0639-1D49-4160-800D-57A940F63A57}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SmartGeoIot", "SmartGeoIot\SmartGeoIot.csproj", "{2B97AF2C-1FB5-462D-B42C-7F6B029505D5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{398C0639-1D49-4160-800D-57A940F63A57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{398C0639-1D49-4160-800D-57A940F63A57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{398C0639-1D49-4160-800D-57A940F63A57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B97AF2C-1FB5-462D-B42C-7F6B029505D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B97AF2C-1FB5-462D-B42C-7F6B029505D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B97AF2C-1FB5-462D-B42C-7F6B029505D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B97AF2C-1FB5-462D-B42C-7F6B029505D5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

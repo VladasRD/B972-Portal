@@ -29,14 +29,14 @@
           <div class="position">
             <div class="header">
               <mat-icon>timelapse</mat-icon>
-              <span class="icon-text">{{dashboard.date | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+              <span class="icon-text">Última Atualização {{dashboard.date | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
             </div>
           </div>
         </mat-card>
 
         <div class="container resultsContainer info-block-a" fxLayout="row wrap" fxLayout.xs="column">
           <mat-card class="card-info">
-            <mat-card-header style="overflow: hidden" fxFlex="75%">
+            <mat-card-header style="overflow: hidden" fxFlex="75%" matTooltip="Nível líquido">
               <mat-card-title>
                 <h5 class="title-info">Nível líquido</h5>
               </mat-card-title>
@@ -58,7 +58,7 @@
           </mat-card>
 
           <mat-card class="card-info">
-            <mat-card-header style="overflow: hidden" fxFlex="75%">
+            <mat-card-header style="overflow: hidden" fxFlex="75%" matTooltip="Temperatura">
               <mat-card-title>
                 <h5 class="title-info">Temperatura</h5>
               </mat-card-title>
@@ -78,7 +78,7 @@
           </mat-card>
 
           <mat-card class="card-info">
-            <mat-card-header style="overflow: hidden" fxFlex="75%">
+            <mat-card-header style="overflow: hidden" fxFlex="75%" matTooltip="Envio">
               <mat-card-title>
                 <h5 class="title-info">Envio</h5>
               </mat-card-title>
@@ -98,7 +98,7 @@
           </mat-card>
 
           <mat-card class="card-info card-info-final">
-            <mat-card-header style="overflow: hidden" fxFlex="75%">
+            <mat-card-header style="overflow: hidden" fxFlex="75%" matTooltip="Alimentação">
               <mat-card-title>
                 <h5 class="title-info">Alimentação</h5>
               </mat-card-title>

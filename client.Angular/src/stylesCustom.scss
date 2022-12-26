@@ -39,9 +39,8 @@ $customTheme: mat-light-theme($customTheme-primary, $customTheme-accent, $custom
   margin-right: 16px;
 }
 
-.category-color {
-  width: 15px; height: 15px; border: gray solid 1px;
-  margin-right: 8px;
+.customTheme .mat-input-element:disabled {
+  color: rgb(0, 0, 0.69);
 }
 
 .alert-border {
@@ -56,62 +55,6 @@ $customTheme: mat-light-theme($customTheme-primary, $customTheme-accent, $custom
 
 .info-border {
   border-left-color: gray;
-}
-
-.salePlan-status0 {
-  color: black;
-  border-color: black;  
-}
-.salePlan-status1 {
-  color: gray;
-  border-color: gray;
-}
-.salePlan-status2 {
-  color: #548235!important;
-  border-color:  #548235!important;
-}
-.salePlan-status3 {
-  color: #B23037;  
-  border-color:  #B23037!important;  
-}
-
-.period-status0 {
-  color: #548235!important;
-}
-.period-status1 {
-  color: mat-color($customTheme-warn)!important;
-}
-
-.category-level2 {
-  color: #B23037;  
-  background-color:#B23037;  
-}
-.category-level1 {
-  color: #E5A557;  
-  background-color:#E5A557;  
-}
-.category-level0 {
-  color: #517AE2;  
-  background-color: #517AE2;  
-}
-
-.category-tag {
-  padding: 3px;
-  background-color: transparent;  
-  font-size: 11px;
-  margin-top: 0px;
-  font-weight: normal;
-}
-
-.sale-plan-title {
-  align-self: center;
-  font-size: 18px;
-  line-height: 24px;  
-}
-
-.sale-plan-title span {
-  line-height: 24px;  
-  vertical-align: middle;
 }
 
 .loading-data-body-message {

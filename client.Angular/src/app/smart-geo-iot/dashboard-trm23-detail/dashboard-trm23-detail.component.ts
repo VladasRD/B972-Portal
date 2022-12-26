@@ -9,6 +9,9 @@ import { String } from 'typescript-string-operations';
 import { Bits } from '../Bits';
 import { GenericYesNoDialogComponent } from '../../common/generic-yes-no-dialog/generic-yes-no-dialog.component';
 import { Client } from '../client';
+import { environment } from '../../../environments/environment';
+import { ProjectEnum } from '../project';
+import { AuthService } from '../../common/auth.service';
 
 @Component({
   selector: 'app-dashboard-trm23-detail',
@@ -31,7 +34,8 @@ export class DashboardTrm23DetailComponent implements OnInit {
     private sgiService: SmartGeoIotService,
     private router: Router,
     private messageService: MessageService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private authService: AuthService
   ) {
     this.dashboard = new Dashboard();
     this.clientByDevice = new Client();
@@ -40,7 +44,9 @@ export class DashboardTrm23DetailComponent implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      'dateFilter': new FormControl(null)
+      'dateFilter': new FormControl(null),
+      'serialNumber': new FormControl({value: '', disabled: true}),
+      'model': new FormControl({value: '', disabled: true})
     });
 
     this.form.get('dateFilter').valueChanges.subscribe(val => {
@@ -51,7 +57,6 @@ export class DashboardTrm23DetailComponent implements OnInit {
 
     this.updateData();
     this.initializeSetTimeout();
-    this.getClientByDevice();
   }
 
   ngOnDestroy() {
@@ -62,6 +67,17 @@ export class DashboardTrm23DetailComponent implements OnInit {
     this.initialSetTimeout = 1;
   }
 
+  get userName(): string {
+    let userName = this.authService.signedUser.userClaims.find(c => c.claimType === 'given_name');
+    if (userName) {
+      return userName.claimValue;
+    }
+    return '';
+  }
+
+
+ 
+
   startSetTimeout() {
     if (this.initialSetTimeout === 1) {
       this.initialSetTimeout = 0;
@@ -70,14 +86,14 @@ export class DashboardTrm23DetailComponent implements OnInit {
   }
 
   back() {
-    this.seqNumber = (this.seqNumber - 1);
+    this.seqNumber = (this.seqNumber);
     this.navigation = 'back';
     this.finishSetTimeout();
     this.getDashboard();
   }
 
   next() {
-    this.seqNumber = (this.seqNumber + 1);
+    this.seqNumber = (this.seqNumber);
     this.navigation = 'next';
     this.finishSetTimeout();
     this.getDashboard();
@@ -86,7 +102,10 @@ export class DashboardTrm23DetailComponent implements OnInit {
   initializeSetTimeout() {
     (async () => {
       while (this.initialSetTimeout === 0) {
-        await new Promise(resolve => setTimeout(resolve, 10000));
+        await new Promise(resolve => setTimeout(resolve, environment.TIMEOUT_REQUEST_DASHBOARD));
+        
+        this.seqNumber = (this.seqNumber);
+        this.navigation = 'next';
         this.updateData();
       }
     })();
@@ -120,6 +139,10 @@ export class DashboardTrm23DetailComponent implements OnInit {
     return Number(this.dashboard.temperature);
   }
 
+  get deviceId() {
+    return this._deviceId;
+  }
+
   private getDashboard(): void {
 
     let _dateFilter: Date = null;
@@ -128,7 +151,7 @@ export class DashboardTrm23DetailComponent implements OnInit {
     }
 
     this._deviceId = this.route.snapshot.paramMap.get('id');
-    this.sgiService.getDashboard(this._deviceId, _dateFilter != null ? _dateFilter.toJSON() : <string>null, this.seqNumber, this.navigation).subscribe(d => {
+    this.sgiService.getDashboard(this._deviceId, _dateFilter != null ? _dateFilter.toJSON() : <string>null, this.seqNumber, this.navigation, 0, ProjectEnum.B972_P).subscribe(d => {
       this.dashboard = Object.assign(new Dashboard(), d);
 
       if (d === null) {
@@ -139,18 +162,16 @@ export class DashboardTrm23DetailComponent implements OnInit {
         this.showDashboard = true;
       }
 
-      if (this.seqNumber === 0) {
-        this.seqNumber = this.dashboard.seqNumber;
-      }
+      // if (this.seqNumber === 0) {
+      //   this.seqNumber = this.dashboard.seqNumber;
+      // }
+      this.seqNumber = this.dashboard.time;
+
+      this.form.get('serialNumber').setValue(this.dashboard.serialNumber);
+      this.form.get('model').setValue(this.dashboard.model);
 
       this.form.patchValue(this.dashboard);
       this.form.updateValueAndValidity();
-    });
-  }
-
-  private getClientByDevice(): void {
-    this.sgiService.getClientByDevice(this._deviceId).subscribe(d => {
-      this.clientByDevice = Object.assign(new Client(), d);
     });
   }
 

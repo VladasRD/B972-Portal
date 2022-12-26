@@ -14,7 +14,7 @@
 .icon-text {
     position: absolute;
     margin-top: 3px;
-    margin-left: 5px;
+    /* margin-left: 5px; */
     font-size: 14px;
 }
 
@@ -338,4 +338,9 @@ td > span {color: #FFF;}
     font-size: 27px;
     color: red;
     text-align: center;
+}
+
+::ng-deep .mat-tooltip {
+    font-size: 16px;
+    white-space: pre;
 }

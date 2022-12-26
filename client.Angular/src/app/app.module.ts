@@ -15,6 +15,7 @@ import { environment } from '../environments/environment';
 
 import { AppComponent } from './app.component';
 import { GenericYesNoDialogComponent } from './common/generic-yes-no-dialog/generic-yes-no-dialog.component';
+import { ChangeNameDialogComponent } from './common/change-name-dialog/change-name-dialog.component';
 
 import { SharedModule } from './common/shared.module';
 
@@ -59,7 +60,8 @@ registerLocaleData(localePt);
     OutComponent,
     LoginComponent,
     GenericYesNoDialogComponent,
-    ChangeDeviceDialogComponent
+    ChangeDeviceDialogComponent,
+    ChangeNameDialogComponent
   ],
   imports: [
     SharedModule,
@@ -122,7 +124,8 @@ registerLocaleData(localePt);
   ],
   entryComponents: [
     GenericYesNoDialogComponent,
-    ChangeDeviceDialogComponent
+    ChangeDeviceDialogComponent,
+    ChangeNameDialogComponent
   ],
   bootstrap: [AppComponent]
 })

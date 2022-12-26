@@ -18,6 +18,9 @@ namespace SmartGeoIot.Data
             modelBuilder.Entity<Client>()
                 .Property(b => b.Created)
                 .HasDefaultValueSql("getdate()");
+
+            modelBuilder.Entity<Message>()
+                .HasKey(aa => new { aa.Id, aa.DeviceId });
         }
         public virtual DbSet<Device> Devices { get; set; }
         public virtual DbSet<Message> Messages { get; set; }
@@ -31,5 +34,12 @@ namespace SmartGeoIot.Data
         public virtual DbSet<DeviceLocation> DevicesLocations { get; set; }
         public virtual DbSet<Outgoing> Outgoings { get; set; }
         public virtual DbSet<VW_Outgoing> VW_Outgoings { get; set; }
+        public virtual DbSet<ReportResil> ReportResil { get; set; }
+        public virtual DbSet<B972> B972s { get; set; }
+        public virtual DbSet<ProjectDevice> VW_DevicesByProjectCode { get; set; }
+        public virtual DbSet<ResetTotalPartial> ResetTotalPartials { get; set; }
+        public virtual DbSet<B982_S> B982_S { get; set; }
+        public virtual DbSet<MCond> MConds { get; set; }
     }
+    
 }

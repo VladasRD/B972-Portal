@@ -1,15 +1,7 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Box.Security.Data;
-using Box.Security.Models;
-using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using SmartGeoIot.ViewModels;
 using System.IO;
-using System.Globalization;
 
 // for excel
 using DocumentFormat.OpenXml;
@@ -74,8 +66,8 @@ namespace SmartGeoIot.Services
                     {
                         var row = new Row();
 
-                        AddCell($"{report.Date.ToShortDateString().ToString(culture)}", row, style: SGICellStyles.Border);
-                        AddCell($"{report.Date.ToShortTimeString().ToString(culture)}", row, style: SGICellStyles.Border);
+                        AddCell($"{report.Date.ToString("dd/MM/yyyy")}", row, style: SGICellStyles.Border);
+                        AddCell($"{report.Date.ToString("HH:mm")}", row, style: SGICellStyles.Border);
                         AddCell(EstadoDetectorNome(report.EstadoDetector).ToString(culture), row, style: SGICellStyles.Border);
                         AddCell(report.Alimentacao?.ToString(culture), row, style: SGICellStyles.Currency);
                         AddCell("V", row, style: SGICellStyles.Border);

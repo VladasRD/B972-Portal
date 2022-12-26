@@ -8,6 +8,7 @@ import { GrudList } from '../../common/grud-list';
 import { MessageService } from '../../common/message.service';
 import { MatDialog, MatBottomSheet } from '@angular/material';
 import { Utils } from '../utils';
+import { ProjectEnum } from '../project';
 
 @Component({
   selector: 'app-report-aguamon2-list',
@@ -16,10 +17,10 @@ import { Utils } from '../utils';
 })
 export class ReportAguamon2ListComponent extends GrudList<Report> implements OnInit {
   form: FormGroup;
-  displayedColumns: string[] = ['data', 'ed1', 'ed2', 'ed3', 'ed4', 'sd1', 'sd2', 'alertaMin', 'alertaMax', 'ea10', 'sa3'];
+  displayedColumns: string[] = ['data', 'hour', 'ed1', 'ed2', 'ed3', 'ed4', 'sd1', 'sd2', 'alertaMin', 'alertaMax', 'ea10', 'sa3'];
   isExporting = false;
   listDevicesFilter: DeviceRegistration[] = [];
-  currentProject = 21;
+  currentProject = ProjectEnum.B982_S;
 
   constructor(
     private sgiService: SmartGeoIotService,
@@ -69,7 +70,7 @@ export class ReportAguamon2ListComponent extends GrudList<Report> implements OnI
     if (this.form.get('endPeriod').value != null) {
       endPeriod = this.form.get('endPeriod').value;
     }
-    return this.sgiService.getReports(this.deviceFilter, startPeriod != null ? startPeriod.toJSON() : <string>null, endPeriod != null ? endPeriod.toJSON() : <string>null, this._skip, (this._skip + this._pageSize), false, c => { this._totalCount = c; });
+    return this.sgiService.getReports(this.deviceFilter, startPeriod != null ? startPeriod.toJSON() : <string>null, endPeriod != null ? endPeriod.toJSON() : <string>null, this._skip, (this._skip + this._pageSize), false, 0, c => { this._totalCount = c; });
   }
 
   searchReports(): void {

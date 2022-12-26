@@ -2,7 +2,7 @@
   <section class="body-wrapper">
 
     <div class="headline" fxLayout>
-      <!-- <button mat-icon-button routerLink="/sgi/relatorio">
+      <!-- <button mat-icon-button routerLink="/radiodados/relatorio">
         <mat-icon>arrow_back</mat-icon>
       </button> -->
       <div class="mat-h1">Relatório</div>
@@ -61,7 +61,14 @@
         <ng-container matColumnDef="data">
           <mat-header-cell fxFlex="16%" *matHeaderCellDef>Data</mat-header-cell>
           <mat-cell fxFlex="16%" *matCellDef="let element" class="small-font">
-            {{element.date | date: 'short'}}
+            {{element.date | date: 'dd/MM/yyyy'}}
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="hour">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef>Hora</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="small-font">
+            {{element.date | date: 'HH:mm'}}
           </mat-cell>
         </ng-container>
 

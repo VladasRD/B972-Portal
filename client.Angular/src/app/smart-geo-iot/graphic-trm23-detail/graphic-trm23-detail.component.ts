@@ -1,4 +1,4 @@
-import { Report } from './../Report';
+import { Report, ReportTypeEnum } from './../Report';
 import { ChartConfig } from './../../common/chartConfig';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -109,7 +109,7 @@ export class GraphicTrm23DetailComponent implements OnInit {
     }
 
     this.sgiService.getDataGraphic(
-      this._deviceId, startPeriod != null ? startPeriod.toJSON() : <string>null, endPeriod != null ? endPeriod.toJSON() : <string>null, 0, 1000).subscribe(d => {
+      this._deviceId, startPeriod != null ? startPeriod.toJSON() : <string>null, endPeriod != null ? endPeriod.toJSON() : <string>null, 0, 1000, this.filter).subscribe(d => {
 
         if (d === null) {
           return;
@@ -127,14 +127,21 @@ export class GraphicTrm23DetailComponent implements OnInit {
         }
 
         // this.lineChartData[0] = this.chartConfig.chartDataSetsOptions;
-        this.lineChartData[0].data = this.reports.map(t => Number(t[this.filter].replace(',', '.')));
+        this.lineChartData[0].data = this.reports.map(t => Number(t[ReportTypeEnum.enumNameColumnGraphic[Number(this.filter)]].replace(',', '.')));
         this.lineChartLabels = [];
 
         this.reports.forEach((r) => {
           const day = new Date(r.date);
-          const _day = day.getUTCDate() < 10 ? `0${day.getUTCDate()}` : day.getUTCDate();
-          const _month = day.getUTCMonth() + 1 < 10 ? `0${day.getUTCMonth() + 1}` : day.getUTCMonth() + 1;
-          const label = `${_day}/${_month}`;
+          // const _day = day.getUTCDate() < 10 ? `0${day.getUTCDate()}` : day.getUTCDate();
+          // const _month = day.getUTCMonth() + 1 < 10 ? `0${day.getUTCMonth() + 1}` : day.getUTCMonth() + 1;
+          // const label = `${_day}/${_month}`;
+
+          const _day = day.getDate() < 10 ? `0${day.getDate()}` : day.getDate();
+          const _month = day.getMonth() + 1 < 10 ? `0${day.getMonth() + 1}` : day.getMonth() + 1;
+          const _hour = day.getHours() < 10 ? `0${day.getHours()}` : day.getHours();
+          const _minute = day.getMinutes();
+          const label = `${_day}/${_month} ${_hour}:${_minute}`;
+          
           this.lineChartLabels.push(label);
         });
 

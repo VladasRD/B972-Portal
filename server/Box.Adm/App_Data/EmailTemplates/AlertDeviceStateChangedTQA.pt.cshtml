@@ -1,0 +1,575 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="pt-br">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Radiodados Analítica</title>
+
+	<style type="text/css">
+		/** RESET STYLES **/
+		p {
+			margin: 1em 0;
+		}
+
+		/*Yahoo paragraph fix*/
+		table td {
+			border-collapse: collapse;
+		}
+
+		/*This resolves the Outlook 07, 10, and Gmail td padding issue fix*/
+		img,
+		a img {
+			border: 0 none;
+			height: auto;
+			outline: none;
+			text-decoration: none;
+		}
+
+		/* Remove the borders that appear when linking images with "border:none" and "outline:none" */
+		@@-ms-viewport {
+			width: device-width;
+		}
+
+		body {
+			background-color: #FFFFFF;
+			height: 100% !important;
+			-webkit-text-size-adjust: 100%;
+			-webkit-font-smoothing: antialiased;
+			-ms-text-size-adjust: 100%;
+			margin: 0;
+			padding: 0;
+			width: 100% !important;
+		}
+
+		/* Prevent Webkit and Windows Mobile platforms from changing default font sizes, while not breaking desktop design. */
+		/** CLIENT-SPECIFIC STYLE **/
+		img {
+			-ms-interpolation-mode: bicubic;
+		}
+
+		/* Force IE to smoothly render resized images. */
+		table {
+			mso-table-lspace: 0pt;
+			mso-table-rspace: 0pt;
+		}
+
+		/* Remove spacing between tables in Outlook 2007 and up. */
+		.ReadMsgBody {
+			width: 100%;
+		}
+
+		.ExternalClass {
+			width: 100%;
+		}
+
+		/* Force Outlook.com to display emails at full width. */
+		p,
+		a,
+		li,
+		td,
+		blockquote {
+			mso-line-height-rule: exactly;
+		}
+
+		/* Force Outlook to render line heights as they're originally set. */
+		a[href^="tel"],
+		a[href^="sms"] {
+			color: inherit;
+			cursor: default;
+			text-decoration: none;
+		}
+
+		/* Force mobile devices to inherit declared link styles. */
+		.appleLinks a {
+			color: #555558;
+			text-decoration: none;
+		}
+
+		.appleLinksWhite a {
+			color: #ffffff;
+			text-decoration: none;
+		}
+
+		p,
+		a,
+		li,
+		td,
+		body,
+		table,
+		blockquote {
+			-ms-text-size-adjust: 100%;
+			-webkit-text-size-adjust: 100%;
+		}
+
+		/* Prevent Windows- and Webkit-based mobile platforms from changing declared text sizes. */
+		.ExternalClass,
+		.ExternalClass p,
+		.ExternalClass td,
+		.ExternalClass div,
+		.ExternalClass span,
+		.ExternalClass font {
+			line-height: 100%;
+		}
+
+		/* Force Outlook.com to display line heights normally. */
+		.link,
+		.link a {
+			color: #4e4e4f !important;
+		}
+
+		/** MOBILE STYLES **/
+		@@media only screen and (max-device-width: 600px),
+		screen and (max-width: 600px) {
+			body[yahoo] .imagem {
+				width: 100% !important;
+				height: auto !important;
+				min-height: 0 !important;
+				min-width: 0 !important
+			}
+
+			body[yahoo] .container {
+				max-width: 100% !important;
+				width: 100% !important;
+			}
+
+			body[yahoo] .center {
+				text-align: center !important;
+			}
+
+			body[yahoo] .column {
+				width: 4%;
+			}
+
+			body[yahoo] .heightAuto {
+				height: auto !important;
+				line-height: 20px !important;
+			}
+
+			body[yahoo] .clear {
+				display: none !important;
+			}
+
+			body[yahoo] .block {
+				display: block !important;
+			}
+
+			body[yahoo] .full-column {
+				max-width: 899px !important;
+				width: 100% !important;
+				display: table;
+			}
+		}
+
+		@@media only screen and (max-device-width: 480px),
+		screen and (max-width: 480px) {
+			body[yahoo] {
+				width: 100% !important;
+				min-width: 100% !important;
+				margin: 0 auto !important;
+			}
+
+			/* Force iOS Mail to render the email at full width & removes margins. */
+			body[yahoo] .logoBelgo {
+				width: 140px !important;
+				height: auto !important;
+			}
+
+			body[yahoo] .fonte18px {
+				font-size: 18px !important;
+				line-height: 24px !important;
+			}
+
+			body[yahoo] .fonte16px {
+				font-size: 16px !important;
+				line-height: 22px !important;
+			}
+
+			body[yahoo] .fonte15px {
+				font-size: 15px !important;
+				line-height: 21px !important;
+			}
+
+			body[yahoo] .fonte14px {
+				font-size: 14px !important;
+				line-height: 20px !important;
+			}
+
+			body[yahoo] .fonte12px {
+				font-size: 12px !important;
+				line-height: 18px !important;
+			}
+		}
+		.alarme-red div {
+			width: 18px;
+			height: 18px;
+			border: solid black;
+			background-color: red;
+			margin-left: 7px;
+		}
+		.alarme-blue div {
+			width: 18px;
+			height: 18px;
+			border: solid black;
+			background-color: blue;
+			margin-left: 7px;
+		}
+	</style>
+</head>
+
+<body style="margin: 0px; -webkit-text-size-adjust: none;" yahoo="fix">
+	<table width="600" cellspacing="0" cellpadding="0" align="center" border="0" bgcolor="#FFFFFF" class="container">
+		<tr>
+			<td height="20" style="font-size: 0;">&nbsp;</td>
+		</tr>
+		<tr>
+			<td>
+				<table width="100%" align="center" cellspacing="0" cellpadding="0" border="0" class="container">
+					<tr>
+						<td width="0" class="column" style="font-size: 0;">&nbsp;</td>
+						<td>
+							<table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+								<tr>
+									<td align="left" class="center">
+										<img src="@(Model.siteClientUrl)/images/custom/appLogo.png"
+											width="100" height="95" class="logoBelgo" alt="Radiodados"
+											style="max-width: 190px; margin: 0; padding: 0; display: block; border: 0; font-family: Arial; font-size: 20px; color: #555558;">
+									</td>
+									<td align="right"
+										style="font-family: Verdana, Arial; font-size: 20px; line-height: 22px; color: #08a;"
+										class="fonte16px">
+										<b>PORTAL RADIODADOS ANALÍTICA</b>
+									</td>
+								</tr>
+							</table>
+						</td>
+						<td width="0" class="column" style="font-size: 0;">&nbsp;</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td height="15" style="height: 15px; line-height: 15px; font-size: 0;">&nbsp;</td>
+		</tr>
+		<tr>
+			<td bgcolor="#08a" height="6" style="height: 6px; line-height: 6px; font-size: 0;">&nbsp;</td>
+		</tr>
+		<tr>
+			<td height="30" class="heightAuto" style="font-size: 0;">&nbsp;</td>
+		</tr>
+		<tr>
+			<td>
+				<table width="100%" align="center" cellspacing="0" cellpadding="0" border="0" class="container">
+					<tr>
+						<td align="center"
+							style="font-family: Verdana, Arial; font-size: 22px; line-height: 24px; color: #08a;"
+							class="fonte16px">
+							<b>Atenção!</b>
+						</td>
+					</tr>
+					<tr>
+						<td height="20" class="heightAuto" style="font-size: 0;">&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="center"
+							style="font-family: Verdana, Arial; font-size: 16px; line-height: 22px; color: #555558;"
+							class="fonte16px">
+							Veja abaixo as informações do alerta
+						</td>
+					</tr>
+					<tr>
+						<td height="20" class="heightAuto" style="font-size: 0;">&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="center"
+							style="font-family: Verdana, Arial; font-size: 16px; line-height: 22px; color: #555558;"
+							class="fonte16px">
+							Dispositivo: <strong>@Model.message.DeviceId - @Model.message.Name</strong>
+						</td>
+					</tr>
+					<tr>
+						<td height="20" class="heightAuto" style="font-size: 0;">&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="center"
+							style="font-family: Verdana, Arial; font-size: 16px; line-height: 22px; color: #555558;"
+							class="fonte16px">
+							Data: <strong>@Model.message.Date.AddHours(-3).ToString("dd/MM/yyyy HH:mm")</strong>
+						</td>
+					</tr>
+                    <tr>
+						<td height="20" class="heightAuto" style="font-size: 0;">&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="center"
+							style="font-family: Verdana, Arial; font-size: 16px; line-height: 22px; color: #555558;"
+							class="fonte16px">
+							Temperatura: <strong>@Model.message.Temperature °C</strong>
+							<br>
+							<div style="display: inline-flex;">
+								@{
+									if (Model.message.ReleBoolean.Rele6)
+									{
+										<label>Alerta 1</label><div style="width: 18px;height: 18px;border: solid black;background-color: blue;margin-left: 7px;"></div>
+									}
+									else
+									{
+										<label>Alerta 1</label><div style="width: 18px;height: 18px;border: solid black;background-color: red;margin-left: 7px;"></div>
+									}
+
+									if (Model.lastRele6 != null)
+									{
+										if (Model.lastRele6)
+										{
+											<label style="background-color: yellow; color: red;margin-left: 10px;display: inline-flex;">anterior: <div style="width: 18px;height: 18px;border: solid black;background-color: blue;margin-left: 7px;"></label>
+										}
+										else
+										{
+											<label style="background-color: yellow; color: red;margin-left: 10px;display: inline-flex;">anterior: <div style="width: 18px;height: 18px;border: solid black;background-color: red;margin-left: 7px;"></label>
+										}
+									}
+								}
+							</div>
+							<br>
+							<div style="display: inline-flex;">
+								@{
+									if (Model.message.ReleBoolean.Rele7)
+									{
+										<label>Alerta 2</label><div style="width: 18px;height: 18px;border: solid black;background-color: blue;margin-left: 7px;"></div>
+									}
+									else
+									{
+										<label>Alerta 2</label><div style="width: 18px;height: 18px;border: solid black;background-color: red;margin-left: 7px;"></div>
+									}
+
+									if (Model.lastRele7 != null)
+									{
+										if (Model.lastRele7)
+										{
+											<label style="background-color: yellow; color: red;margin-left: 10px;display: inline-flex;">anterior: <div style="width: 18px;height: 18px;border: solid black;background-color: blue;margin-left: 7px;"></label>
+										}
+										else
+										{
+											<label style="background-color: yellow; color: red;margin-left: 10px;display: inline-flex;">anterior: <div style="width: 18px;height: 18px;border: solid black;background-color: red;margin-left: 7px;"></label>
+										}
+									}
+								}
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td height="20" class="heightAuto" style="font-size: 0;">&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="center"
+							style="font-family: Verdana, Arial; font-size: 16px; line-height: 22px; color: #555558;"
+							class="fonte16px">
+							pH: <strong>@Model.message.Ph</strong>
+							<br>
+							<div style="display: inline-flex;">
+								@{
+									if (Model.message.ReleBoolean.Rele1)
+									{
+										<label>Alerta 1</label><div style="width: 18px;height: 18px;border: solid black;background-color: blue;margin-left: 7px;"></div>
+									}
+									else
+									{
+										<label>Alerta 1</label><div style="width: 18px;height: 18px;border: solid black;background-color: red;margin-left: 7px;"></div>
+									}
+
+									if (Model.lastRele1 != null)
+									{
+										if (Model.lastRele1)
+										{
+											<label style="background-color: yellow; color: red;margin-left: 10px;display: inline-flex;">anterior: <div style="width: 18px;height: 18px;border: solid black;background-color: blue;margin-left: 7px;"></label>
+										}
+										else
+										{
+											<label style="background-color: yellow; color: red;margin-left: 10px;display: inline-flex;">anterior: <div style="width: 18px;height: 18px;border: solid black;background-color: red;margin-left: 7px;"></label>
+										}
+									}
+								}
+							</div>
+							<br>
+							<div style="display: inline-flex;">
+								@{
+									if (Model.message.ReleBoolean.Rele2)
+									{
+										<label>Alerta 2</label><div style="width: 18px;height: 18px;border: solid black;background-color: blue;margin-left: 7px;"></div>
+									}
+									else
+									{
+										<label>Alerta 2</label><div style="width: 18px;height: 18px;border: solid black;background-color: red;margin-left: 7px;"></div>
+									}
+
+									if (Model.lastRele2 != null)
+									{
+										if (Model.lastRele2)
+										{
+											<label style="background-color: yellow; color: red;margin-left: 10px;display: inline-flex;">anterior: <div style="width: 18px;height: 18px;border: solid black;background-color: blue;margin-left: 7px;"></label>
+										}
+										else
+										{
+											<label style="background-color: yellow; color: red;margin-left: 10px;display: inline-flex;">anterior: <div style="width: 18px;height: 18px;border: solid black;background-color: red;margin-left: 7px;"></label>
+										}
+									}
+								}
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td height="20" class="heightAuto" style="font-size: 0;">&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="center"
+							style="font-family: Verdana, Arial; font-size: 16px; line-height: 22px; color: #555558;"
+							class="fonte16px">
+							Flúor: <strong>@Model.message.Fluor ppm</strong>
+							<br>
+							<div style="display: inline-flex;">
+								@{
+									if (Model.message.ReleBoolean.Rele5)
+									{
+										<label>Alerta 1</label><div style="width: 18px;height: 18px;border: solid black;background-color: blue;margin-left: 7px;"></div>
+									}
+									else
+									{
+										<label>Alerta 1</label><div style="width: 18px;height: 18px;border: solid black;background-color: red;margin-left: 7px;"></div>
+									}
+
+									if (Model.lastRele5 != null)
+									{
+										if (Model.lastRele5)
+										{
+											<label style="background-color: yellow; color: red;margin-left: 10px;display: inline-flex;">anterior: <div style="width: 18px;height: 18px;border: solid black;background-color: blue;margin-left: 7px;"></label>
+										}
+										else
+										{
+											<label style="background-color: yellow; color: red;margin-left: 10px;display: inline-flex;">anterior: <div style="width: 18px;height: 18px;border: solid black;background-color: red;margin-left: 7px;"></label>
+										}
+									}
+								}
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td height="20" class="heightAuto" style="font-size: 0;">&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="center"
+							style="font-family: Verdana, Arial; font-size: 16px; line-height: 22px; color: #555558;"
+							class="fonte16px">
+							Cloro: <strong>@Model.message.Cloro ppm</strong>
+							<br>
+							<div style="display: inline-flex;">
+								@{
+									if (Model.message.ReleBoolean.Rele3)
+									{
+										<label>Alerta 1</label><div style="width: 18px;height: 18px;border: solid black;background-color: blue;margin-left: 7px;"></div>
+									}
+									else
+									{
+										<label>Alerta 1</label><div style="width: 18px;height: 18px;border: solid black;background-color: red;margin-left: 7px;"></div>
+									}
+
+									if (Model.lastRele3 != null)
+									{
+										if (Model.lastRele3)
+										{
+											<label style="background-color: yellow; color: red;margin-left: 10px;display: inline-flex;">anterior: <div style="width: 18px;height: 18px;border: solid black;background-color: blue;margin-left: 7px;"></label>
+										}
+										else
+										{
+											<label style="background-color: yellow; color: red;margin-left: 10px;display: inline-flex;">anterior: <div style="width: 18px;height: 18px;border: solid black;background-color: red;margin-left: 7px;"></label>
+										}
+									}
+								}
+							</div>
+							<br>
+							<div style="display: inline-flex;">
+								@{
+									if (Model.message.ReleBoolean.Rele4)
+									{
+										<label>Alerta 2</label><div style="width: 18px;height: 18px;border: solid black;background-color: blue;margin-left: 7px;"></div>
+									}
+									else
+									{
+										<label>Alerta 2</label><div style="width: 18px;height: 18px;border: solid black;background-color: red;margin-left: 7px;"></div>
+									}
+
+									if (Model.lastRele4 != null)
+									{
+										if (Model.lastRele4)
+										{
+											<label style="background-color: yellow; color: red;margin-left: 10px;display: inline-flex;">anterior: <div style="width: 18px;height: 18px;border: solid black;background-color: blue;margin-left: 7px;"></label>
+										}
+										else
+										{
+											<label style="background-color: yellow; color: red;margin-left: 10px;display: inline-flex;">anterior: <div style="width: 18px;height: 18px;border: solid black;background-color: red;margin-left: 7px;"></label>
+										}
+									}
+								}
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td height="20" class="heightAuto" style="font-size: 0;">&nbsp;</td>
+					</tr>
+					<tr>
+						<td align="center"
+							style="font-family: Verdana, Arial; font-size: 16px; line-height: 22px; color: #555558;"
+							class="fonte16px">
+							Turbidez: <strong>@Model.message.Turbidez NTU</strong>
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td height="40" class="heightAuto" style="font-size: 0;">&nbsp;</td>
+		</tr>
+		<tr>
+			<td>
+				<table width="100%" align="center" cellspacing="0" cellpadding="0" border="0" class="container">
+					<tr>
+						<td width="20" class="column" style="font-size: 0;">&nbsp;</td>
+						<td>
+							<table width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+								<tr>
+									<td height="15" style="height: 15px; line-height: 15px; font-size: 0;">&nbsp;</td>
+								</tr>
+								<tr>
+									<td align="center"
+										style="font-family: Verdana, Arial; font-size: 16px; line-height: 22px; color: #08a;"
+										class="fonte16px">
+										<b>Obrigado,</b>
+									</td>
+								</tr>
+								<tr>
+									<td height="20" class="heightAuto" style="font-size: 0;">&nbsp;</td>
+								</tr>
+								<tr>
+									<td align="center"
+										style="font-family: Verdana, Arial; font-size: 16px; line-height: 22px; color: #08a;"
+										class="fonte16px">
+										<b>Radiodados Analítica</b>
+									</td>
+								</tr>
+								<tr>
+									<td height="15" style="height: 15px; line-height: 15px; font-size: 0;">&nbsp;</td>
+								</tr>
+							</table>
+						</td>
+						<td width="20" class="column" style="font-size: 0;">&nbsp;</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td height="20" style="font-size: 0;">&nbsp;</td>
+		</tr>
+	</table>
+</body>
+
+</html>

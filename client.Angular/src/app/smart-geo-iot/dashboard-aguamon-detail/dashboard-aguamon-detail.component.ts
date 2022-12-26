@@ -66,7 +66,7 @@ export class DashboardAguamonDetailComponent implements OnInit {
 
     this.sgiService.sendChangesDevice(this._deviceId, this.numeroEnvios, this.tempoTransmissao, this.tipoEnvio, 0)
       .subscribe(() => {
-        this.router.navigate(['./sgi/dashboard']);
+        this.router.navigate(['./radiodados/dashboard']);
         this.messageService.add('Alteração no dispositivo enviada.');
       },
         err => {

@@ -6,5 +6,6 @@ export class Firmware {
     proc: string;
     placa: string;
     vPlaca: string;
+    id: string;
     nAplic: string;
 }

@@ -30,6 +30,13 @@ export class Bits {
     bAlertaMax: boolean;
     modoFechado: boolean;
     modoAberto: boolean;
+
+    vazao: boolean;
+    totalizador: boolean;
+    qualidade: boolean;
+    alertaVazao: boolean;
+    alertaTotalizador: boolean;
+    alertaQualidade: boolean;
 }
 
 export class Rele {
@@ -38,4 +45,14 @@ export class Rele {
     rele3: string;
     rele4: string;
     rele5: string;
+}
+
+export class ReleBoolean {
+    rele1: boolean;
+    rele2: boolean;
+    rele3: boolean;
+    rele4: boolean;
+    rele5: boolean;
+    rele6: boolean;
+    rele7: boolean;
 }

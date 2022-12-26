@@ -2,7 +2,7 @@
   <section class="body-wrapper">
 
     <div class="headline" fxLayout>
-      <button mat-icon-button routerLink="/sgi/configuracoes">
+      <button mat-icon-button routerLink="/radiodados/configuracoes">
         <mat-icon>arrow_back</mat-icon>
       </button>
       <div class="mat-h1">Dispositivos</div>
@@ -57,6 +57,11 @@
         <ng-container matColumnDef="project">
           <mat-header-cell *matHeaderCellDef fxFlex="15%" fxFlex.lt-sm="15%">Projeto</mat-header-cell>
           <mat-cell *matCellDef="let element" fxFlex="15%" fxFlex.lt-sm="15%">{{element.project.name}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="deviceId">
+          <mat-header-cell *matHeaderCellDef fxFlex="12%" fxFlex.lt-sm="12%">Device Id</mat-header-cell>
+          <mat-cell *matCellDef="let element" fxFlex="12%" fxFlex.lt-sm="12%">{{element.device.id}}</mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

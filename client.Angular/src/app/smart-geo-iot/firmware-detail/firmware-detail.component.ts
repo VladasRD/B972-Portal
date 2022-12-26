@@ -40,7 +40,8 @@ export class FirmwareDetailComponent implements OnInit {
       'proc': new FormControl({ value: null, disabled: true }),
       'placa': new FormControl({ value: null, disabled: true }),
       'vPlaca': new FormControl({ value: null, disabled: true }),
-      'nAplic': new FormControl({ value: null, disabled: true })
+      'nAplic': new FormControl({ value: null, disabled: true }),
+      'id': new FormControl({ value: null, disabled: true })
     });
 
     this.getDeviceRegistration();

@@ -49,50 +49,72 @@ import { DashboardTrm23DetailComponent } from './dashboard-trm23-detail/dashboar
 import { ReportTrmListComponent } from './report-trm-list/report-trm-list.component';
 import { GraphicTrm23DetailComponent } from './graphic-trm23-detail/graphic-trm23-detail.component';
 import { DataUpdateComponent } from './data-update/data-update.component';
+import { ReportTspListComponent } from './report-tsp-list/report-tsp-list.component';
+import { GraphicTspDetailComponent } from './graphic-tsp-detail/graphic-tsp-detail.component';
+import { DashboardClamponDetailComponent } from './dashboard-clampon-detail/dashboard-clampon-detail.component';
+import { ReportTqaListComponent } from './report/report-tqa-list/report-tqa-list.component';
+import { SerialModelComponent } from './serial-model/serial-model.component';
+import { DashboardNavigationComponent } from './dashboard-navigation/dashboard-navigation.component';
+import { DashboardB978DetailComponent } from './dashboard-b978-detail/dashboard-b978-detail.component';
+import { ReportB978ListComponent } from './report/report-b978-list/report-b978-list.component';
+import { DashboardB987DetailComponent } from './dashboard-b987-detail/dashboard-b987-detail.component';
+import { ReportMcondListComponent } from './report-mcond-list/report-mcond-list.component';
+import { GraphicB987DetailComponent } from './graphic-b987-detail/graphic-b987-detail.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
-      { path: 'sgi/dashboard/:id', component: DashboardDetailComponent },
-      { path: 'sgi/dashboard/aguamon/:id', component: DashboardAguamonDetailComponent },
-      { path: 'sgi/dashboard/djrf/:id', component: DashboardDjrfDetailComponent },
-      { path: 'sgi/relatorio', component: ReportComponent, data: { shouldReuse: false } },
-      { path: 'sgi/relatorio/hidro', component: ReportListComponent, data: { shouldReuse: false } },
-      { path: 'sgi/relatorio/djrf', component: ReportDjrfListComponent, data: { shouldReuse: false } },
-      { path: 'sgi/relatorio/aguamon', component: ReportAguamonListComponent, data: { shouldReuse: false } },
-      { path: 'sgi/relatorio/aguamon2', component: ReportAguamon2ListComponent, data: { shouldReuse: false } },
-      { path: 'sgi/relatorio/trm', component: ReportTrmListComponent, data: { shouldReuse: false } },
-      { path: 'sgi/grafico', component: GraphicListComponent, data: { shouldReuse: true } },
-      { path: 'sgi/grafico/:id', component: GraphicDetailComponent },
-      { path: 'sgi/grafico/aguamon/:id', component: GraphicAguamonDetailComponent },
-      { path: 'sgi/grafico/djrf/:id', component: GraphicDjrfDetailComponent },
-      { path: 'sgi/grafico/pqa/:id', component: GraphicPqaDetailComponent },
-      { path: 'sgi/grafico/trm/:id', component: GraphicTrmDetailComponent },
-      { path: 'sgi/grafico/trm23/:id', component: GraphicTrm23DetailComponent },
-      { path: 'sgi/configuracoes', component: SettingsComponent, data: { shouldReuse: true } },
-      { path: 'sgi/clientes', component: ClientListComponent, data: { shouldReuse: true } },
-      { path: 'sgi/clientes/:id', component: ClientDetailComponent },
-      { path: 'sgi/ajuda', component: HelpComponent, data: { shouldReuse: true } },
-      { path: 'sgi/pacotes', component: PackageListComponent, data: { shouldReuse: true } },
-      { path: 'sgi/pacotes/:id', component: PackageDetailComponent },
-      { path: 'sgi/projetos', component: ProjectListComponent, data: { shouldReuse: true } },
-      { path: 'sgi/projetos/:id', component: ProjectDetailComponent },
-      { path: 'sgi/dispositivos', component: DeviceConfigListComponent, data: { shouldReuse: true } },
-      { path: 'sgi/dispositivos/:id', component: DeviceConfigDetailComponent },
-      { path: 'sgi/sub-clientes', component: SubClientListComponent, data: { shouldReuse: true } },
-      { path: 'sgi/sub-clientes/:id', component: SubClientDetailComponent },
-      { path: 'sgi/dados-firmware', component: FirmwareListComponent, data: { shouldReuse: false } },
-      { path: 'sgi/dados-firmware/:id', component: FirmwareDetailComponent },
-      { path: 'sgi/dados-atualizacao', component: DataUpdateComponent, data: { shouldReuse: false } },
+      { path: 'radiodados/dashboard/:id', component: DashboardDetailComponent },
+      { path: 'radiodados/dashboard/aguamon/:id', component: DashboardAguamonDetailComponent },
+      { path: 'radiodados/dashboard/djrf/:id', component: DashboardDjrfDetailComponent },
+      { path: 'radiodados/relatorio', component: ReportComponent, data: { shouldReuse: false } },
+      { path: 'radiodados/relatorio/hidro', component: ReportListComponent, data: { shouldReuse: false } },
+      { path: 'radiodados/relatorio/djrf', component: ReportDjrfListComponent, data: { shouldReuse: false } },
+      { path: 'radiodados/relatorio/aguamon', component: ReportAguamonListComponent, data: { shouldReuse: false } },
+      { path: 'radiodados/relatorio/aguamon2', component: ReportAguamon2ListComponent, data: { shouldReuse: false } },
+      { path: 'radiodados/relatorio/trm', component: ReportTrmListComponent, data: { shouldReuse: false } },
+      { path: 'radiodados/grafico', component: GraphicListComponent, data: { shouldReuse: true } },
+      { path: 'radiodados/grafico/:id', component: GraphicDetailComponent },
+      { path: 'radiodados/grafico/aguamon/:id', component: GraphicAguamonDetailComponent },
+      { path: 'radiodados/grafico/djrf/:id', component: GraphicDjrfDetailComponent },
+      { path: 'radiodados/grafico/pqa/:id', component: GraphicPqaDetailComponent },
+      { path: 'radiodados/grafico/trm/:id', component: GraphicTrmDetailComponent },
+      { path: 'radiodados/grafico/trm23/:id', component: GraphicTrm23DetailComponent },
+      { path: 'radiodados/grafico/tsp/:id', component: GraphicTspDetailComponent },
+      { path: 'radiodados/configuracoes', component: SettingsComponent, data: { shouldReuse: true } },
+      { path: 'radiodados/clientes', component: ClientListComponent, data: { shouldReuse: true } },
+      { path: 'radiodados/clientes/:id', component: ClientDetailComponent },
+      { path: 'radiodados/ajuda', component: HelpComponent, data: { shouldReuse: true } },
+      { path: 'radiodados/pacotes', component: PackageListComponent, data: { shouldReuse: true } },
+      { path: 'radiodados/pacotes/:id', component: PackageDetailComponent },
+      { path: 'radiodados/projetos', component: ProjectListComponent, data: { shouldReuse: true } },
+      { path: 'radiodados/projetos/:id', component: ProjectDetailComponent },
+      { path: 'radiodados/dispositivos', component: DeviceConfigListComponent, data: { shouldReuse: true } },
+      { path: 'radiodados/dispositivos/:id', component: DeviceConfigDetailComponent },
+      { path: 'radiodados/sub-clientes', component: SubClientListComponent, data: { shouldReuse: true } },
+      { path: 'radiodados/sub-clientes/:id', component: SubClientDetailComponent },
+      { path: 'radiodados/dados-firmware', component: FirmwareListComponent, data: { shouldReuse: false } },
+      { path: 'radiodados/dados-firmware/:id', component: FirmwareDetailComponent },
+      { path: 'radiodados/dados-atualizacao', component: DataUpdateComponent, data: { shouldReuse: false } },
       { path: 'redirect', component: RedirectionComponent },
-      { path: 'sgi/maps/:id', component: MapsViewComponent },
-      { path: 'sgi/relatorio-comercial', component: CommercialReportListComponent, data: { shouldReuse: true } },
-      { path: 'sgi/relatorio-comercial/:id', component: CommercialReportDetailComponent },
-      { path: 'sgi/relatorio-comercial-show/:id', component: CommercialReportShowComponent },
-      { path: 'sgi/dashboard/aguamon81/:id', component: DashboardAguamon81DetailComponent },
-      { path: 'sgi/dashboard/aguamon83/:id', component: DashboardAguamon83DetailComponent },
-      { path: 'sgi/dashboard/aguamon21/:id', component: DashboardAguamon21DetailComponent },
-      { path: 'sgi/dashboard/trm23/:id', component: DashboardTrm23DetailComponent }
+      { path: 'radiodados/maps/:id', component: MapsViewComponent },
+      { path: 'radiodados/relatorio-comercial', component: CommercialReportListComponent, data: { shouldReuse: true } },
+      { path: 'radiodados/relatorio-comercial/:id', component: CommercialReportDetailComponent },
+      { path: 'radiodados/relatorio-comercial-show/:id', component: CommercialReportShowComponent },
+      { path: 'radiodados/dashboard/aguamon81/:id', component: DashboardAguamon81DetailComponent },
+      { path: 'radiodados/dashboard/aguamon83/:id', component: DashboardAguamon83DetailComponent },
+      { path: 'radiodados/dashboard/aguamon21/:id', component: DashboardAguamon21DetailComponent },
+      { path: 'radiodados/dashboard/trm23/:id', component: DashboardTrm23DetailComponent },
+      { path: 'radiodados/relatorio/tsp', component: ReportTspListComponent },
+      { path: 'radiodados/dashboard/clampon/:id', component: DashboardClamponDetailComponent },
+      { path: 'radiodados/dashboard/b978/:id', component: DashboardB978DetailComponent },
+      { path: 'radiodados/relatorio/tqa', component: ReportTqaListComponent },
+      { path: 'radiodados/relatorio/b978', component: ReportB978ListComponent },
+
+      // PROJETO B987 - MCOND
+      { path: 'radiodados/dashboard/b987/:id', component: DashboardB987DetailComponent },
+      { path: 'radiodados/relatorio/b987', component: ReportMcondListComponent },
+      { path: 'radiodados/grafico/b987/:id', component: GraphicB987DetailComponent }
     ]),
     SharedModule,
     SecurityModule
@@ -145,7 +167,18 @@ import { DataUpdateComponent } from './data-update/data-update.component';
     DashboardTrm23DetailComponent,
     ReportTrmListComponent,
     GraphicTrm23DetailComponent,
-    DataUpdateComponent
+    DataUpdateComponent,
+    ReportTspListComponent,
+    GraphicTspDetailComponent,
+    DashboardClamponDetailComponent,
+    ReportTqaListComponent,
+    SerialModelComponent,
+    DashboardNavigationComponent,
+    DashboardB978DetailComponent,
+    ReportB978ListComponent,
+    DashboardB987DetailComponent,
+    ReportMcondListComponent,
+    GraphicB987DetailComponent
   ],
     // entryComponents: [
     //   BottomsheetComponent,

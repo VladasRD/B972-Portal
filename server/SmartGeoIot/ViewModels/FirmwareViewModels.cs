@@ -13,6 +13,7 @@ namespace SmartGeoIot.ViewModels
         public string Placa { get; set; }
         public string VPlaca { get; set; }
         public string NAplic { get; set; }
+        public string Id { get; set; }
         public string Pacotes { get; set; }
     }
     

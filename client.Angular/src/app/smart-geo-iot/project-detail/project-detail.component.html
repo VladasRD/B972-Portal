@@ -4,7 +4,7 @@
     <section class="body-wrapper">
 
       <div class="headline" fxLayout>
-        <button mat-icon-button routerLink="/sgi/projetos">
+        <button mat-icon-button routerLink="/radiodados/projetos">
           <mat-icon>arrow_back</mat-icon>
         </button>
         <div class="mat-h1">{{pageTitle}}</div>
@@ -18,6 +18,12 @@
       </div>
 
       <div fxLayout="column" fxLayoutGap="16px">
+        <mat-form-field appearance="outline">
+          <mat-label>Código (código de identificação único por projeto)</mat-label>
+          <input matInput autocomplete="off" required maxlength="500" formControlName="code">
+          <mat-error *ngIf="form.controls.code.invalid">Campo obrigatório</mat-error>
+        </mat-form-field>
+
         <mat-form-field appearance="outline">
           <mat-label>Nome</mat-label>
           <input matInput autocomplete="off" required maxlength="500" formControlName="name">
@@ -38,7 +44,7 @@
     <svg class="mark">
       <circle cx="16" cy="16" r="16" /></svg>
     <button mat-raised-button color="primary" type="submit" fxFlexLayout="start">salvar</button>
-    <button mat-button fxFlexLayout="start" type="button" routerLink="/sgi/projetos">voltar</button>
+    <button mat-button fxFlexLayout="start" type="button" routerLink="/radiodados/projetos">voltar</button>
   </section>
 
 </form>

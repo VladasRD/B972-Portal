@@ -138,9 +138,12 @@ namespace Box.Security.Services
                 _context.SaveChanges();
 
                 // delete old records
-                int years = _settings.KeepLogsForYears > 0 ? _settings.KeepLogsForYears : 1;
-                DateTime yearAgo = when.AddYears(-years);
-                _context.Database.ExecuteSqlCommand("DELETE FROM Logs WHERE Logs.[When] < {0}",  yearAgo);
+                // int years = _settings.KeepLogsForYears > 0 ? _settings.KeepLogsForYears : 1;
+                // DateTime yearAgo = when.AddYears(-years);
+                // _context.Database.ExecuteSqlCommand("DELETE FROM Logs WHERE Logs.[When] < {0}",  yearAgo);
+
+                // DateTime hoursAgo = when.AddHours(-12);
+                // _context.Database.ExecuteSqlCommand("DELETE FROM Logs WHERE Logs.[When] < {0}",  hoursAgo);
                 
             }
             catch (Exception) { }

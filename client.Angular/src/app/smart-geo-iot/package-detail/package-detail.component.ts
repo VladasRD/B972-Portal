@@ -86,7 +86,7 @@ export class PackageDetailComponent implements OnInit {
 
     this.sgiService.savePackage(this.package)
       .subscribe(() => {
-        this.router.navigate(['./sgi/pacotes']);
+        this.router.navigate(['./radiodados/pacotes']);
         this.messageService.add('Pacote salvo.');
       },
         err => {
@@ -98,7 +98,7 @@ export class PackageDetailComponent implements OnInit {
     this.sgiService.deletePackage(this.package.packageUId)
       .subscribe(() => {
         this.messageService.add('Pacote removido.');
-        this.router.navigate(['./sgi/pacotes']);
+        this.router.navigate(['./radiodados/pacotes']);
       },
         err => {
           this.messageService.addError(err.message + ' (removendo pacote)');

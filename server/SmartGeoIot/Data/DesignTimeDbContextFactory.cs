@@ -19,8 +19,9 @@ namespace SmartGeoIot.Data
     
             var connectionString = configuration.GetConnectionString("DefaultConnection");
     
-            builder.UseSqlServer(connectionString);
+            builder.UseSqlServer(connectionString, opts => opts.CommandTimeout((int)System.TimeSpan.FromMinutes(3).TotalSeconds));
             // builder.UseMySql(connectionString);
+
     
             return new SmartGeoIotContext(builder.Options);
         }

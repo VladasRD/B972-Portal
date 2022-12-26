@@ -8,6 +8,7 @@ import { GrudList } from '../../common/grud-list';
 import { MessageService } from '../../common/message.service';
 import { MatDialog, MatBottomSheet } from '@angular/material';
 import { Utils } from '../utils';
+import { ProjectEnum } from '../project';
 
 @Component({
   selector: 'app-report-aguamon-list',
@@ -21,7 +22,7 @@ export class ReportAguamonListComponent extends GrudList<Report>  implements OnI
   displayedColumns: string[] = [];
   isExporting = false;
   listDevicesFilter: DeviceRegistration[] = [];
-  currentProject = 81;
+  currentProject = ProjectEnum.AM_1leg;
 
   constructor(
     private sgiService: SmartGeoIotService,
@@ -37,10 +38,10 @@ export class ReportAguamonListComponent extends GrudList<Report>  implements OnI
     });
 
     this.form.get('deviceFilter').valueChanges.subscribe(val => {
-      if (this.currentProject === 81) {
-        this.displayedColumns = ['data', 'temperatura', 'ph', 'fluor', 'cloro', 'turbidez', 'rele1', 'rele2', 'rele3', 'rele4', 'rele5'];
+      if (this.currentProject === ProjectEnum.AM_1leg) {
+        this.displayedColumns = ['data', 'hour', 'temperatura', 'ph', 'fluor', 'cloro', 'turbidez', 'rele1', 'rele2', 'rele3', 'rele4', 'rele5'];
       } else {
-        this.displayedColumns = ['data', 'nivel', 'luz', 'temperatura', 'umidade', 'oxigenio', 'ph', 'condutividade'];
+        this.displayedColumns = ['data', 'hour', 'nivel', 'luz', 'temperatura', 'umidade', 'oxigenio', 'ph', 'condutividade'];
       }
     });
   }
@@ -71,7 +72,7 @@ export class ReportAguamonListComponent extends GrudList<Report>  implements OnI
     if (this.form.get('endPeriod').value != null) {
       endPeriod = this.form.get('endPeriod').value;
     }
-    return this.sgiService.getReports(this.deviceFilter, startPeriod != null ? startPeriod.toJSON() : <string>null, endPeriod != null ? endPeriod.toJSON() : <string>null, this._skip, (this._skip + this._pageSize), false, c => { this._totalCount = c; });
+    return this.sgiService.getReports(this.deviceFilter, startPeriod != null ? startPeriod.toJSON() : <string>null, endPeriod != null ? endPeriod.toJSON() : <string>null, this._skip, (this._skip + this._pageSize), false, 0, c => { this._totalCount = c; });
   }
 
   searchReports(): void {

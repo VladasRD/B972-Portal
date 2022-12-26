@@ -14,7 +14,7 @@
 .icon-text {
     position: absolute;
     margin-top: 3px;
-    margin-left: 5px;
+    /* margin-left: 5px; */
     font-size: 14px;
 }
 
@@ -263,4 +263,9 @@ td > span {color: #FFF;}
 
 .change-device {
     margin-top: 20px;
+}
+
+::ng-deep .mat-tooltip {
+    font-size: 16px;
+    white-space: pre;
 }

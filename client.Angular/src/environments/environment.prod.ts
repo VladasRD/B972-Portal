@@ -6,7 +6,7 @@ export const environment = {
 
   get IDENTITY_SERVER_URL() {
     // FOR PRODUTCION ENVIROMENT WHERE THE IDENTITY IS AT THE SAME HOST THAT THE CLIENT
-    return 'MSD_PRODUCTION_URL';
+    return 'https://rdportal.com.br';
   },
 
   get API_SERVER_URL() {
@@ -16,7 +16,8 @@ export const environment = {
   },
 
   get CLIENT_URL() {
-    return this.IDENTITY_SERVER_URL;
+    // return this.IDENTITY_SERVER_URL;
+    return window.location.origin;
   },
 
   get URL_MAPS() {
@@ -24,5 +25,7 @@ export const environment = {
     return 'https://www.google.com/maps/@?api=1&map_action=map&center=';
   },
 
-  REQUIRE_HTTPS: true
+  REQUIRE_HTTPS: false,
+
+  TIMEOUT_REQUEST_DASHBOARD: 30000
 };
