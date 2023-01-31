@@ -121,7 +121,7 @@ namespace SmartGeoIot.Services
             }
             if (currentMessage.PortFireState != lastMessage.PortFireState)
             {
-                whatsappBody += "Alarme de incêndio: " + (currentMessage.PortFireState ? "Em alarme" : "Normal") + Environment.NewLine;
+                whatsappBody += "Incêndio: " + (currentMessage.PortFireState ? "Acionado" : "Normal") + Environment.NewLine;
             }
             if (currentMessage.PortIvaAlarm != lastMessage.PortIvaAlarm)
             {
@@ -129,7 +129,7 @@ namespace SmartGeoIot.Services
             }
             if (currentMessage.PortIvaState != lastMessage.PortIvaState)
             {
-                whatsappBody += "Alarme IVA: " + (currentMessage.PortIvaState ? "Em alaarme" : "Normal") + Environment.NewLine;
+                whatsappBody += "IVA: " + (currentMessage.PortIvaState ? "Acionado" : "Normal") + Environment.NewLine;
             }
 
             foreach (var phone in phoneNumbers)

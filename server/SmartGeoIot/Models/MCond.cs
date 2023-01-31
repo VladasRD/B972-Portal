@@ -35,7 +35,8 @@ namespace SmartGeoIot.Models
                 if (this.PackInf == null)
                     return 0;
                     
-                return (this.InfLevel * this.LevelMultiplicationFactor) - this.LevelSubtractionFactor;
+                // return (this.InfLevel * this.LevelMultiplicationFactor) - this.LevelSubtractionFactor;
+                return this.InfLevel;
             }
         }
         
@@ -55,7 +56,8 @@ namespace SmartGeoIot.Models
                 if (this.PackSup == null)
                     return 0;
 
-                return (this.SupLevel * this.LevelMultiplicationFactor) - this.LevelSubtractionFactor;
+                // return (this.SupLevel * this.LevelMultiplicationFactor) - this.LevelSubtractionFactor;
+                return this.SupLevel;
             }
         }
         

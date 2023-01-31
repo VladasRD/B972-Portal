@@ -140,7 +140,7 @@
 
             <div style="width: 100%;display: flex;">
               <div style="width: 50%;">
-                <strong class="value-info">{{dashboard.mCond.supLevelLitros | number: '1.0-0'}}</strong>
+                <strong class="value-info">{{dashboard.mCond.supLevelLitros | number: '1.2-2'}}</strong>
               </div>
 
               <div style="float: right;display: flex;">
@@ -190,7 +190,7 @@
 
             <div style="width: 100%;display: flex;">
               <div style="width: 50%;">
-                <strong class="value-info">{{dashboard.mCond.infLevelLitros | number: '1.0-0'}}</strong>
+                <strong class="value-info">{{dashboard.mCond.infLevelLitros | number: '1.2-2'}}</strong>
               </div>
 
               <div style="float: right;display: flex;">
@@ -224,7 +224,7 @@
             <div style="width: 100%;display: flex;">
               <div style="float: right;display: flex;">
                 <div class="{{dashboard.mCond.portFireAlarm ? 'alarme-red' : 'alarme-green'}}"></div>
-                <span style="margin-left: 15px">Alarme de incêndio ativado - {{dashboard.mCond.portFireAlarm ? 'Não' : 'Sim'}}</span>
+                <!-- <span style="margin-left: 15px">Alarme de incêndio ativado - {{dashboard.mCond.portFireAlarm ? 'Não' : 'Sim'}}</span> -->
               </div>
             </div>
 
@@ -233,7 +233,7 @@
             <div style="width: 100%;display: flex;">
               <div style="float: right;display: flex;">
                 <div class="{{dashboard.mCond.portFireState ? 'alarme-red' : 'alarme-green'}}"></div>
-                <span style="margin-left: 15px">Alarme de incêndio - {{dashboard.mCond.portFireState ? 'Em alarme' : 'Normal'}}</span>
+                <span style="margin-left: 15px">Incêndio - {{dashboard.mCond.portFireState ? '(Acionado)' : '(Normal)'}}</span>
               </div>
             </div>
 
@@ -242,7 +242,7 @@
             <div style="width: 100%;display: flex;">
               <div style="float: right;display: flex;">
                 <div class="{{dashboard.mCond.portIvaAlarm ? 'alarme-red' : 'alarme-green'}}"></div>
-                <span style="margin-left: 15px">Alarme IVA ativado - {{dashboard.mCond.portIvaAlarm ? 'Não' : 'Sim'}}</span>
+                <!-- <span style="margin-left: 15px">Alarme IVA ativado - {{dashboard.mCond.portIvaAlarm ? 'Não' : 'Sim'}}</span> -->
               </div>
             </div>
 
@@ -251,7 +251,7 @@
             <div style="width: 100%;display: flex;">
               <div style="float: right;display: flex;">
                 <div class="{{dashboard.mCond.portIvaState ? 'alarme-red' : 'alarme-green'}}"></div>
-                <span style="margin-left: 15px">Alarme IVA - {{dashboard.mCond.portIvaState ? 'Em alarme' : 'Normal'}}</span>
+                <span style="margin-left: 15px">IVA - {{dashboard.mCond.portIvaState ? '(Acionado)' : '(Normal)'}}</span>
               </div>
             </div>
 

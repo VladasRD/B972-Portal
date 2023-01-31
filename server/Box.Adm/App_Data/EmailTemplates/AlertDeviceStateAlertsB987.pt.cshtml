@@ -330,7 +330,7 @@
 						</tr>
 					}
 
-					@if(Model.currentMessage.PortFireAlarm != Model.lastMessage.PortFireAlarm)
+					@* @if(Model.currentMessage.PortFireAlarm != Model.lastMessage.PortFireAlarm)
 					{
 						<tr>
 							<td align="center"
@@ -342,7 +342,7 @@
 						<tr>
 							<td height="20" class="heightAuto" style="font-size: 0;">&nbsp;</td>
 						</tr>
-					}
+					} *@
 
 					@if(Model.currentMessage.PortFireState != Model.lastMessage.PortFireState)
 					{
@@ -350,14 +350,14 @@
 							<td align="center"
 								style="font-family: Verdana, Arial; font-size: 16px; line-height: 22px; color: #555558;"
 								class="fonte16px">
-								Alarme de incêndio: <strong>@if(Model.currentMessage.PortFireState){<label>Em alarme</label>} else {<label>Normal</label>}</strong>
+								Incêndio: <strong>@if(Model.currentMessage.PortFireState){<label>Acionado</label>} else {<label>Normal</label>}</strong>
 							</td>
 						</tr>
 						<tr>
 							<td height="20" class="heightAuto" style="font-size: 0;">&nbsp;</td>
 						</tr>
 					}
-
+@* 
 					@if(Model.currentMessage.PortIvaAlarm != Model.lastMessage.PortIvaAlarm)
 					{
 						<tr>
@@ -370,7 +370,7 @@
 						<tr>
 							<td height="20" class="heightAuto" style="font-size: 0;">&nbsp;</td>
 						</tr>
-					}
+					} *@
 
 					@if(Model.currentMessage.PortIvaState != Model.lastMessage.PortIvaState)
 					{
@@ -378,7 +378,7 @@
 							<td align="center"
 								style="font-family: Verdana, Arial; font-size: 16px; line-height: 22px; color: #555558;"
 								class="fonte16px">
-								Alarme IVA: <strong>@if(Model.currentMessage.PortIvaState){<label>Em alarme</label>} else {<label>Normal</label>}</strong>
+								IVA: <strong>@if(Model.currentMessage.PortIvaState){<label>Acionado</label>} else {<label>Normal</label>}</strong>
 							</td>
 						</tr>
 						<tr>

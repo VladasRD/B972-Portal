@@ -21,11 +21,16 @@ namespace SmartGeoIot.Services
                 if (lastData == null)
                     return;
 
+                // if (currentData.SupAlarmLevelMax != lastData.SupAlarmLevelMax || currentData.SupAlarmLevelMin != lastData.SupAlarmLevelMin ||
+                // currentData.SupStateBomb != lastData.SupStateBomb || currentData.PortFireAlarm != lastData.PortFireAlarm ||
+                // currentData.PortFireState != lastData.PortFireState || currentData.PortIvaAlarm != lastData.PortIvaAlarm || currentData.PortIvaState != lastData.PortIvaState)
+                // {
+                //     canNotify = true;
+                // }
                 if (currentData.SupAlarmLevelMax != lastData.SupAlarmLevelMax || currentData.SupAlarmLevelMin != lastData.SupAlarmLevelMin ||
-                currentData.SupStateBomb != lastData.SupStateBomb || currentData.PortFireAlarm != lastData.PortFireAlarm ||
-                currentData.PortFireState != lastData.PortFireState || currentData.PortIvaAlarm != lastData.PortIvaAlarm || currentData.PortIvaState != lastData.PortIvaState)
+                currentData.SupStateBomb != lastData.SupStateBomb || currentData.PortFireState != lastData.PortFireState || currentData.PortIvaState != lastData.PortIvaState)
                 {
-                    canNotify = true;    
+                    canNotify = true;
                 }
 
                 if (canNotify)
@@ -108,12 +113,12 @@ namespace SmartGeoIot.Services
                         if (McondType.Superior == deviceType)
                         {
                             // se já existe, vai para o próximo registro
-                            if (dataB987.PackSup != null)
-                            {
-                                if (!VerifyExistPack(deviceFather, deviceType, message.Data))
-                                    _result = CreateMCOnd(deviceFather, deviceType, message, _alarmLevelMin, _alarmLevelMax, _stateBomb, _level, _portFireAlarm, _portIvaAlarm, _portFireState, _portIvaState);
-                                continue;
-                            }
+                            // if (dataB987.PackSup != null)
+                            // {
+                            //     if (!VerifyExistPack(deviceFather, deviceType, message.Data))
+                            _result = CreateMCOnd(deviceFather, deviceType, message, _alarmLevelMin, _alarmLevelMax, _stateBomb, _level, _portFireAlarm, _portIvaAlarm, _portFireState, _portIvaState);
+                            //     continue;
+                            // }
                             
                             // se não existe, atualiza o registro existente com o pacote
                             dataB987.PackSup = message.Data;
@@ -126,12 +131,12 @@ namespace SmartGeoIot.Services
                         if (McondType.Inferior == deviceType)
                         {
                             // se já existe, vai para o próximo registro
-                            if (dataB987.PackInf != null)
-                            {
-                                if (!VerifyExistPack(deviceFather, deviceType, message.Data))
-                                    _result = CreateMCOnd(deviceFather, deviceType, message, _alarmLevelMin, _alarmLevelMax, _stateBomb, _level, _portFireAlarm, _portIvaAlarm, _portFireState, _portIvaState);
-                                continue;
-                            }
+                            // if (dataB987.PackInf != null)
+                            // {
+                            //     if (!VerifyExistPack(deviceFather, deviceType, message.Data))
+                            _result = CreateMCOnd(deviceFather, deviceType, message, _alarmLevelMin, _alarmLevelMax, _stateBomb, _level, _portFireAlarm, _portIvaAlarm, _portFireState, _portIvaState);
+                            //     continue;
+                            // }
                             
                             // se não existe, atualiza o registro existente com o pacote
                             dataB987.PackInf = message.Data;
@@ -143,12 +148,12 @@ namespace SmartGeoIot.Services
                         if (McondType.Portaria == deviceType)
                         {
                             // se já existe, vai para o próximo registro
-                            if (dataB987.PackPort != null)
-                            {
-                                if (!VerifyExistPack(deviceFather, deviceType, message.Data))
-                                    _result = CreateMCOnd(deviceFather, deviceType, message, _alarmLevelMin, _alarmLevelMax, _stateBomb, _level, _portFireAlarm, _portIvaAlarm, _portFireState, _portIvaState);
-                                continue;
-                            }
+                            // if (dataB987.PackPort != null)
+                            // {
+                            //     if (!VerifyExistPack(deviceFather, deviceType, message.Data))
+                            _result = CreateMCOnd(deviceFather, deviceType, message, _alarmLevelMin, _alarmLevelMax, _stateBomb, _level, _portFireAlarm, _portIvaAlarm, _portFireState, _portIvaState);
+                            //     continue;
+                            // }
                             
                             // se não existe, atualiza o registro existente com o pacote
                             dataB987.PackPort = message.Data;
