@@ -1,7 +1,14 @@
-# Client.Angular
+# IMPORTANT NOTE
+THIS PROJECT __NEEDS TO USE Node 14 version__.
+IF YOUR NOTE VERSION IS DIFFERENT THAN THAT:
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.  
-You will need the server/backoffice application running for the client to work.
+1. Install nvs (`https://github.com/jasongin/nvs/releases`)
+2. Go to /client.angular folder
+3. `nvs add 14`
+4. `nvs use node/14.21.2/x64`
+5. `npm install`
+6. `ng build box-material`
+7. `ng build`
 
 ## Development server
 

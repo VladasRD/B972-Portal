@@ -35,7 +35,8 @@ namespace SmartGeoIot.Models
                 if (this.PackInf == null)
                     return 0;
                     
-                return (this.InfLevel * this.LevelMultiplicationFactor) - this.LevelSubtractionFactor;
+                // return (this.InfLevel * this.LevelMultiplicationFactor) - this.LevelSubtractionFactor;
+                return this.InfLevel;
             }
         }
         
@@ -55,7 +56,8 @@ namespace SmartGeoIot.Models
                 if (this.PackSup == null)
                     return 0;
 
-                return (this.SupLevel * this.LevelMultiplicationFactor) - this.LevelSubtractionFactor;
+                // return (this.SupLevel * this.LevelMultiplicationFactor) - this.LevelSubtractionFactor;
+                return this.SupLevel;
             }
         }
         
@@ -154,6 +156,245 @@ namespace SmartGeoIot.Models
                 return 5209.302;
             }
         }
+
+        [NotMapped]
+        public string SupStateBombNameClass
+        {
+            get
+            {
+                if (this.PackSup == null)
+                    return "";
+
+                
+                return (this.SupStateBomb ? "alarme-yellow" : "alarme-gray");
+            }
+        }
+
+        [NotMapped]
+        public string SupStateBombText
+        {
+            get
+            {
+                if (this.PackSup == null)
+                    return "";
+
+                
+                return (this.SupStateBomb ? "Bomba Ligada" : "Bomba Desligada");
+            }
+        }
+
+        [NotMapped]
+        public string SupStateBombTextReport
+        {
+            get
+            {
+                return this.SupStateBombText.Replace("Bomba", "");
+            }
+        }
+
+        [NotMapped]
+        public string AlarmeSupText
+        {
+            get
+            {
+                if (this.PackSup == null)
+                    return string.Empty;
+
+                if (!this.SupAlarmLevelMin && !this.SupAlarmLevelMax)
+                {
+                    return "Nível Normal";
+                }
+
+                if (this.SupAlarmLevelMin && !this.SupAlarmLevelMax)
+                {
+                    return "Nível Baixo";
+                }
+
+                if (!this.SupAlarmLevelMin && this.SupAlarmLevelMax)
+                {
+                    return "Nível Alto";
+                }
+
+                return string.Empty;
+            }
+        }
+
+        [NotMapped]
+        public string AlarmeSupTextReport
+        {
+            get
+            {
+                return this.AlarmeSupText.Replace("Nível ", "");
+            }
+        }
+
+        [NotMapped]
+        public string AlarmeSupNameClass
+        {
+            get
+            {
+                if (this.PackSup == null)
+                    return string.Empty;
+
+                if (!this.SupAlarmLevelMin && !this.SupAlarmLevelMax)
+                {
+                    return "alarme-green";
+                }
+
+                if (this.SupAlarmLevelMin && !this.SupAlarmLevelMax)
+                {
+                    return "alarme-red";
+                }
+
+                if (!this.SupAlarmLevelMin && this.SupAlarmLevelMax)
+                {
+                    return "alarme-yellow";
+                }
+
+                return string.Empty;
+            }
+        }
+
+        [NotMapped]
+        public string AlarmeInfText
+        {
+            get
+            {
+                if (this.PackInf == null)
+                    return string.Empty;
+
+                if (!this.InfAlarmLevelMin && !this.InfAlarmLevelMax)
+                {
+                    return "Nível Normal";
+                }
+
+                if (this.InfAlarmLevelMin && !this.InfAlarmLevelMax)
+                {
+                    return "Nível Baixo";
+                }
+
+                if (!this.InfAlarmLevelMin && this.InfAlarmLevelMax)
+                {
+                    return "Nível Alto";
+                }
+
+                return string.Empty;
+            }
+        }
+
+        [NotMapped]
+        public string AlarmeInfTextReport
+        {
+            get
+            {
+                return this.AlarmeInfText.Replace("Nível ", "");
+            }
+        }
+
+        [NotMapped]
+        public string AlarmeInfNameClass
+        {
+            get
+            {
+                if (this.PackSup == null)
+                    return string.Empty;
+
+                if (!this.InfAlarmLevelMin && !this.InfAlarmLevelMax)
+                {
+                    return "alarme-green";
+                }
+
+                if (this.InfAlarmLevelMin && !this.InfAlarmLevelMax)
+                {
+                    return "alarme-red";
+                }
+
+                if (!this.InfAlarmLevelMin && this.InfAlarmLevelMax)
+                {
+                    return "alarme-yellow";
+                }
+
+                return string.Empty;
+            }
+        }
+
+        [NotMapped]
+        public string PortFireAlarmNameClass
+        {
+            get
+            {
+                if (this.PackPort == null)
+                    return string.Empty;
+
+                return (this.PortFireAlarm ? "alarme-red" : "alarme-green");
+            }
+        }
+
+        [NotMapped]
+        public string PortFireStateNameClass
+        {
+            get
+            {
+                if (this.PackPort == null)
+                    return string.Empty;
+
+                return (this.PortFireState ? "alarme-red" : "alarme-green");
+            }
+        }
+
+        [NotMapped]
+        public string PortFireStateText
+        {
+            get
+            {
+                if (this.PackPort == null)
+                    return string.Empty;
+
+                return (this.PortFireState ? "Acionado" : "Normal");
+            }
+        }
+
+        [NotMapped]
+        public string PortIvaAlarmNameClass
+        {
+            get
+            {
+                if (this.PackPort == null)
+                    return string.Empty;
+
+                return (this.PortIvaAlarm ? "alarme-red" : "alarme-green");
+            }
+        }
+
+        [NotMapped]
+        public string PortIvaStateNameClass
+        {
+            get
+            {
+                if (this.PackPort == null)
+                    return string.Empty;
+
+                return (this.PortIvaState ? "alarme-red" : "alarme-green");
+            }
+        }
+
+        [NotMapped]
+        public string PortIvaStateText
+        {
+            get
+            {
+                if (this.PackPort == null)
+                    return string.Empty;
+
+                return (this.PortIvaState ? "Acionado" : "Normal");
+            }
+        }
+
+        [NotMapped]
+        public string Latitude { get; set; }
+
+        [NotMapped]
+        public string Longitude { get; set; }
         
     }
 }

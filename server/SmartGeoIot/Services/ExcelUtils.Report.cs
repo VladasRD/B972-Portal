@@ -616,8 +616,8 @@ namespace SmartGeoIot.Services
 
                     // create columns
                     Columns columns = new Columns();
-                    columns.Append(CreateColumnData(1, 2, 15));
-                    columns.Append(CreateColumnData(2, 8, 20));
+                    columns.Append(CreateColumnData(1, 1, 20));
+                    columns.Append(CreateColumnData(2, 11, 22));
                     // columns.Append(CreateColumnData(6, 6, 30));
                     worksheetPart.Worksheet.Append(columns);
 
@@ -649,28 +649,31 @@ namespace SmartGeoIot.Services
                     {
                         var row = new Row();
 
-                        AddCell(report.Date != default(DateTime) ? report.Date.ToString("dd/MM/yyyy") : "", row, style: SGICellStyles.Border);
-                        AddCell(report.Date != default(DateTime) ? report.Date.ToString("HH:mm:ss") : "", row, style: SGICellStyles.Border);
+                        AddCell(report.Date != default(DateTime) ? report.Date.ToString("dd/MM/yyyy HH:mm:ss") : "", row, style: SGICellStyles.Border);
 
                         if (packSup)
                         {
-                            AddCell(report.SupLevelLitros.ToString("0"), row, style: SGICellStyles.Border);
-                            AddCell(!report.SupAlarmLevelMax ? "Não" : "Sim", row, style: SGICellStyles.Border);
-                            AddCell(!report.SupAlarmLevelMin ? "Não" : "Sim", row, style: SGICellStyles.Border);
+                            AddCell(String.Format("{0:N}", report.SupLevelLitros), row, style: SGICellStyles.Border);
+                            AddCell(report.AlarmeSupTextReport, row, style: SGICellStyles.Border);
                         }
 
                         if (packInf)
                         {
-                            AddCell(report.InfLevelLitros.ToString("0"), row, style: SGICellStyles.Border);
-                            AddCell(!report.InfAlarmLevelMax ? "Não" : "Sim", row, style: SGICellStyles.Border);
-                            AddCell(!report.InfAlarmLevelMin ? "Não" : "Sim", row, style: SGICellStyles.Border);
+                            AddCell(String.Format("{0:N}", report.InfLevelLitros), row, style: SGICellStyles.Border);
+                            AddCell(report.AlarmeInfTextReport, row, style: SGICellStyles.Border);
                         }
+
+                        if (packSup)
+                            AddCell(report.SupStateBombTextReport, row, style: SGICellStyles.Border);
 
                         if (packPort)
                         {
-                            AddCell(report.PortFireAlarm ? "Normal" : "Em alarme", row, style: SGICellStyles.Border);
-                            AddCell(report.PortIvaAlarm ? "Normal" : "Em alarme", row, style: SGICellStyles.Border);
+                            AddCell(report.PortFireStateText, row, style: SGICellStyles.Border);
+                            AddCell(report.PortIvaStateText, row, style: SGICellStyles.Border);
                         }
+
+                        AddCell(report.Latitude, row, style: SGICellStyles.Border);
+                        AddCell(report.Longitude, row, style: SGICellStyles.Border);
 
                         sheetData.AppendChild(row);
                     }
@@ -693,25 +696,28 @@ namespace SmartGeoIot.Services
             //2º Linha
             var row = new Row();
             AddCell("Data", row, style: SGICellStyles.TableHeader);
-            AddCell("Hora", row, style: SGICellStyles.TableHeader);
 
             if (packSup)
             {
-                AddCell("Nível Superior (litros)", row, style: SGICellStyles.TableHeader);
-                AddCell("Alerta Alto", row, style: SGICellStyles.TableHeader);
-                AddCell("Alerta Baixo", row, style: SGICellStyles.TableHeader);
+                AddCell("Nível", row, style: SGICellStyles.TableHeader);
+                AddCell("Alerta de Nível Superior", row, style: SGICellStyles.TableHeader);
             }
             if (packInf)
             {
-                AddCell("Nível Inferior (litros)", row, style: SGICellStyles.TableHeader);
-                AddCell("Alerta Alto", row, style: SGICellStyles.TableHeader);
-                AddCell("Alerta Baixo", row, style: SGICellStyles.TableHeader);
+                AddCell("Nível", row, style: SGICellStyles.TableHeader);
+                AddCell("Alerta de Nível Inferior", row, style: SGICellStyles.TableHeader);
             }
+            if (packSup)
+                AddCell("Bomba", row, style: SGICellStyles.TableHeader);
+
             if (packPort)
             {
                 AddCell("Alarme de Incêndio", row, style: SGICellStyles.TableHeader);
                 AddCell("Alarme IVA", row, style: SGICellStyles.TableHeader);
             }
+            
+            AddCell("Latitude", row, style: SGICellStyles.TableHeader);
+            AddCell("Longitude", row, style: SGICellStyles.TableHeader);
 
             sheetData.AppendChild(row);
         }

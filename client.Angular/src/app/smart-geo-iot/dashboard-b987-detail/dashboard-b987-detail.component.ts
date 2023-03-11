@@ -6,8 +6,6 @@ import { MatDialog } from '@angular/material';
 import { SmartGeoIotService } from './../smartgeoiot.service';
 import { MessageService } from '../../common/message.service';
 import { String } from 'typescript-string-operations';
-import { Bits } from '../Bits';
-import { GenericYesNoDialogComponent } from '../../common/generic-yes-no-dialog/generic-yes-no-dialog.component';
 import { Client } from '../client';
 import { environment } from '../../../environments/environment';
 import { ProjectEnum } from '../project';
@@ -31,12 +29,6 @@ export class DashboardB987DetailComponent implements OnInit {
   seqNumber = 0;
   navigation = null;
 
-  edit_ed1 = false;
-  edit_ed2 = false;
-  edit_ed3 = false;
-  edit_ed4 = false;
-  edit = false;
-
   constructor(
     private route: ActivatedRoute,
     private sgiService: SmartGeoIotService,
@@ -47,25 +39,13 @@ export class DashboardB987DetailComponent implements OnInit {
   ) {
     this.dashboard = new Dashboard();
     this.clientByDevice = new Client();
-    // this.dashboard.bits = new Bits();
   }
 
   ngOnInit() {
     this.form = new FormGroup({
-      'tipoEnvio': new FormControl(''),
-      'numeroEnvios': new FormControl(''),
-      'tempoTransmissao': new FormControl(''),
       'dateFilter': new FormControl(null),
       'serialNumber': new FormControl({value: '', disabled: true}),
-      'model': new FormControl({value: '', disabled: true}),
-      'notes': new FormControl(''),
-      'ed1': new FormControl({value: '', disabled: true}),
-      'ed2': new FormControl({value: '', disabled: true}),
-      'ed3': new FormControl({value: '', disabled: true}),
-      'ed4': new FormControl({value: '', disabled: true}),
-      'sd1': new FormControl({value: '', disabled: true}),
-      'sd2': new FormControl({value: '', disabled: true}),
-      'ea10': new FormControl({value: '', disabled: true})
+      'model': new FormControl({value: '', disabled: true})
     });
 
     this.form.get('dateFilter').valueChanges.subscribe(val => {
@@ -152,50 +132,10 @@ export class DashboardB987DetailComponent implements OnInit {
     return Number(this.dashboard.temperature);
   }
 
-  // sendChanges() {
-  //   if (this.form.get('numeroEnvios').value > 140) {
-  //     this.form.get('numeroEnvios').setValue(140);
-  //   }
-
-  //   this.sgiService.sendChangesDevice(this._deviceId, this.numeroEnvios, this.tempoTransmissao, this.tipoEnvio, 0)
-  //     .subscribe(() => {
-  //       this.router.navigate(['./radiodados/dashboard']);
-  //       this.messageService.add('Alteração no dispositivo enviada.');
-  //     },
-  //       err => {
-  //         this.messageService.addError(err.message + ' (alterando informações do dispositivo)');
-  //       });
-  // }
-
-  // openConfirmDeleteDialog(): void {
-  //   const dialogRef = this.dialog.open(GenericYesNoDialogComponent, {
-  //     width: '80%',
-  //     data: { title: 'Alterar informações do dispositivo', message: 'Tem certeza que deseja enviar as alterações do dispositivo?', isWarn: true }
-  //   });
-
-  //   dialogRef.afterClosed().subscribe(result => {
-  //     if (result === true) {
-  //       this.sendChanges();
-  //     }
-  //   });
-  // }
-
-  private get numeroEnvios() {
-    return this.form.get('numeroEnvios').value;
-  }
-
-  private get tempoTransmissao() {
-    return this.form.get('tempoTransmissao').value;
-  }
-
   get dateFilter() {
     return this.form.get('dateFilter').value;
   }
-
-  private get tipoEnvio() {
-    return this.form.get('tipoEnvio').value;
-  }
-
+  
   private get notes() {
     return this.form.get('notes').value;
   }

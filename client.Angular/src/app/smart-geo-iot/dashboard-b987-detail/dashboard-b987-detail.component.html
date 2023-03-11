@@ -45,8 +45,7 @@
           <div class="title-page">
             <p class="icon-text" *ngIf="showDashboard">
               <mat-icon style="vertical-align: bottom;">timelapse</mat-icon>
-              <label style="margin-left: 5px;">Última Atualização {{dashboard.date | date: 'dd/MM/yyyy
-                HH:mm:ss'}}</label>
+              <label style="margin-left: 5px;">Última Atualização {{dashboard.date | date: 'dd/MM/yyyy HH:mm:ss'}}</label>
             </p>
           </div>
 
@@ -84,8 +83,7 @@
               </p>
               <p class="icon-text" *ngIf="showDashboard">
                 <mat-icon style="vertical-align: bottom;">timelapse</mat-icon>
-                <label style="margin-left: 5px;">Última Atualização {{dashboard.date | date: 'dd/MM/yyyy
-                  HH:mm:ss'}}</label>
+                <label style="margin-left: 5px;">Última Atualização {{dashboard.date | date: 'dd/MM/yyyy HH:mm:ss'}}</label>
               </p>
               <p>
                 <strong *ngIf="!showDashboard" style="color: red; font-size: 16px;">Nenhuma informação encontrada para o
@@ -120,32 +118,16 @@
         <!-- PACOTE SUPERIOR -->
         <div class="div-title-alerts" style="width: 50%;" *ngIf="dashboard.mCond.packSup != null">
           <div class="div-title-alerts" style="border: solid black 1px;padding: 10px;width: auto;">
-
-            <div style="width: 100%;display: flex;">
-
-              <div style="width: 50%;display: flex;height: 40px;" class="span-ea10">
-                <strong class="title-info">Nível (litros)</strong>
-
-                <button matSuffix mat-icon-button class="edit-name-field ea10" aria-label="Clear"
-                  (click)="changeNameField('EA10')">
-                  <mat-icon>mode_edit</mat-icon>
-                </button>
-              </div>
-
-              <div style="float: right;display: flex;">
-                <div class="{{dashboard.mCond.supAlarmLevelMax ? 'alarme-red' : 'alarme-green'}}"></div>
-                <span style="margin-left: 15px">Alerta Alto</span>
-              </div>
-            </div>
+            <h3>Caixa Superior</h3>
 
             <div style="width: 100%;display: flex;">
               <div style="width: 50%;">
-                <strong class="value-info">{{dashboard.mCond.supLevelLitros | number: '1.0-0'}}</strong>
+                <strong class="value-info">{{dashboard.mCond.supLevelLitros | number: '1.2-2'}} <label style="font-size: small;">Litros</label></strong>
               </div>
 
               <div style="float: right;display: flex;">
-                <div class="{{dashboard.mCond.supAlarmLevelMin ? 'alarme-red' : 'alarme-green'}}"></div>
-                <span style="margin-left: 15px">Alerta Baixo</span>
+                <div class="{{dashboard.mCond.alarmeSupNameClass}}"></div>
+                <span style="margin-left: 15px">{{dashboard.mCond.alarmeSupText}}</span>
               </div>
             </div>
 
@@ -155,8 +137,8 @@
               </div>
 
               <div style="float: right;display: flex;">
-                <div class="{{dashboard.mCond.supStateBomb ? 'alarme-yellow' : 'alarme-gray'}}"></div>
-                <span style="margin-left: 15px">{{dashboard.mCond.supStateBomb ? 'Estado da Bomba - Ligada' : 'Estado da Bomba - Normal'}}</span>
+                <div class="{{dashboard.mCond.supStateBombNameClass}}"></div>
+                <span style="margin-left: 15px">{{dashboard.mCond.supStateBombText}}</span>
               </div>
             </div>
 
@@ -170,45 +152,18 @@
         <!-- PACOTE INFERIOR -->
         <div class="div-title-alerts" style="width: 50%;" *ngIf="dashboard.mCond.packInf != null">
           <div class="div-title-alerts" style="border: solid black 1px;padding: 10px;width: auto;">
-
-            <div style="width: 100%;display: flex;">
-
-              <div style="width: 50%;display: flex;height: 40px;" class="span-ea10">
-                <strong class="title-info">Nível (litros)</strong>
-
-                <button matSuffix mat-icon-button class="edit-name-field ea10" aria-label="Clear"
-                  (click)="changeNameField('EA10')">
-                  <mat-icon>mode_edit</mat-icon>
-                </button>
-              </div>
-
-              <div style="float: right;display: flex;">
-                <div class="{{dashboard.mCond.infAlarmLevelMax ? 'alarme-red' : 'alarme-green'}}"></div>
-                <span style="margin-left: 15px">Alerta Alto</span>
-              </div>
-            </div>
+            <h3>Caixa Inferior</h3>
 
             <div style="width: 100%;display: flex;">
               <div style="width: 50%;">
-                <strong class="value-info">{{dashboard.mCond.infLevelLitros | number: '1.0-0'}}</strong>
+                <strong class="value-info">{{dashboard.mCond.infLevelLitros | number: '1.2-2'}} <label style="font-size: small;">Litros</label></strong>
               </div>
 
               <div style="float: right;display: flex;">
-                <div class="{{dashboard.mCond.infAlarmLevelMin ? 'alarme-red' : 'alarme-green'}}"></div>
-                <span style="margin-left: 15px">Alerta Baixo</span>
+                <div class="{{dashboard.mCond.alarmeInfNameClass}}"></div>
+                <span style="margin-left: 15px">{{dashboard.mCond.alarmeInfText}}</span>
               </div>
             </div>
-
-            <!-- <div style="width: 100%;display: flex;margin-top: 10px;">
-              <div style="width: 50%;">
-                <strong class="value-info"></strong>
-              </div>
-
-              <div style="float: right;display: flex;">
-                <div class="{{dashboard.mCond.infStateBomb ? 'alarme-yellow' : 'alarme-gray'}}"></div>
-                <span style="margin-left: 15px">{{dashboard.mCond.infStateBomb ? 'Estado da Bomba - Ligada' : 'Estado da Bomba - Normal'}}</span>
-              </div>
-            </div> -->
 
           </div>
         </div>
@@ -220,11 +175,11 @@
         <!-- PACOTE PORTARIA -->
         <div class="div-title-alerts" style="width: 50%;" *ngIf="dashboard.mCond.packPort != null">
           <div class="div-title-alerts" style="border: solid black 1px;padding: 10px;width: auto;">
+            <h3>Alarmes</h3>
 
             <div style="width: 100%;display: flex;">
               <div style="float: right;display: flex;">
-                <div class="{{dashboard.mCond.portFireAlarm ? 'alarme-red' : 'alarme-green'}}"></div>
-                <span style="margin-left: 15px">Alarme de incêndio ativado - {{dashboard.mCond.portFireAlarm ? 'Não' : 'Sim'}}</span>
+                <div class="{{dashboard.mCond.portFireAlarmNameClass}}"></div>
               </div>
             </div>
 
@@ -232,8 +187,8 @@
 
             <div style="width: 100%;display: flex;">
               <div style="float: right;display: flex;">
-                <div class="{{dashboard.mCond.portFireState ? 'alarme-red' : 'alarme-green'}}"></div>
-                <span style="margin-left: 15px">Alarme de incêndio - {{dashboard.mCond.portFireState ? 'Em alarme' : 'Normal'}}</span>
+                <div class="{{dashboard.mCond.portFireStateNameClass}}"></div>
+                <span style="margin-left: 15px">Incêndio - ({{dashboard.mCond.portFireStateText}})</span>
               </div>
             </div>
 
@@ -241,8 +196,7 @@
 
             <div style="width: 100%;display: flex;">
               <div style="float: right;display: flex;">
-                <div class="{{dashboard.mCond.portIvaAlarm ? 'alarme-red' : 'alarme-green'}}"></div>
-                <span style="margin-left: 15px">Alarme IVA ativado - {{dashboard.mCond.portIvaAlarm ? 'Não' : 'Sim'}}</span>
+                <div class="{{dashboard.mCond.portIvaAlarmNameClass}}"></div>
               </div>
             </div>
 
@@ -250,176 +204,13 @@
 
             <div style="width: 100%;display: flex;">
               <div style="float: right;display: flex;">
-                <div class="{{dashboard.mCond.portIvaState ? 'alarme-red' : 'alarme-green'}}"></div>
-                <span style="margin-left: 15px">Alarme IVA - {{dashboard.mCond.portIvaState ? 'Em alarme' : 'Normal'}}</span>
+                <div class="{{dashboard.mCond.portIvaStateNameClass}}"></div>
+                <span style="margin-left: 15px">IVA - ({{dashboard.mCond.portIvaStateText}})</span>
               </div>
             </div>
 
           </div>
         </div>
-
-
-
-        <!-- ABAIXO CONTEÚDO -->
-
-
-        <!-- <div>
-          <p>Portaria, alarme fogo: <b>{{dashboard.mCond.portFireAlarm}}</b></p>
-          <p>Portaria, alarme IVA: <b>{{dashboard.mCond.portIvaAlarm}}</b></p>
-
-          <p>Inferior, nível mínimo: <b>{{dashboard.mCond.infAlarmLevelMin}}</b></p>
-          <p>Inferior, nível máximo: <b>{{dashboard.mCond.infAlarmLevelMax}}</b></p>
-          <p *ngIf="dashboard.mCond.packInf != null">Inferior, nível: <b></b>{{dashboard.mCond.infLevel}}</p>
-
-          <p>Superior, nível mínimo: <b>{{dashboard.mCond.supAlarmLevelMin}}</b></p>
-          <p>Superior, nível máximo: <b>{{dashboard.mCond.supAlarmLevelMax}}</b></p>
-          <p>Superior, estado da bomba: <b>{{dashboard.mCond.supStateBomb}}</b></p>
-          <p *ngIf="dashboard.mCond.packSup != null">Superior, nível: <b>{{dashboard.mCond.supLevel}}</b></p>
-
-          <p>Inferior, subtipo: <b>{{dashboard.mCond.packInfSubType}}</b></p>
-          <p>Portaria, subtipo: <b>{{dashboard.mCond.packPortSubType}}</b></p>
-          <p>Superior, subtipo: <b>{{dashboard.mCond.packSupSubType}}</b></p>
-
-          <p>Inferior, pacote: <b>{{dashboard.mCond.packInf}}</b></p>
-          <p>Portaria, pacote: <b>{{dashboard.mCond.packPort}}</b></p>
-          <p>Superior, pacote: <b>{{dashboard.mCond.packSup}}</b></p>
-          
-        </div> -->
-
-
-
-
-
-
-        <!-- DESKTOP -->
-        <!-- <div style="width: 100%;display: flex;" *ngIf="!isMobile">
-          <div style="width: 50%;">
-
-            <div style="width: 100%;display: flex;">
-              <div class="div-title-alerts" style="width: 50%;">
-                <span class="title-info-group span-ed1">
-                  <div class="{{!dashboard.bits.bed1 ? 'alarme-red' : 'alarme-green'}}"></div>
-                  <span class="title-info-eds">{{dashboard.ed1 ? dashboard.ed1 : 'ED1'}}</span>
-
-                  <button matSuffix mat-icon-button class="edit-name-field ed1" aria-label="Clear"
-                    (click)="changeNameField('ED1')">
-                    <mat-icon>mode_edit</mat-icon>
-                  </button>
-
-                </span>
-                <span class="title-info-group span-ed2">
-                  <div class="{{!dashboard.bits.bed2 ? 'alarme-red' : 'alarme-green'}}"></div>
-                  <span class="title-info-eds">{{dashboard.ed2 ? dashboard.ed2 : 'ED2'}}</span>
-
-                  <button matSuffix mat-icon-button class="edit-name-field ed2" aria-label="Clear"
-                    (click)="changeNameField('ED2')">
-                    <mat-icon>mode_edit</mat-icon>
-                  </button>
-                </span>
-              </div>
-
-              <div class="div-title-alerts" style="width: 50%;">
-                <span class="title-info-group span-sd1">
-                  <div class="{{!dashboard.bits.bsd1 ? 'alarme-red' : 'alarme-green'}}"></div>
-                  <span class="title-info-eds">{{dashboard.sd1 ? dashboard.sd1 : 'SD1'}}</span>
-
-                  <button matSuffix mat-icon-button class="edit-name-field sd1" aria-label="Clear"
-                    (click)="changeNameField('SD1')">
-                    <mat-icon>mode_edit</mat-icon>
-                  </button>
-                </span>
-
-                <span class="title-info-group span-sd2">
-                  <div class="{{!dashboard.bits.bsd2 ? 'alarme-red' : 'alarme-green'}}"></div>
-                  <span class="title-info-eds">{{dashboard.sd2 ? dashboard.sd2 : 'SD2'}}</span>
-
-                  <button matSuffix mat-icon-button class="edit-name-field sd2" aria-label="Clear"
-                    (click)="changeNameField('SD2')">
-                    <mat-icon>mode_edit</mat-icon>
-                  </button>
-                </span>
-              </div>
-            </div>
-
-
-            <div style="width: 100%;display: flex;">
-              <div class="div-title-alerts" style="width: 50%;">
-                <span class="title-info-group span-ed3">
-                  <div class="{{!dashboard.bits.bed3 ? 'alarme-red' : 'alarme-green'}}"></div>
-                  <span class="title-info-eds">{{dashboard.ed3 ? dashboard.ed3 : 'ED3'}}</span>
-
-                  <button matSuffix mat-icon-button class="edit-name-field ed3" aria-label="Clear"
-                    (click)="changeNameField('ED3')">
-                    <mat-icon>mode_edit</mat-icon>
-                  </button>
-                </span>
-                <span class="title-info-group span-ed4">
-                  <div class="{{!dashboard.bits.bed4 ? 'alarme-red' : 'alarme-green'}}"></div>
-                  <span class="title-info-eds">{{dashboard.ed4 ? dashboard.ed4 : 'ED4'}}</span>
-
-                  <button matSuffix mat-icon-button class="edit-name-field ed4" aria-label="Clear"
-                    (click)="changeNameField('ED4')">
-                    <mat-icon>mode_edit</mat-icon>
-                  </button>
-                </span>
-              </div>
-
-              <div class="div-title-alerts" style="width: 50%;"></div>
-            </div>
-          </div>
-
-
-          <div style="width: 50%;">
-            <div class="div-title-alerts" style="border: solid black 1px;padding: 10px;width: 65%;">
-
-              <div style="width: 100%;display: flex;">
-
-                <div style="width: 50%;display: flex;height: 40px;" class="span-ea10">
-                  <strong class="title-info">{{dashboard.ea10 ? dashboard.ea10 : 'EA10'}}</strong>
-
-                  <button matSuffix mat-icon-button class="edit-name-field ea10" aria-label="Clear"
-                    (click)="changeNameField('EA10')">
-                    <mat-icon>mode_edit</mat-icon>
-                  </button>
-                </div>
-
-                <div style="float: right;display: flex;">
-                  <div class="{{!dashboard.bits.bAlertaMax ? 'alarme-red' : 'alarme-green'}}"></div>
-                  <span style="margin-left: 15px">Alerta Alto</span>
-                </div>
-              </div>
-
-              <div style="width: 100%;display: flex;">
-                <div style="width: 50%;">
-                  <strong class="value-info">{{dashboard.entradaAnalogica}}</strong>
-                </div>
-
-                <div style="float: right;display: flex;">
-                  <div class="{{!dashboard.bits.bAlertaMin ? 'alarme-red' : 'alarme-green'}}"></div>
-                  <span style="margin-left: 15px">Alerta Baixo</span>
-                </div>
-              </div>
-
-            </div>
-
-            <div class="div-title-alerts" style="border: solid black 1px;padding: 10px;margin-top: 5px;width: 65%;">
-              <div style="width: 50%;display: flex;height: 40px;" class="span-sa3">
-                <strong class="title-info">{{dashboard.sa3 ? dashboard.sa3 : 'SA3'}}</strong>
-
-                <button matSuffix mat-icon-button class="edit-name-field sa3" aria-label="Clear"
-                  (click)="changeNameField('SA3')">
-                  <mat-icon>mode_edit</mat-icon>
-                </button>
-              </div>
-              <strong class="value-info">{{dashboard.saidaAnalogica}}</strong>
-            </div>
-
-
-          </div>
-        </div> -->
-
-
-
 
 
       </div>

@@ -787,8 +787,7 @@ namespace SmartGeoIot.Models
         {
             get
             {
-                var _value = this.Package.Substring(0, 2);
-                var _bitsByteToBinary = GetBitsByteToBinary(9);
+                var _bitsByteToBinary = GetBitsByteToBinary(0);
                 return Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(3, 1)));
             }
         }
@@ -798,8 +797,7 @@ namespace SmartGeoIot.Models
         {
             get
             {
-                var _value = this.Package.Substring(1, 2);
-                var _bitsByteToBinary = GetBitsByteToBinary(9);
+                var _bitsByteToBinary = GetBitsByteToBinary(1);
                 return (Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(6, 1))), Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(5, 1))));
             }
         }
@@ -821,8 +819,8 @@ namespace SmartGeoIot.Models
             get
             {
                 var _value = this.Package.Substring(0, 2);
-                var _bitsByteToBinary = GetBitsByteToBinary(9);
-                return (Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(6, 1))), Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(5, 1))), Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(4, 1))), Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(3, 1))));
+                var _bitsByteToBinary = GetBitsByteToBinary(0);
+                return (Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(7, 1))), Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(6, 1))), Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(5, 1))), Convert.ToBoolean(int.Parse(_bitsByteToBinary.Substring(4, 1))));
             }
         }
 

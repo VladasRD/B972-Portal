@@ -64,22 +64,26 @@ export class ReportMcondListComponent extends GrudList<MCond> implements OnInit 
     this.displayedColumns.push('hour');
 
     if (data.packSup !== null) {
-      // verifica pacote portaria
+      // verifica pacote superior
       this.displayedColumns.push('supLevel');
-      this.displayedColumns.push('supAlertMax');
-      this.displayedColumns.push('supAlertMin');
+      this.displayedColumns.push('supAlert');
     }
     if (data.packInf !== null) {
-      // verifica pacote portaria
+      // verifica pacote inferior
       this.displayedColumns.push('infLevel');
-      this.displayedColumns.push('infAlarmLevelMax');
-      this.displayedColumns.push('infAlarmLevelMin');
+      this.displayedColumns.push('infAlert');
+    }
+    if (data.packSup !== null) {
+      // verifica pacote superior
+      this.displayedColumns.push('bomb');
     }
     if (data.packPort !== null) {
-      // verifica pacote superior
+      // verifica pacote portaria
       this.displayedColumns.push('portFireAlarm');
       this.displayedColumns.push('portIvaAlarm');
     }
+
+    this.displayedColumns.push('geo');
   }
 
   getResults(): Observable<MCond[]> {

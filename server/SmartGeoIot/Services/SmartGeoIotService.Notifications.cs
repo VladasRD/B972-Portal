@@ -94,10 +94,15 @@ namespace SmartGeoIot.Services
             data.lastMessage = lastMessage;
             var emailBody = await _templateService.RenderTemplate("AlertDeviceStateAlertsB987", data, null, "pt");
 
+            // teste para ver quantos emails serão notificados
+            _log.Log("SendStateAlertsChangedDeviceB987.Emails", JsonConvert.SerializeObject(emails), true);
+            await _emailSender.SendEmailAsync("rafaelestevaojp@gmail.com", "Emails que vão ser notificados Mcond", JsonConvert.SerializeObject(emails));
+            // teste para ver quantos emails serão notificados
+            
             foreach (var email in emails)
             {            
                 await _emailSender.SendEmailAsync(email, subject, emailBody);
-                _log.Log("Email:SendStateAlertsChangedDeviceB987", JsonConvert.SerializeObject(emailBody), true);
+                _log.Log("Email:SendStateAlertsChangedDeviceB987", email, true);
             }
 
             var whatsappBody = "PORTAL RADIODADOS ANALÍTICA" + Environment.NewLine + Environment.NewLine + "Atenção!" + Environment.NewLine + Environment.NewLine +
@@ -121,7 +126,7 @@ namespace SmartGeoIot.Services
             }
             if (currentMessage.PortFireState != lastMessage.PortFireState)
             {
-                whatsappBody += "Alarme de incêndio: " + (currentMessage.PortFireState ? "Em alarme" : "Normal") + Environment.NewLine;
+                whatsappBody += "Incêndio: " + (currentMessage.PortFireState ? "Acionado" : "Normal") + Environment.NewLine;
             }
             if (currentMessage.PortIvaAlarm != lastMessage.PortIvaAlarm)
             {
@@ -129,13 +134,13 @@ namespace SmartGeoIot.Services
             }
             if (currentMessage.PortIvaState != lastMessage.PortIvaState)
             {
-                whatsappBody += "Alarme IVA: " + (currentMessage.PortIvaState ? "Em alaarme" : "Normal") + Environment.NewLine;
+                whatsappBody += "IVA: " + (currentMessage.PortIvaState ? "Acionado" : "Normal") + Environment.NewLine;
             }
 
             foreach (var phone in phoneNumbers)
             {
                 await SendWhatsappMessage(data.deviceName, whatsappBody, phone);
-                _log.Log("Whatsapp:SendStateAlertsChangedDeviceB987", JsonConvert.SerializeObject(whatsappBody), true);
+                _log.Log("Whatsapp:SendStateAlertsChangedDeviceB987", phone, true);
             }
         }
 

@@ -60,92 +60,86 @@
       <mat-table [dataSource]="results" class="mat-elevation-z4" style="margin-bottom: 20px; clear:both;">
 
         <ng-container matColumnDef="date">
-          <mat-header-cell fxFlex="10%" *matHeaderCellDef>Data</mat-header-cell>
-          <mat-cell fxFlex="10%" *matCellDef="let element" class="small-font">
-            {{element.date | date: 'dd/MM/yyyy'}}
+          <mat-header-cell fxFlex="12%" *matHeaderCellDef>Data</mat-header-cell>
+          <mat-cell fxFlex="12%" *matCellDef="let element">
+            {{element.date | date: 'dd/MMM/yyyy'}}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="hour">
-          <mat-header-cell fxFlex="8%" *matHeaderCellDef>Hora</mat-header-cell>
-          <mat-cell fxFlex="8%" *matCellDef="let element" class="small-font">
-            {{element.date | date: 'HH:mm'}}
+          <mat-header-cell fxFlex="6%" *matHeaderCellDef>Hora</mat-header-cell>
+          <mat-cell fxFlex="6%" *matCellDef="let element">
+            {{element.date | date: 'HH:mm:ss'}}
           </mat-cell>
         </ng-container>
 
 
         <!-- PACOTE SUPERIOR -->
-        <!-- <div *ngIf="results[0].packSup!==null"> -->
-          
-          <ng-container matColumnDef="supLevel">
-            <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">Nível Superior (litros)</mat-header-cell>
-            <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
-              {{element.supLevelLitros | number: '1.0-0'}}
-            </mat-cell>
-          </ng-container>
+        <ng-container matColumnDef="supLevel">
+          <mat-header-cell fxFlex="10%" *matHeaderCellDef class="align-center">Nível Superior</mat-header-cell>
+          <mat-cell fxFlex="10%" *matCellDef="let element" class="align-center">
+            {{element.supLevelLitros | number: '1.2-2'}}
+          </mat-cell>
+        </ng-container>
 
-          <ng-container matColumnDef="supAlertMax">
-            <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">Alerta Alto</mat-header-cell>
-            <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
-              {{!element.supAlarmLevelMax ? 'Não' : 'Sim'}}
-            </mat-cell>
-          </ng-container>
+        <ng-container matColumnDef="supAlert">
+          <mat-header-cell fxFlex="18%" *matHeaderCellDef class="align-center">Alerta de Nível Superior</mat-header-cell>
+          <mat-cell fxFlex="18%" *matCellDef="let element" class="align-center">
+            {{element.alarmeSupTextReport}}
+          </mat-cell>
+        </ng-container>
 
-          <ng-container matColumnDef="supAlertMin">
-            <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">Alerta Baixo</mat-header-cell>
-            <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
-              {{!element.supAlarmLevelMin ? 'Não' : 'Sim'}}
-            </mat-cell>
-          </ng-container>
 
-        <!-- </div> -->
+        <!-- PACOTE INFERIOR -->
+        <ng-container matColumnDef="infLevel">
+          <mat-header-cell fxFlex="10%" *matHeaderCellDef class="align-center">Nível Inferior</mat-header-cell>
+          <mat-cell fxFlex="10%" *matCellDef="let element" class="align-center">
+            {{element.infLevelLitros | number: '1.2-2'}}
+          </mat-cell>
+        </ng-container>
 
-        <!-- PACOTE PORTARIA -->
-        <!-- <div *ngIf="results[0].packInf!==null"> -->
-          
-          <ng-container matColumnDef="infLevel">
-            <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">Nível Inferior (litros)</mat-header-cell>
-            <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
-              {{element.infLevelLitros | number: '1.0-0'}}
-            </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="infAlertMax">
-            <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">Alerta Alto</mat-header-cell>
-            <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
-              {{!element.infAlarmLevelMax ? 'Não' : 'Sim'}}
-            </mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="infAlertMin">
-            <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">Alerta Baixo</mat-header-cell>
-            <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
-              {{!element.infAlarmLevelMin ? 'Não' : 'Sim'}}
-            </mat-cell>
-          </ng-container>
-
-        <!-- </div> -->
+        <ng-container matColumnDef="infAlert">
+          <mat-header-cell fxFlex="18%" *matHeaderCellDef class="align-center">Alerta de Nível Inferior</mat-header-cell>
+          <mat-cell fxFlex="18%" *matCellDef="let element" class="align-center">
+            {{element.alarmeInfTextReport}}
+          </mat-cell>
+        </ng-container>
 
         
 
-        <!-- RELATÓRIO ANALÍTICO -->
-        <!-- <div *ngIf="results[0].packPort!==null"> -->
+        <ng-container matColumnDef="bomb">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">Bomba</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
+            {{element.supStateBombTextReport}}
+          </mat-cell>
+        </ng-container>
+        
+        
 
-          <ng-container matColumnDef="portFireAlarm">
-            <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">Alarme de Incêndio</mat-header-cell>
-            <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
-              {{element.portFireAlarm ? 'Normal' : 'Em alarme'}}
-            </mat-cell>
-          </ng-container>
+        <!-- PACOTE PORTARIA -->
+        <ng-container matColumnDef="portFireAlarm">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">Alarme de Incêndio</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
+            {{element.portFireStateText}}
+          </mat-cell>
+        </ng-container>
 
-          <ng-container matColumnDef="portIvaAlarm">
-            <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">Alarme IVA</mat-header-cell>
-            <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
-              {{element.portIvaAlarm ? 'Normal' : 'Em alarme'}}
-            </mat-cell>
-          </ng-container>
+        <ng-container matColumnDef="portIvaAlarm">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">Alarme IVA</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
+            {{element.portIvaStateText}}
+          </mat-cell>
+        </ng-container>
 
-        <!-- </div> -->
+        <ng-container matColumnDef="geo">
+          <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">Geo</mat-header-cell>
+          <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
+            {{element.latitude}}
+            <br>
+            {{element.longitude}}
+          </mat-cell>
+        </ng-container>
+
 
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

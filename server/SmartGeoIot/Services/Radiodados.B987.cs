@@ -21,11 +21,16 @@ namespace SmartGeoIot.Services
                 if (lastData == null)
                     return;
 
-                if (currentData.SupAlarmLevelMax != lastData.SupAlarmLevelMax || currentData.SupAlarmLevelMin != lastData.SupAlarmLevelMin ||
-                currentData.SupStateBomb != lastData.SupStateBomb || currentData.PortFireAlarm != lastData.PortFireAlarm ||
-                currentData.PortFireState != lastData.PortFireState || currentData.PortIvaAlarm != lastData.PortIvaAlarm || currentData.PortIvaState != lastData.PortIvaState)
+                // if (currentData.SupAlarmLevelMax != lastData.SupAlarmLevelMax || currentData.SupAlarmLevelMin != lastData.SupAlarmLevelMin ||
+                // currentData.SupStateBomb != lastData.SupStateBomb || currentData.PortFireAlarm != lastData.PortFireAlarm ||
+                // currentData.PortFireState != lastData.PortFireState || currentData.PortIvaAlarm != lastData.PortIvaAlarm || currentData.PortIvaState != lastData.PortIvaState)
+                // {
+                //     canNotify = true;
+                // }
+                if (currentData.PortFireState != lastData.PortFireState || currentData.PortIvaState != lastData.PortIvaState)
                 {
-                    canNotify = true;    
+                    if (currentData.PackPort != null && lastData.PackPort != null)
+                        canNotify = true;
                 }
 
                 if (canNotify)
@@ -77,7 +82,7 @@ namespace SmartGeoIot.Services
                 {
                     var deviceFather = GetDeviceFather(message.DeviceId);
                     McondType deviceType = GetMCondType(message);
-                    var dataB987 = GetDataB987(deviceFather);
+                    // MCond dataB987 = null;//GetDataB987(deviceFather);
 
                     DateTime _today = DateTime.Today;
                     bool _stateBomb = false;
@@ -97,72 +102,72 @@ namespace SmartGeoIot.Services
                     if (McondType.Portaria == deviceType)
                         (_portFireAlarm, _portFireState, _portIvaState, _portIvaAlarm) = message.MCond_AlertaIncendioIVA;
 
-                    if (dataB987 == null)
-                    {
+                    // if (dataB987 == null)
+                    // {
                         // criar novo registro (superior ou inferior ou portaria)
-                        _result = CreateMCOnd(deviceFather, deviceType, message, _alarmLevelMin, _alarmLevelMax, _stateBomb, _level, _portFireAlarm, _portIvaAlarm, _portFireState, _portIvaState);
-                    }
-                    else
-                    {
-                        // verificar o tipo de sensor e atualizar registro (superior ou inferior ou portaria)
-                        if (McondType.Superior == deviceType)
-                        {
-                            // se já existe, vai para o próximo registro
-                            if (dataB987.PackSup != null)
-                            {
-                                if (!VerifyExistPack(deviceFather, deviceType, message.Data))
-                                    _result = CreateMCOnd(deviceFather, deviceType, message, _alarmLevelMin, _alarmLevelMax, _stateBomb, _level, _portFireAlarm, _portIvaAlarm, _portFireState, _portIvaState);
-                                continue;
-                            }
+                    _result = CreateMCOnd(deviceFather, deviceType, message, _alarmLevelMin, _alarmLevelMax, _stateBomb, _level, _portFireAlarm, _portIvaAlarm, _portFireState, _portIvaState);
+                    // }
+                    // else
+                    // {
+                    //     // verificar o tipo de sensor e atualizar registro (superior ou inferior ou portaria)
+                    //     if (McondType.Superior == deviceType)
+                    //     {
+                    //         // se já existe, vai para o próximo registro
+                    //         // if (dataB987.PackSup != null)
+                    //         // {
+                    //         //     if (!VerifyExistPack(deviceFather, deviceType, message.Data))
+                    //         _result = CreateMCOnd(deviceFather, deviceType, message, _alarmLevelMin, _alarmLevelMax, _stateBomb, _level, _portFireAlarm, _portIvaAlarm, _portFireState, _portIvaState);
+                    //         //     continue;
+                    //         // }
                             
-                            // se não existe, atualiza o registro existente com o pacote
-                            dataB987.PackSup = message.Data;
-                            dataB987.SupStateBomb = _stateBomb;
-                            dataB987.SupAlarmLevelMin = _alarmLevelMin;
-                            dataB987.SupAlarmLevelMax = _alarmLevelMax;
-                            dataB987.SupLevel= _level;
-                        }
+                    //         // se não existe, atualiza o registro existente com o pacote
+                    //         dataB987.PackSup = message.Data;
+                    //         dataB987.SupStateBomb = _stateBomb;
+                    //         dataB987.SupAlarmLevelMin = _alarmLevelMin;
+                    //         dataB987.SupAlarmLevelMax = _alarmLevelMax;
+                    //         dataB987.SupLevel= _level;
+                    //     }
 
-                        if (McondType.Inferior == deviceType)
-                        {
-                            // se já existe, vai para o próximo registro
-                            if (dataB987.PackInf != null)
-                            {
-                                if (!VerifyExistPack(deviceFather, deviceType, message.Data))
-                                    _result = CreateMCOnd(deviceFather, deviceType, message, _alarmLevelMin, _alarmLevelMax, _stateBomb, _level, _portFireAlarm, _portIvaAlarm, _portFireState, _portIvaState);
-                                continue;
-                            }
+                    //     if (McondType.Inferior == deviceType)
+                    //     {
+                    //         // se já existe, vai para o próximo registro
+                    //         // if (dataB987.PackInf != null)
+                    //         // {
+                    //         //     if (!VerifyExistPack(deviceFather, deviceType, message.Data))
+                    //         _result = CreateMCOnd(deviceFather, deviceType, message, _alarmLevelMin, _alarmLevelMax, _stateBomb, _level, _portFireAlarm, _portIvaAlarm, _portFireState, _portIvaState);
+                    //         //     continue;
+                    //         // }
                             
-                            // se não existe, atualiza o registro existente com o pacote
-                            dataB987.PackInf = message.Data;
-                            dataB987.InfAlarmLevelMin = _alarmLevelMin;
-                            dataB987.InfAlarmLevelMax = _alarmLevelMax;
-                            dataB987.InfLevel = _level;
-                        }
+                    //         // se não existe, atualiza o registro existente com o pacote
+                    //         dataB987.PackInf = message.Data;
+                    //         dataB987.InfAlarmLevelMin = _alarmLevelMin;
+                    //         dataB987.InfAlarmLevelMax = _alarmLevelMax;
+                    //         dataB987.InfLevel = _level;
+                    //     }
 
-                        if (McondType.Portaria == deviceType)
-                        {
-                            // se já existe, vai para o próximo registro
-                            if (dataB987.PackPort != null)
-                            {
-                                if (!VerifyExistPack(deviceFather, deviceType, message.Data))
-                                    _result = CreateMCOnd(deviceFather, deviceType, message, _alarmLevelMin, _alarmLevelMax, _stateBomb, _level, _portFireAlarm, _portIvaAlarm, _portFireState, _portIvaState);
-                                continue;
-                            }
+                    //     if (McondType.Portaria == deviceType)
+                    //     {
+                    //         // se já existe, vai para o próximo registro
+                    //         // if (dataB987.PackPort != null)
+                    //         // {
+                    //         //     if (!VerifyExistPack(deviceFather, deviceType, message.Data))
+                    //         _result = CreateMCOnd(deviceFather, deviceType, message, _alarmLevelMin, _alarmLevelMax, _stateBomb, _level, _portFireAlarm, _portIvaAlarm, _portFireState, _portIvaState);
+                    //         //     continue;
+                    //         // }
                             
-                            // se não existe, atualiza o registro existente com o pacote
-                            dataB987.PackPort = message.Data;
-                            dataB987.PortFireAlarm = _portFireAlarm;
-                            dataB987.PortIvaAlarm = _portIvaAlarm;
+                    //         // se não existe, atualiza o registro existente com o pacote
+                    //         dataB987.PackPort = message.Data;
+                    //         dataB987.PortFireAlarm = _portFireAlarm;
+                    //         dataB987.PortIvaAlarm = _portIvaAlarm;
 
-                            dataB987.PortFireState = _portFireState;
-                            dataB987.PortIvaState = _portIvaState;
-                        }
+                    //         dataB987.PortFireState = _portFireState;
+                    //         dataB987.PortIvaState = _portIvaState;
+                    //     }
 
-                        // atualiza registro no banco de dados
-                        _result = dataB987;
-                        UpdateB987(dataB987);
-                    }
+                    //     // atualiza registro no banco de dados
+                    //     _result = dataB987;
+                    //     UpdateB987(dataB987);
+                    // }
                 }
                 catch (System.Exception ex)
                 {
@@ -219,6 +224,25 @@ namespace SmartGeoIot.Services
             return _result;
         }
 
+        internal MCond GetDataB987ByPack(string deviceId, McondType deviceType)
+        {
+            if (McondType.Superior == deviceType)
+            {
+                return _context.MConds.LastOrDefault(c => c.DeviceId == deviceId && c.PackSup != null);
+            }
+
+            if (McondType.Inferior == deviceType)
+            {
+                return _context.MConds.LastOrDefault(c => c.DeviceId == deviceId && c.PackInf != null);
+            }
+
+            if (McondType.Portaria == deviceType)
+            {
+                return _context.MConds.LastOrDefault(c => c.DeviceId == deviceId && c.PackPort != null);
+            }
+            return null;
+        }
+
         internal MCond CreateMCOnd(string deviceFather, McondType deviceType, Message message, bool _alarmLevelMin, bool _alarmLevelMax, bool _stateBomb, double _level, bool _portFireAlarm, bool _portIvaAlarm, bool _portFireState, bool _portIvaState)
         {
             DateTime _today = message.OperationDate.HasValue ? message.OperationDate.Value : DateTime.Today;
@@ -246,6 +270,44 @@ namespace SmartGeoIot.Services
 
                 Date = _today
             };
+
+            if (mcond.PackPort == null)
+            {
+                var lastData = GetDataB987ByPack(mcond.DeviceId, McondType.Portaria);
+                if (lastData != null)
+                {
+                    mcond.PackPort = lastData.PackPort;
+                    mcond.PortFireAlarm = lastData.PortFireAlarm;
+                    mcond.PortIvaAlarm = lastData.PortIvaAlarm;
+                    mcond.PortFireState = lastData.PortFireState;
+                    mcond.PortIvaState = lastData.PortIvaState;
+                }
+            }
+
+            if (mcond.PackInf == null)
+            {
+                var lastData = GetDataB987ByPack(mcond.DeviceId, McondType.Inferior);
+                if (lastData != null)
+                {    
+                    mcond.PackInf = lastData.PackInf;
+                    mcond.InfAlarmLevelMin = lastData.InfAlarmLevelMin;
+                    mcond.InfAlarmLevelMax = lastData.InfAlarmLevelMax;
+                    mcond.InfLevel = lastData.InfLevel;
+                }
+            }
+
+            if (mcond.PackSup == null)
+            {
+                var lastData = GetDataB987ByPack(mcond.DeviceId, McondType.Superior);
+                if (lastData != null)
+                {    
+                    mcond.PackSup = lastData.PackSup;
+                    mcond.SupStateBomb = lastData.SupStateBomb;
+                    mcond.SupAlarmLevelMin = lastData.SupAlarmLevelMin;
+                    mcond.SupAlarmLevelMax = lastData.SupAlarmLevelMax;
+                    mcond.SupLevel = lastData.SupLevel;
+                }
+            }
 
             // insere registro no banco de dados
             SaveB987(mcond);
@@ -289,13 +351,25 @@ namespace SmartGeoIot.Services
             if (totalCount != null)
                 totalCount.Value = reports.Count();
 
-            reports = reports.OrderBy(o => o.Date).ToList();
+            reports = reports.OrderByDescending(o => o.Date).ToList();
 
             if (skip != 0)
                 reports = reports.Skip(skip).ToList();
 
             if (top != 0)
                 reports = reports.Take(top).ToList();
+
+            foreach (var item in reports)
+            {
+                var l = _context.DevicesLocations.First(c => c.DeviceId == item.DeviceId && c.Data == item.PackPort);
+                if (l != null)
+                {
+                    string _lat = l.Latitude.ToString().Replace(",", "").Replace("-", "");
+                    string _lon = l.Longitude.ToString().Replace(",", "").Replace("-", "");
+                    item.Latitude = $"{_lat.Substring(0, 2)}°{_lat.Substring(2, 2)}'{_lat.Substring(4, 2)},{_lat.Substring(6, 2)}'' S";
+                    item.Longitude = $"{_lon.Substring(0, 2)}°{_lon.Substring(2, 2)}'{_lon.Substring(4, 2)},{_lon.Substring(6, 2)}'' O";
+                }
+            }
 
             return reports.ToArray();
         }
