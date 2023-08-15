@@ -1,22 +1,32 @@
 using System;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using SmartGeoIot.Extensions;
 using SmartGeoIot.Models;
 
 namespace SmartGeoIot.Services
 {
     public partial class RadiodadosService
     {
-        public DeviceLocation GetDeviceLocationByDeviceId(string deviceId)
+        public DeviceLocation GetLastDeviceLocationByDeviceId(string deviceId)
         {
             return _context.DevicesLocations.Where(c => c.DeviceId == deviceId).OrderByDescending(o => o.Time).Take(1).SingleOrDefault();
+        }
+
+        public DeviceLocation GetDeviceLocationByTime(string deviceId, long time)
+        {
+            DateTime datetimeForMessage = Utils.Timestamp_ToDateTimeBrasilian(time);
+            return _context.DevicesLocations.SingleOrDefault(c => c.DeviceId == deviceId && c.CreateDate == datetimeForMessage);
         }
 
         public void SaveDeviceLocation(DeviceLocation deviceLocation)
         {
             _context.Entry<DeviceLocation>(deviceLocation).State = EntityState.Added;
             _context.SaveChanges(true);
-            _log.Log($"Registro de localização do dispositivo {deviceLocation.DeviceId} foi criado/alterado.");
+            // _log.Log($"Registro de localização do dispositivo {deviceLocation.DeviceId} foi criado/alterado.");
         }
 
         public string LocationDecimalToDegrees(decimal decimalValue, string type)
@@ -41,7 +51,7 @@ namespace SmartGeoIot.Services
             Models.Message message = new Models.Message { Data = data };
             if (message.Bits.EstadoBloqueio || message.Bits.EstadoSaidaRastreador)
             {
-                _log.Log($"Detectado estado de bloqueio no disposito {deviceId}. Inínio de envio de notificações.");
+                // _log.Log($"Detectado estado de bloqueio no disposito {deviceId}. Inínio de envio de notificações.");
 
                 // Pegamos todos os clientes que tem aquele dispositivo e que estão ativos (cliente e dispositivo)
                 var clients = GetClientsByDevice(deviceId);
@@ -104,6 +114,103 @@ namespace SmartGeoIot.Services
                         }
                     }
                 }
+            }
+        }
+
+        public string GetCityByCoordinates(double latitude, double longitude)
+        {
+            try
+            {    
+                string _latitude = latitude.ToString().Replace(",", ".");
+                string _longitude = longitude.ToString().Replace(",", ".");
+                
+                string _url = $"{_sgiSettings.GOOGLE_MAPS_URL}?key={_sgiSettings.GOOGLE_MAPS_KEY}&sensor=false&latlng={_latitude},{_longitude}";
+                HttpClient _httpClient = new HttpClient();
+                HttpResponseMessage response = _httpClient.GetAsync(_url).Result;
+
+                if (!response.IsSuccessStatusCode)
+                    return string.Empty;
+                
+                string jsonResponse = response.Content.ReadAsStringAsync().Result;
+                Models.GoogleMapsViewModel data = JsonConvert.DeserializeObject<Models.GoogleMapsViewModel>(jsonResponse);
+
+                foreach (var result in data.results.Take(1))
+                {
+                    string city = string.Empty;
+
+                    // recupera o bairro
+                    foreach (var component in result.address_components.Where(c => c.types.Contains("sublocality_level_1")))
+                    {
+                        city += component.long_name;
+                    }
+
+                    // recupera a cidade
+                    foreach (var component in result.address_components.Where(c => c.types.Contains("administrative_area_level_2")))
+                    {
+                        city += " - " + component.long_name;
+                    }
+
+                    // recupera o estado
+                    foreach (var component in result.address_components.Where(c => c.types.Contains("administrative_area_level_1")))
+                    {
+                        city += "/" + component.short_name;
+                    }
+
+                    return city;
+                }
+
+                return string.Empty;
+            }
+            catch (System.Exception)
+            {
+                return string.Empty;
+            }
+        }
+
+        public LocationMaps GetLocationByCoordinates(double latitude, double longitude)
+        {
+            LocationMaps locationMaps = new LocationMaps();
+            try
+            {
+                string _latitude = latitude.ToString().Replace(",", ".");
+                string _longitude = longitude.ToString().Replace(",", ".");
+                
+                string _url = $"{_sgiSettings.GOOGLE_MAPS_URL}?key={_sgiSettings.GOOGLE_MAPS_KEY}&sensor=false&latlng={_latitude},{_longitude}";
+                HttpClient _httpClient = new HttpClient();
+                HttpResponseMessage response = _httpClient.GetAsync(_url).Result;
+
+                if (!response.IsSuccessStatusCode)
+                    return null;
+                
+                string jsonResponse = response.Content.ReadAsStringAsync().Result;
+                Models.GoogleMapsViewModel data = JsonConvert.DeserializeObject<Models.GoogleMapsViewModel>(jsonResponse);
+
+                foreach (var result in data.results.Take(1))
+                {
+                    // recupera o bairro
+                    foreach (var component in result.address_components.Where(c => c.types.Contains("sublocality_level_1")))
+                    {
+                        locationMaps.Neighborhood = component.long_name;
+                    }
+
+                    // recupera a cidade
+                    foreach (var component in result.address_components.Where(c => c.types.Contains("administrative_area_level_2")))
+                    {
+                        locationMaps.City = component.long_name;
+                    }
+
+                    // recupera o estado
+                    foreach (var component in result.address_components.Where(c => c.types.Contains("administrative_area_level_1")))
+                    {
+                        locationMaps.State = component.short_name;
+                    }
+                }
+
+                return locationMaps;
+            }
+            catch (System.Exception)
+            {
+                return null;
             }
         }
 

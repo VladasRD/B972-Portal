@@ -36,6 +36,7 @@ namespace SmartGeoIot.ViewModels
         public string LatitudeConverted { get; set; }
         public string LongitudeConverted { get; set; }
         public string RadiusConverted { get; set; }
+        public string LocationCity { get; set; }
         public bool AlertaFonteBaixa { get; set; }
         public string TensaoMinima { get; set; }
         public string Fluor { get; set; }
@@ -92,6 +93,7 @@ namespace SmartGeoIot.ViewModels
         public string Ea10 { get; set; }
         public string Sa3 { get; set; }
         public MCond MCond { get; set; }
+        public B975 B975 { get; set; }
     }
 
     public class Rele
@@ -166,6 +168,26 @@ namespace SmartGeoIot.ViewModels
         public bool AlertaVazao { get; set; }
         public bool AlertaTotalizador { get; set; }
         public bool AlertaQualidade { get; set; }
+
+        // Project B980
+        public bool N1 { get; set; }
+        public bool N2 { get; set; }
+        public bool N3 { get; set; }
+        public bool N4 { get; set; }
+        public bool N5 { get; set; }
+        public bool N6 { get; set; }
+        // Project B980
+
+
+        // Project B975
+        public bool RasOut { get; set; }
+        public bool Bloqueio { get; set; }
+        public bool RasIn { get; set; }
+        public bool Vio { get; set; }
+        public bool Jam { get; set; }
+        public bool PcPosChave { get; set; }
+        public bool AlertaFonteBaixa { get; set; }
+        // Project B975
     }
 
     public enum EstatusDetector

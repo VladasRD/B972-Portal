@@ -36,6 +36,7 @@ export class Report {
     latitudeConverted: string;
     longitudeConverted: string;
     radiusConverted: string;
+    locationCity: string;
     alertaFonteBaixa: boolean;
     tensaoMinima: string;
     fluor: string;

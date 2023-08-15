@@ -40,6 +40,11 @@ namespace SmartGeoIot.Data
         public virtual DbSet<ResetTotalPartial> ResetTotalPartials { get; set; }
         public virtual DbSet<B982_S> B982_S { get; set; }
         public virtual DbSet<MCond> MConds { get; set; }
+        public virtual DbSet<B979> B979s { get; set; }
+        public virtual DbSet<B979RequestToDevice> B979RequestToDevices { get; set; }
+        public virtual DbSet<B975> B975s { get; set; }
+        public virtual DbSet<ServiceDesk> ServiceDesks { get; set; }
+        public virtual DbSet<ServiceDeskRecord> ServiceDeskRecords { get; set; }
     }
     
 }

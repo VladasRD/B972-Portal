@@ -18,6 +18,7 @@ namespace SmartGeoIot.Services
                 filter = filter.ToLower();
                 packages = packages.Where(c =>
                     c.Name.ToLower().Contains(filter) ||
+                    c.Type.ToLower().Contains(filter) ||
                     c.Description.ToLower().Contains(filter));
             }
 
@@ -53,7 +54,7 @@ namespace SmartGeoIot.Services
             }
 
             _context.SaveChanges(true);
-            _log.Log($"Pacote {package.Name} foi criado/alterado.");
+            // _log.Log($"Pacote {package.Name} foi criado/alterado.");
 
             return package;
         }
@@ -66,7 +67,7 @@ namespace SmartGeoIot.Services
 
             _context.Packages.Remove(package);
             _context.SaveChanges();
-            _log.Log($"Pacote {package.Name} foi removido.");
+            // _log.Log($"Pacote {package.Name} foi removido.");
         }
         
     }

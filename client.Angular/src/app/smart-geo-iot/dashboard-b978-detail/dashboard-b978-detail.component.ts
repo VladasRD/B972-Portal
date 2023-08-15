@@ -140,7 +140,7 @@ export class DashboardB978DetailComponent implements OnInit {
   }
 
   get pageTitle(): string {
-    return String.Format('Dados do dispositivo {0} (TSP)', this.dashboard.name);
+    return String.Format('Nível – Local {0}', this.dashboard.name);
   }
 
   get getTemperature(): number {

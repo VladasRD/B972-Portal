@@ -50,6 +50,23 @@ namespace SmartGeoIot.Api
             return devices;
         }
 
+        [HttpGet("fromDashboard-b975")]
+        [PaginationHeaderFilter]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "SGI-DEVICE.READ")]
+        public IEnumerable<ViewModels.B975DevicesDashboardViewModels> FromDashboardB975([FromQuery] int skip = 0, [FromQuery] int top = 0, [FromQuery] string filter = null, [FromQuery] bool filtrarBloqueios = false)
+        {
+            var totalCount = new OptionalOutTotalCount();
+            
+            bool isFullAcess = false;
+            if (User.IsInRole("SGI.MASTER"))
+                isFullAcess = true;
+
+            // passar o "User", para ver se tem acesso aos devices do cliente
+            var devices = _sgiService.GetDevicesB975FromDashboard(User, skip, top, filter, totalCount, isFullAcess, filtrarBloqueios);
+            Request.SetListTotalCount(totalCount.Value);
+            return devices;
+        }
+
         [HttpGet("fromFirmware")]
         [PaginationHeaderFilter]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "SGI.MASTER")]

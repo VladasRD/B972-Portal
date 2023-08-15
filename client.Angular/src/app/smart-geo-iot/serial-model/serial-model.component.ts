@@ -3,6 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MessageService } from '../../common/message.service';
 import { SmartGeoIotService } from '../../smart-geo-iot/smartgeoiot.service';
 import { environment } from '../../../environments/environment';
+import { ServicedeskHistoryBottomsheetComponent } from '../servicedesk-history-bottomsheet/servicedesk-history-bottomsheet.component';
+import { MatBottomSheet } from '@angular/material';
 
 @Component({
   selector: 'app-serial-model',
@@ -15,12 +17,15 @@ export class SerialModelComponent implements OnInit {
   edit_serialNumber = false;
   edit_model = false;
   @Input() deviceId: string;
+  @Input() latitude: number;
+  @Input() longitude: number;
+  @Input() radius: number;
 
   constructor(
     private sgiService: SmartGeoIotService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private bottomSheet: MatBottomSheet
     ) {
-    
   }
 
   ngOnInit() {
@@ -95,13 +100,25 @@ export class SerialModelComponent implements OnInit {
   }
 
   goToMaps() {
-    const baseUrl = `${environment.CLIENT_URL}/radiodados/maps/${this.deviceId}`;
+    const baseUrl = `${environment.CLIENT_URL}/radiodados/maps/${this.deviceId}/${this.latitude}/${this.longitude}/${this.radius}`;
     window.open(baseUrl, '_blank');
   }
 
   goToInfos() {
     const baseUrl = `${environment.CLIENT_URL}/radiodados/dados-firmware/${this.deviceId}`;
     window.open(baseUrl, '_blank');
+  }
+  
+  openHistoryBottomSheet(event: MouseEvent) {
+    event.cancelBubble = true;
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.sgiService.getHistoryServiceDesk(this.deviceId, 0, 0, '', null).subscribe(result => {
+        this.bottomSheet.open(ServicedeskHistoryBottomsheetComponent, { data: { records: result } });
+      });
+
+    return false;
   }
 
 

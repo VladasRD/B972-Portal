@@ -1,0 +1,40 @@
+.bg-aguardando {
+    background-color: #80808073;
+    font-weight: bold;
+}
+.bg-operacional {
+    background-color: #21ae41;
+    color: white;
+    font-weight: bold;
+}
+.bg-carencia {
+    background-color: #ffff00;
+    color: black;
+    font-weight: bold;
+}
+.bg-ciclos {
+    background-color: #ff0000;
+    font-weight: bold;
+}
+.bg-bloqueio {
+    background-color: #ff0000;
+    font-weight: bold;
+}
+.bg-dormencia {
+    background-color: #ffa500;
+    font-weight: bold;
+}
+.span-status {
+    padding: 10px;
+    border-radius: 2rem;
+}
+.btn-chamado-space {
+    margin-left: 20px;
+}
+.mat-header-cell{
+    color: black;
+}
+.info {
+    color: #ffa500;
+    margin-left: 10px;
+}

@@ -37,7 +37,7 @@
     <form *ngIf="showFilters" [formGroup]="form" class="container filterBoxArea preserve-margin" fxLayout
       fxLayoutGap="10px" fxLayout.xs="column">
 
-      <app-device-select project="{{currentProject}}" [control]="form.controls.deviceFilter"></app-device-select>
+      <app-device-select fxFlex="100%" project="{{currentProject}}" [control]="form.controls.deviceFilter"></app-device-select>
 
       <mat-card-content fxLayout="row" fxLayoutGap="10px" fxLayout.xs="column">
         <mat-form-field appearance="outline">
@@ -78,7 +78,7 @@
         <ng-container matColumnDef="ed1">
           <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">{{getTitleName('ED1')}}</mat-header-cell>
           <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
-            {{element.bits.bed1 ? '1' : '0'}}
+            {{element.bits.bed1 ? 'Alto' : 'Baixo'}}
           </mat-cell>
         </ng-container>
 
@@ -86,7 +86,7 @@
           <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">{{getTitleName('ED2')}}
           </mat-header-cell>
           <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
-            {{element.bits.bed2 ? '1' : '0'}}
+            {{element.bits.bed2 ? 'Alto' : 'Baixo'}}
           </mat-cell>
         </ng-container>
 
@@ -94,7 +94,7 @@
           <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">{{getTitleName('ED3')}}
           </mat-header-cell>
           <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
-            {{element.bits.bed3 ? '1' : '0'}}
+            {{element.bits.bed3 ? 'Alto' : 'Baixo'}}
           </mat-cell>
         </ng-container>
 
@@ -102,7 +102,7 @@
           <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">{{getTitleName('ED4')}}
           </mat-header-cell>
           <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
-            {{element.bits.bed4 ? '1' : '0'}}
+            {{element.bits.bed4 ? 'Alto' : 'Baixo'}}
           </mat-cell>
         </ng-container>
 
@@ -110,14 +110,14 @@
           <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">{{getTitleName('SD1')}}
           </mat-header-cell>
           <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
-            {{element.bits.bsd1 ? '1' : '0'}}
+            {{element.bits.bsd1 ? 'Alto' : 'Baixo'}}
           </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="sd2">
           <mat-header-cell fxFlex="16%" *matHeaderCellDef class="align-center">{{getTitleName('SD2')}}</mat-header-cell>
           <mat-cell fxFlex="16%" *matCellDef="let element" class="align-center">
-            {{element.bits.bsd2 ? '1' : '0'}}
+            {{element.bits.bsd2 ? 'Alto' : 'Baixo'}}
           </mat-cell>
         </ng-container>
 

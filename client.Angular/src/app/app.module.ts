@@ -1,47 +1,34 @@
 import { ChangeDeviceDialogComponent } from './smart-geo-iot/change-device-dialog/change-device-dialog.component';
 import { SmartGeoIotModule } from './smart-geo-iot/smart-geo-iot.module';
 import { SmartGeoIotMenus } from './smart-geo-iot/smart-geo-iot.menus';
-
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { RouterModule, RouteReuseStrategy } from '@angular/router';
-
 import { LOCALE_ID, TRANSLATIONS, TRANSLATIONS_FORMAT, NgModule, CompilerFactory, COMPILER_OPTIONS, Compiler } from '@angular/core';
-
 import { OAuthModule, OAuthModuleConfig } from 'angular-oauth2-oidc';
-
 import { environment } from '../environments/environment';
-
 import { AppComponent } from './app.component';
 import { GenericYesNoDialogComponent } from './common/generic-yes-no-dialog/generic-yes-no-dialog.component';
 import { ChangeNameDialogComponent } from './common/change-name-dialog/change-name-dialog.component';
-
 import { SharedModule } from './common/shared.module';
-
 // load locale data form date, currency, etc..
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
-
 // For dynamic localization: see https://github.com/ngx-translate/i18n-polyfill
 import { I18n } from '@ngx-translate/i18n-polyfill';
-
 import { LoginComponent } from './login/login.component';
 import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
 import { OutComponent } from './out/out.component';
-import { HomeComponent } from './home/home.component';
-
+import { DashboardProjectsComponent } from './smart-geo-iot/dashboard/dashboard-projects/dashboard-projects.component';
 import { CustomRouteReuseStrategy } from './common/custom-route-reuse-strategy';
-
 import { CookieService } from 'ngx-cookie-service';
 import { ServiceWorkerModule } from '@angular/service-worker';
-
 import { SecurityMenus } from './security/security.menus';
 import { CMSMenus } from './cms/cms.menus';
 import { PluginsService } from './common/plugins.service';
 import { AuthService } from './common/auth.service';
 import { MenuService } from './common/menu.service';
-
 // For plugins AOT
 import { JitCompilerFactory } from '@angular/platform-browser-dynamic';
 import { SecurityModule } from './security/security.module';
@@ -55,7 +42,8 @@ registerLocaleData(localePt);
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
+    // HomeComponent,
+    DashboardProjectsComponent,
     UnauthorizedComponent,
     OutComponent,
     LoginComponent,
@@ -73,8 +61,9 @@ registerLocaleData(localePt);
     SmartGeoIotModule,
     OAuthModule.forRoot(),
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, data: { shouldReuse: true }  },
-      { path: 'index.html', component: HomeComponent, data: { shouldReuse: true } },
+      // { path: '', component: HomeComponent, data: { shouldReuse: true }  },
+      { path: '', component: DashboardProjectsComponent, data: { shouldReuse: true }  },
+      { path: 'index.html', component: DashboardProjectsComponent, data: { shouldReuse: true } },
       { path: 'unauthorized', component: UnauthorizedComponent, data: { shouldReuse: true } },
       { path: 'bye', component: OutComponent, data: { shouldReuse: true } },
 

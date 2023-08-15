@@ -117,7 +117,7 @@ namespace SmartGeoIot.Services
                     {
                         _context.ReportResil.Add(item);
                         _context.SaveChanges();
-                        _log.Log("Report Resil criado.");
+                        // _log.Log("Report Resil criado.");
                     }
                 }
             }

@@ -144,6 +144,44 @@ namespace SmartGeoIot.Services
         //     }
         // }
 
+        public async void SendNotificationB980(Message currentMessage)
+        {
+            if (!currentMessage.Bits.N5)
+                return;
+
+            
+            _log.Log($"Envio de notificação do dispositivo {currentMessage.DeviceId}.");
+
+            List<string> emailsNotify = new List<string>();
+            List<string> phoneNumbers = new List<string>();
+            var clients = GetClientsByDevice(currentMessage.DeviceId);
+            var admEmails = _SMTPsettings.MockRecipientCopy.Split(";").ToList();
+
+            emailsNotify = admEmails;
+            phoneNumbers = _sgiSettings.ADM_PHONE.Split(";").ToList();
+            phoneNumbers.Add(_sgiSettings.TECHNICAL_PHONE);
+
+            if (clients != null)
+            {
+                if (clients.Count() > 0)
+                {
+                    var clientMails = clients.Where(c => c.EmailNotification).Select(s => s.Email).ToList();
+                    foreach (var item in clientMails)
+                    {
+                        emailsNotify.Add(item);
+                    }
+
+                    var clientPhones = clients.Where(c => c.WhatsAppNotification).Select(s => s.Phone).ToList();
+                    foreach (var item in clientPhones)
+                    {
+                        phoneNumbers.Add($"+55{item}");
+                    }
+                }
+            }
+
+            await SendMailNotificationB980(emailsNotify.ToArray(), currentMessage);
+        }
+
         public void SendNotificationStateChangedTSP(DeviceLocation deviceLocation)
         {
             // return Task.Run(() =>
@@ -458,6 +496,23 @@ namespace SmartGeoIot.Services
             }
         }
 
+        public void UpdateMessageProcessed(Message messages)
+        {
+            try
+            {     
+                if (messages != null)
+                {
+                    messages.WasProcessed = true;
+                    _context.Entry<Message>(messages).State = EntityState.Modified;
+                    _context.SaveChanges(true);
+                }
+            }
+            catch (System.Exception ex)
+            {
+                _log.Log("SmartGeoIotService.SetPackProcessed: Error set pack processed.", ex.InnerException == null ? ex.Message : ex.InnerException.Message, true);
+            }
+        }
+
         public void SetPackProcessed(string deviceId, string package, long time)
         {
             try
@@ -602,7 +657,7 @@ namespace SmartGeoIot.Services
             _context.Entry(deviceRegistration).State = EntityState.Modified;
 
             _context.SaveChanges(false);
-            _log.Log($"Download link do dispositivo {deviceRegistration.Name} atualizado.");
+            // _log.Log($"Download link do dispositivo {deviceRegistration.Name} atualizado.");
         }
 
         public void SigfoxSaveDevices(SigfoxDevice sigfoxDevice)
@@ -617,18 +672,20 @@ namespace SmartGeoIot.Services
                 _addDevice.State = item.state;
                 _addDevice.ComState = item.comState;
                 _addDevice.Pac = item.pac;
-                _addDevice.LocationLat = item.location.lat;
-                _addDevice.LocationLng = item.location.lng;
-                _addDevice.DeviceTypeId = item.deviceType.id;
-                _addDevice.GroupId = item.group.id;
+                _addDevice.LocationLat = item.location != null ? item.location.lat : string.Empty;
+                _addDevice.LocationLng = item.location != null ? item.location.lng : string.Empty;
+                _addDevice.DeviceTypeId = item.deviceType != null ? item.deviceType.id : string.Empty;
+                _addDevice.GroupId = item.group != null ? item.group.id : string.Empty;
                 _addDevice.Lqi = item.lqi;
                 _addDevice.ActivationTime = item.activationTime;
-                _addDevice.TokenState = item.token.state;
-                _addDevice.TokenDetailMessage = item.token.detailMessage;
-                _addDevice.TokenEnd = item.token.end;
-                _addDevice.ContractId = item.contract.id;
+
+                _addDevice.TokenState = item.token != null ? item.token.state : 0;
+                _addDevice.TokenDetailMessage = item.token != null ? item.token.detailMessage : string.Empty;
+                _addDevice.TokenEnd = item.token != null ? item.token.end : 0;
+
+                _addDevice.ContractId = item.contract != null ? item.contract.id : string.Empty;
                 _addDevice.CreationTime = item.creationTime;
-                _addDevice.ModemCertificateId = item.modemCertificate.id;
+                _addDevice.ModemCertificateId = item.modemCertificate != null ? item.modemCertificate.id : string.Empty;
                 _addDevice.Prototype = item.prototype;
                 _addDevice.AutomaticRenewal = item.automaticRenewal;
                 _addDevice.AutomaticRenewalStatus = item.automaticRenewalStatus;
@@ -647,7 +704,7 @@ namespace SmartGeoIot.Services
                 }
 
                 _context.SaveChanges(true);
-                _log.Log($"Dispositivo {_addDevice.Name} criado/atualizado.");
+                // _log.Log($"Dispositivo {_addDevice.Name} criado/atualizado.");
             }
         }
 
@@ -734,7 +791,7 @@ namespace SmartGeoIot.Services
             {
                 _context.Messages.AddRange(listMessages);
                 _context.SaveChanges();
-                _log.Log($"Dados do dispositivo criados.");
+                // _log.Log($"Dados do dispositivo criados.");
             }
         }
 
@@ -1184,7 +1241,7 @@ namespace SmartGeoIot.Services
             {
                 _context.Messages.UpdateRange(messages);
                 _context.SaveChanges();
-                _log.Log($"Data da operação atualizada.");
+                // _log.Log($"Data da operação atualizada.");
             }
         }
 
@@ -1228,7 +1285,7 @@ namespace SmartGeoIot.Services
 
         public async Task DownloadMessageByDevice(string deviceId)
         {
-            _log.Log($"Baixando dados do dispositivo {deviceId}.");
+            // _log.Log($"Baixando dados do dispositivo {deviceId}.");
 
             for (int i = 0; i < _sigfoxLogins.Length; i++)
             {
@@ -1237,7 +1294,7 @@ namespace SmartGeoIot.Services
                     SigfoxSaveMessages(messages);
             }
 
-            _log.Log($"Finalizado download de dados do dispositivo {deviceId}.");
+            // _log.Log($"Finalizado download de dados do dispositivo {deviceId}.");
         }
 
     }

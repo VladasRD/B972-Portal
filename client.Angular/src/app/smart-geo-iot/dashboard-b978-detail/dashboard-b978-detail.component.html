@@ -29,9 +29,6 @@
               <p>
                 <strong>{{userName}}</strong>
               </p>
-              <p *ngIf="showDashboard">
-                <strong>Informações de Campo</strong>
-              </p>
             </div>
             <p>
               <strong *ngIf="!showDashboard" style="color: red; font-size: 16px;">Nenhuma informação encontrada para o
@@ -78,9 +75,6 @@
             <div class="title-page">
               <p>
                 <strong>{{userName}}</strong>
-              </p>
-              <p *ngIf="showDashboard">
-                <strong>Informações de Campo</strong>
               </p>
               <p class="icon-text" *ngIf="showDashboard">
                 <mat-icon style="vertical-align: bottom;">timelapse</mat-icon>
@@ -203,7 +197,7 @@
 
                 <div style="float: right;display: flex;">
                   <div class="{{!dashboard.bits.bAlertaMax ? 'alarme-red' : 'alarme-green'}}"></div>
-                  <span style="margin-left: 15px">Alerta Alto</span>
+                  <span style="margin-left: 15px">Bom</span>
                 </div>
               </div>
 
@@ -214,7 +208,7 @@
 
                 <div style="float: right;display: flex;">
                   <div class="{{!dashboard.bits.bAlertaMin ? 'alarme-red' : 'alarme-green'}}"></div>
-                  <span style="margin-left: 15px">Alerta Baixo</span>
+                  <span style="margin-left: 15px">Baixo</span>
                 </div>
               </div>
 
@@ -351,7 +345,7 @@
 
                 <div style="float: right;display: flex;">
                   <div class="{{!dashboard.bits.bAlertaMax ? 'alarme-red' : 'alarme-green'}}"></div>
-                  <span style="margin-left: 15px">Alerta Alto</span>
+                  <span style="margin-left: 15px">Bom</span>
                 </div>
               </div>
 
@@ -362,7 +356,7 @@
 
                 <div style="float: right;display: flex;">
                   <div class="{{!dashboard.bits.bAlertaMin ? 'alarme-red' : 'alarme-green'}}"></div>
-                  <span style="margin-left: 15px">Alerta Baixo</span>
+                  <span style="margin-left: 15px">Baixo</span>
                 </div>
               </div>
 

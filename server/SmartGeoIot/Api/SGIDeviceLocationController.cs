@@ -23,7 +23,7 @@ namespace SmartGeoIot.Api
             if (id == null)
                 throw new Box.Common.BoxLogicException("É necessário informar o id do dispositivo.");
 
-            return _sgiService.GetDeviceLocationByDeviceId(id);
+            return _sgiService.GetLastDeviceLocationByDeviceId(id);
         }
         
     }

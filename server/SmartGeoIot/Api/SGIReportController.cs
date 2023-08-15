@@ -56,6 +56,8 @@ namespace SmartGeoIot.Api
                 excelBytes = excel.ExportReportsTRM10(reports, id, de, ate, reportType);
             else if (deviceRegistration.Package.Type.Equals("83"))
                 excelBytes = excel.ExportReportsTSP(reports, id, de, ate);
+            else if (deviceRegistration.Package.Type.Equals("31"))
+                excelBytes = excel.ExportReportsB980(reports, id, de, ate);
             else
                 throw new Box.Common.BoxLogicException("Erro na exportação. Por favor, entre em contato com o suporte.");
 

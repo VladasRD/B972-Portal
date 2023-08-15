@@ -146,6 +146,18 @@ namespace SmartGeoIot.Models
         public string downlinkDataString { get; set; }
     }
 
+    public class LocationMaps
+    {
+        [MaxLength(100)]
+        public string Neighborhood { get; set; }
+
+        [MaxLength(100)]
+        public string City { get; set; }
+
+        [MaxLength(100)]
+        public string State { get; set; }
+    }
+
     public class DeviceLocation
     {
         [Key, Column(TypeName = "char(36)"), MaxLength(36)]
@@ -164,6 +176,24 @@ namespace SmartGeoIot.Models
 
         [MaxLength(100)]
         public double Longitude { get; set; }
+
+        [MaxLength(100)]
+        public string Neighborhood { get; set; }
+
+        [MaxLength(100)]
+        public string City { get; set; }
+
+        [MaxLength(100)]
+        public string State { get; set; }
+
+        [NotMapped]
+        public DateTime CreateDate
+        {
+            get
+            {
+                return Utils.TimeStampSecondsToDateTimeUTC(this.Time);
+            }
+        }
     }
     
 }

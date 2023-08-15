@@ -1,4 +1,5 @@
 import { environment } from './../../environments/environment';
+import { B975 } from './B975';
 import { Bits, Rele, ReleBoolean } from './Bits';
 import { MCond } from './MCond';
 
@@ -52,6 +53,7 @@ export class Dashboard {
     latitudeConverted: string;
     longitudeConverted: string;
     radiusConverted: string;
+    locationCity: string;
     alertaFonteBaixa: boolean;
     tensaoMinima: string;
     fluor: string;
@@ -106,6 +108,7 @@ export class Dashboard {
     ea10: string;
     sa3: string;
     mCond: MCond;
+    b975: B975;
 
     get nameEstadoDetector(): string {
         return EstadoDJ.enum[this.estadoDetector];

@@ -37,7 +37,7 @@ namespace SmartGeoIot.Extensions
             return dtDateTime.AddSeconds(valor).AddHours(-3);
         }
 
-        public static DateTime Timestamp_Milisecodns_ToDateTime(long value)
+        public static DateTime Timestamp_ToDateTimeBrasilian(long value)
         {
             DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeMilliseconds(value);
             return dateTimeOffset.UtcDateTime.AddHours(-3);
@@ -63,6 +63,11 @@ namespace SmartGeoIot.Extensions
         public static string ByteToBinary(byte value)
         {
             return Convert.ToString(value, 2).PadLeft(8, '0');
+        }
+
+        public static decimal BinaryToDecimal(string value)
+        {
+            return Convert.ToInt32(value, 2);
         }
 
         public static string SumHexValuesOfPack(string package)
@@ -162,6 +167,28 @@ namespace SmartGeoIot.Extensions
             }
 
             return result.ToString();
+        }
+
+        public static string GetStatusDJName(int value)
+        {
+            string[] status = new string[]
+            {
+                "Aguardando",
+                "Operacional",
+                "Em carência",
+                "Em Ciclos",
+                "Em bloqueio",
+                "Em dormência"
+            };
+
+            try
+            {    
+                return status[value];
+            }
+            catch (System.Exception)
+            {
+                return "N/A";
+            }
         }
 
         public static string GetMonthName(int enumMonth)

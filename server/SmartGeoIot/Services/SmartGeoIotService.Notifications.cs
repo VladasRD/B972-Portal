@@ -32,7 +32,7 @@ namespace SmartGeoIot.Services
                        subject,
                        body);
 
-                _log.Log($"E-mail enviado para o cliente {client.Email} com faturamento que vence em {dataVencimento}.", saveParameters: false);
+                // _log.Log($"E-mail enviado para o cliente {client.Email} com faturamento que vence em {dataVencimento}.", saveParameters: false);
                 return true;
             }
             catch (Exception ex)
@@ -95,14 +95,14 @@ namespace SmartGeoIot.Services
             var emailBody = await _templateService.RenderTemplate("AlertDeviceStateAlertsB987", data, null, "pt");
 
             // teste para ver quantos emails serão notificados
-            _log.Log("SendStateAlertsChangedDeviceB987.Emails", JsonConvert.SerializeObject(emails), true);
-            await _emailSender.SendEmailAsync("rafaelestevaojp@gmail.com", "Emails que vão ser notificados Mcond", JsonConvert.SerializeObject(emails));
+            // _log.Log("SendStateAlertsChangedDeviceB987.Emails", JsonConvert.SerializeObject(emails), true);
+            // await _emailSender.SendEmailAsync("rafaelestevaojp@gmail.com", "Emails que vão ser notificados Mcond", JsonConvert.SerializeObject(emails));
             // teste para ver quantos emails serão notificados
             
             foreach (var email in emails)
             {            
                 await _emailSender.SendEmailAsync(email, subject, emailBody);
-                _log.Log("Email:SendStateAlertsChangedDeviceB987", email, true);
+                // _log.Log("Email:SendStateAlertsChangedDeviceB987", email, true);
             }
 
             var whatsappBody = "PORTAL RADIODADOS ANALÍTICA" + Environment.NewLine + Environment.NewLine + "Atenção!" + Environment.NewLine + Environment.NewLine +
@@ -140,7 +140,7 @@ namespace SmartGeoIot.Services
             foreach (var phone in phoneNumbers)
             {
                 await SendWhatsappMessage(data.deviceName, whatsappBody, phone);
-                _log.Log("Whatsapp:SendStateAlertsChangedDeviceB987", phone, true);
+                // _log.Log("Whatsapp:SendStateAlertsChangedDeviceB987", phone, true);
             }
         }
 
@@ -160,7 +160,7 @@ namespace SmartGeoIot.Services
             foreach (var email in emails)
             {            
                 await _emailSender.SendEmailAsync(email, subject, emailBody);
-                _log.Log("SendStateChangedDeviceTSP", JsonConvert.SerializeObject(emailBody), true);
+                // _log.Log("SendStateChangedDeviceTSP", JsonConvert.SerializeObject(emailBody), true);
             }
         }
 
@@ -180,7 +180,25 @@ namespace SmartGeoIot.Services
             foreach (var email in emails)
             {            
                 await _emailSender.SendEmailAsync(email, subject, emailBody);
-                _log.Log("SendStateChangedDeviceTRM", JsonConvert.SerializeObject(emailBody), true);
+                // _log.Log("SendStateChangedDeviceTRM", JsonConvert.SerializeObject(emailBody), true);
+            }
+        }
+
+        public async Task SendMailNotificationB980(string[] emails, Message message)
+        {
+            string subject = $"{_boxSettings.APPLICATION_NAME} - Notificação de status do dispositivo {message.DeviceId}";
+
+            // create the template
+            CultureInfo ptbr = new CultureInfo("pt-BR");
+            dynamic data = _templateService.CreateBasicModel();
+            data.subject = subject;
+            data.message = message;
+            var emailBody = await _templateService.RenderTemplate("AlertDevicesB980", data, null, "pt");
+
+            foreach (var email in emails)
+            {            
+                await _emailSender.SendEmailAsync(email, subject, emailBody);
+                // _log.Log("SendStateChangedDeviceTRM", JsonConvert.SerializeObject(emailBody), true);
             }
         }
 
@@ -248,7 +266,7 @@ namespace SmartGeoIot.Services
             foreach (var email in emails)
             {            
                 await _emailSender.SendEmailAsync(email, subject, emailBody);
-                _log.Log("SendStateChangedDeviceTQA", JsonConvert.SerializeObject(emailBody), true);
+                // _log.Log("SendStateChangedDeviceTQA", JsonConvert.SerializeObject(emailBody), true);
             }
         }
         // internal async Task NotifyFencerRegistrationSuccessAsync(Models.FencerRegistrationRequest fencerRegistrationRequest, string password)
@@ -349,10 +367,10 @@ namespace SmartGeoIot.Services
                                 HttpResponseMessage msg = await wc.SendAsync(req);
 
                                 string jsonResult = string.Empty;
-                                if (msg.StatusCode == System.Net.HttpStatusCode.Created)
-                                    _log.Log($"SMS enviado para o número {numberTo}, de alerta de bloqueio do dispositivo {deviceId}. {msg.RequestMessage}");
-                                else
-                                    _log.Log($"Erro no envio de SMS enviado para o número {numberTo}, de alerta de bloqueio do dispositivo {deviceId}. {msg.RequestMessage}");
+                                // if (msg.StatusCode == System.Net.HttpStatusCode.Created)
+                                //     _log.Log($"SMS enviado para o número {numberTo}, de alerta de bloqueio do dispositivo {deviceId}. {msg.RequestMessage}");
+                                // else
+                                //     _log.Log($"Erro no envio de SMS enviado para o número {numberTo}, de alerta de bloqueio do dispositivo {deviceId}. {msg.RequestMessage}");
                             }
                             catch (System.Exception ex)
                             {

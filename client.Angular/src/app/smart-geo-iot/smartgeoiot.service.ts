@@ -1,5 +1,5 @@
 import { Outgoing, OutgoingViewModel } from './outgoing';
-import { DeviceLocation } from './Device';
+import { B975DevicesDashboardViewModels, DeviceLocation } from './Device';
 import { Firmware } from './firmware';
 import { Cep, State } from './address';
 import { Package } from './package';
@@ -20,6 +20,7 @@ import { p } from '@angular/core/src/render3';
 import { Client, ClientUser } from './client';
 import { toJSON } from 'knockout';
 import { MCond } from './MCond';
+import { ServiceDeskRecord } from './service-desk';
 
 @Injectable({
   providedIn: 'root'
@@ -47,6 +48,17 @@ export class SmartGeoIotService extends BaseService {
   getDevicesFromDashboard(skip = 0, top = 0, filter = '', out: (totalCount: number) => void = null): Observable<DeviceRegistration[]> {
     const url = environment.API_SERVER_URL + '/sgiDevice/fromDashboard/?skip=' + skip + '&top=' + top + '&filter=' + filter;
     return this.getEntities<DeviceRegistration>(() => new DeviceRegistration(), url, out).pipe(
+      tap(() => { this.messageService.isLoadingData = false; }),
+      catchError(this.handleError([]))
+    );
+  }
+
+  /**
+  * Gets all devices.
+  */
+  getDevicesB975FromDashboard(skip = 0, top = 0, filter = '', filtrarBloqueios: boolean, out: (totalCount: number) => void = null): Observable<B975DevicesDashboardViewModels[]> {
+    const url = `${environment.API_SERVER_URL}/sgiDevice/fromDashboard-b975/?skip=${skip}&top=${top}&filter=${filter}&filtrarBloqueios=${filtrarBloqueios}`;
+    return this.getEntities<B975DevicesDashboardViewModels>(() => new B975DevicesDashboardViewModels(), url, out).pipe(
       tap(() => { this.messageService.isLoadingData = false; }),
       catchError(this.handleError([]))
     );
@@ -216,6 +228,36 @@ export class SmartGeoIotService extends BaseService {
       catchError(this.handleError())
     );
   }
+
+  createClientApiKey(clientUId: string): Observable<string> {
+    return this.http.post<string>(`${environment.API_SERVER_URL}/sgiClient/api-key/${clientUId}`, this.httpOptions).pipe(
+      tap(() => { this.messageService.isLoadingData = false; }),
+      catchError(this.handleError(null))
+    );
+  }
+
+  serviceDeskSendMessage(deviceId: string, reason: string, packageTimestamp: number, pack: string = null): Observable<string> {
+    return this.http.put<string>(`${environment.API_SERVER_URL}/serviceDesk/by-dashboard/${deviceId}?reason=${reason}&package=${pack}&packageTimestamp=${packageTimestamp}`, this.httpOptions).pipe(
+      tap(() => { this.messageService.isLoadingData = false; }),
+      catchError(this.handleError(null))
+    );
+  }
+
+  serviceDeskClose(deviceId: string, reason: string): Observable<string> {
+    return this.http.put<string>(`${environment.API_SERVER_URL}/serviceDesk/close/${deviceId}?reason=${reason}`, this.httpOptions).pipe(
+      tap(() => { this.messageService.isLoadingData = false; }),
+      catchError(this.handleError(null))
+    );
+  }
+
+  getHistoryServiceDesk(deviceId: string, skip = 0, top = 0, filter = '', out: (totalCount: number) => void = null): Observable<ServiceDeskRecord[]> {
+    const url = `${environment.API_SERVER_URL}/serviceDesk/${deviceId}?skip=${skip}&top=${top}&filter=${filter}`;
+    return this.getEntities<ServiceDeskRecord>(() => new ServiceDeskRecord(), url, out).pipe(
+      tap(() => { this.messageService.isLoadingData = false; }),
+      catchError(this.handleError([]))
+    );
+  }
+
 
   /**
    * Updates a device fields.

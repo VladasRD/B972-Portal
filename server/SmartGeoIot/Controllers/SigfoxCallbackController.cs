@@ -48,19 +48,62 @@ namespace SmartGeoIot.Controllers
             await _sgiService.SendWhatsappMessage(deviceId, subject, phone);
         }
 
+        [HttpPost("process-old-data/{project}")]
+        public string ProcessOldData(string project)
+        {
+            if (project == Utils.EnumToAnnotationText(ProjectCode.B975))
+            {
+                var messages = _sgiService.ProcessPunctualOldDataB975();
+                return JsonConvert.SerializeObject(new { message = $"Dados processados do projeto {project}.", data = messages});
+            }
+
+
+            return $"Não encontramos função de processamento para o projeto {project};";
+        }
+
+        [HttpGet]
+        public string GetTeste(string deviceTypeId, [FromBody] Models.CallBackDataAdvanced callBackDataAdvanced, string dataReturn = "all")
+        {
+            bool isLocalHost = false;
+            Models.CallBackMessageValue computedLocation = null;
+            if (callBackDataAdvanced.messages != null && callBackDataAdvanced.messages.Length > 1)
+                computedLocation = JsonConvert.DeserializeObject<Models.CallBackMessageValue>(callBackDataAdvanced.messages[1].value.ToString());
+            
+            if (computedLocation == null)
+                return null;
+
+            Models.DeviceLocation deviceLocation = new Models.DeviceLocation
+            {
+                DeviceLocationUId = Guid.NewGuid().ToString(),
+                DeviceId = callBackDataAdvanced?.device,
+                Data = callBackDataAdvanced?.data,
+                Time = (long)callBackDataAdvanced?.timestamp,
+                Latitude = double.Parse(computedLocation?.lat),
+                Longitude = double.Parse(computedLocation?.lng),
+                Radius = computedLocation?.radius
+            };
+
+            var host = HttpContext.Request.Host;
+            isLocalHost = host.Host.Contains("localhost");
+
+            Message _result = _sgiService.CreateDefaultMessageToCallBack(deviceLocation.DeviceId, deviceLocation.Data, deviceLocation.Time, isLocalHost);
+            Models.B975 b975 = _sgiService.SimulateProcessDataB975(_result, deviceLocation);
+
+            if (dataReturn.Equals("all"))
+                return JsonConvert.SerializeObject(new { _result, b975});
+            else if (dataReturn.Equals("b975"))
+                return JsonConvert.SerializeObject(b975);
+            else
+                return JsonConvert.SerializeObject(_result);
+        }
+
+
         [HttpPost]
         public async Task Post(string deviceTypeId, [FromBody] Models.CallBackDataAdvanced callBackDataAdvanced)
         {
-            // if (callBackDataAdvanced == null)
-            // {
-            //     callBackDataAdvanced = new Models.CallBackDataAdvanced()
-            //     {
-            //         data = "8403d203cc03d203d203cca1",
-            //         device = "440C54",
-            //         timestamp = 1627774762000
-            //     };
-            // }
-            string callBackDataAdvancedJSON = JsonConvert.SerializeObject(callBackDataAdvanced);
+            bool isLocalHost = false;
+            var host = HttpContext.Request.Host;
+            isLocalHost = host.Host.Contains("localhost");
 
             Models.CallBackMessageValue computedLocation = null;
             if (callBackDataAdvanced.messages != null && callBackDataAdvanced.messages.Length > 1)
@@ -68,6 +111,7 @@ namespace SmartGeoIot.Controllers
 
             if (computedLocation != null)
             {
+
                 Models.DeviceLocation deviceLocation = new Models.DeviceLocation
                 {
                     DeviceLocationUId = Guid.NewGuid().ToString(),
@@ -78,6 +122,15 @@ namespace SmartGeoIot.Controllers
                     Longitude = double.Parse(computedLocation?.lng),
                     Radius = computedLocation?.radius
                 };
+
+                var locationMaps = _sgiService.GetLocationByCoordinates(deviceLocation.Latitude, deviceLocation.Longitude);
+                if (locationMaps != null)
+                {
+                    deviceLocation.Neighborhood = locationMaps.Neighborhood;
+                    deviceLocation.City = locationMaps.City;
+                    deviceLocation.State = locationMaps.State;
+                }
+
                 // Salvar o registro de localização do dispositivo
                 _sgiService.SaveDeviceLocation(deviceLocation);
 
@@ -97,35 +150,58 @@ namespace SmartGeoIot.Controllers
                 //         _sgiService.SendPackToUpdateHourDevice(deviceLocation.DeviceId, callBackDataAdvanced.data);
                 // }
 
+                // Projeto B975
+                if (_sgiService.VerifyIsProject(deviceLocation.DeviceId, Utils.EnumToAnnotationText(ProjectCode.B975)))
+                {
+                    try
+                    {
+                        Message newMessage = _sgiService.CreateDefaultMessageToCallBack(deviceLocation.DeviceId, deviceLocation.Data, deviceLocation.Time, isLocalHost);
+                        // if (!newMessage.TypePackage.Equals("1C"))
+                        // {
+                        //     deviceLocation.Latitude = 0;
+                        //     deviceLocation.Longitude = 0;
+                        //     deviceLocation.Radius = null;
+                        // }
+
+                        await _sgiService.ProcessDataB975(newMessage, deviceLocation);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        _log.Log($"SigfoxCallbackController/Post: Erro Pacote {Utils.EnumToAnnotationText(ProjectCode.B975)} no processamento dos dados.", ex.Message, true);
+                    }
+                }
                 
 
-                // VERIFICANDO O TIPO DE PACOTE SE É UM NÚMERO, SE NÃO, TEM ERRO, NÃO PROSSEGUIR
-                try
+                // projeto boia
+                if (callBackDataAdvanced.TypePackage == ((int)Models.PackagesEnum.B980).ToString())
                 {
-                    int.Parse(callBackDataAdvanced.TypePackage);
-                }
-                catch (System.Exception)
-                {
-                    return;                    
-                }
+                    try
+                    {
+                        Message newMessage = _sgiService.CreateDefaultMessageToCallBack(deviceLocation.DeviceId, deviceLocation.Data, deviceLocation.Time, isLocalHost);
+                        if (newMessage != null)
+                        {
+                            _context.Messages.Add(newMessage);
+                            _context.SaveChanges();
+                            _log.Log($"Dados do dispositivo {deviceLocation.DeviceId} criados.");
 
-
+                            _sgiService.SendNotificationB980(newMessage);
+                        }
+                    }
+                    catch (System.Exception ex)
+                    {
+                        _log.Log($"SigfoxCallbackController/Post: Erro Pacote {(int)Models.PackagesEnum.B980} na verificação de mudança de alerta.", ex.Message, true);
+                    }
+                }
 
                 // Projeto - MCond
-                if (int.Parse(callBackDataAdvanced.TypePackage) == (int)Models.PackagesEnum.B987)
+                if (callBackDataAdvanced.TypePackage == ((int)Models.PackagesEnum.B987).ToString())
                 {
                     if (_sgiService.VerifyDeviceIsProjectB987(deviceLocation.DeviceId))
                     {
                         List<Message> listMessage = new List<Message>();
                         listMessage.Add
                         (
-                            new Message()
-                            {
-                                DeviceId = deviceLocation.DeviceId,
-                                Data = deviceLocation.Data,
-                                Time = deviceLocation.Time,
-                                OperationDate = Utils.TimeStampSecondsToDateTime(deviceLocation.Time)
-                            }
+                            _sgiService.CreateDefaultMessageToCallBack(deviceLocation.DeviceId, deviceLocation.Data, deviceLocation.Time, isLocalHost)
                         );
 
                         Models.MCond currentData = _sgiService.ProcessDataB987(listMessage);
@@ -137,7 +213,7 @@ namespace SmartGeoIot.Controllers
                 }
                 
                 // pacote 83 projeto vazão de fluxo TSP
-                if (int.Parse(callBackDataAdvanced.TypePackage) == (int)Models.PackagesEnum.TSP)
+                if (callBackDataAdvanced.TypePackage == ((int)Models.PackagesEnum.TSP).ToString())
                 {
                     var projectDevicesB982_S = _sgiService.GetDevicesByProjectCode(Utils.EnumToAnnotationText(ProjectCode.B982_S));
                     var devicesB982_S = projectDevicesB982_S != null ? projectDevicesB982_S.Select(s => s.DeviceId).ToArray() : null;
@@ -145,7 +221,7 @@ namespace SmartGeoIot.Controllers
                     {
                         try
                         {    
-                            _log.Log($"SigfoxCallbackController/Post: Pacote {(int)Models.PackagesEnum.TSP} recebido, verificando mudança de alerta.");
+                            // _log.Log($"SigfoxCallbackController/Post: Pacote {(int)Models.PackagesEnum.TSP} recebido, verificando mudança de alerta.");
                             _sgiService.SendNotificationStateChangedTSP(deviceLocation);
                         }
                         catch (System.Exception ex)
@@ -156,7 +232,7 @@ namespace SmartGeoIot.Controllers
                 }
 
                 // pacote 82 projeto vazão de fluxo TQA
-                if (int.Parse(callBackDataAdvanced.TypePackage) == (int)Models.PackagesEnum.TQA_S)
+                if (callBackDataAdvanced.TypePackage == ((int)Models.PackagesEnum.TQA_S).ToString())
                 {
                     var projectDevicesB981 = _sgiService.GetDevicesByProjectCode(Utils.EnumToAnnotationText(ProjectCode.B981));
                     var devicesB981 = projectDevicesB981 != null ? projectDevicesB981.Select(s => s.DeviceId).ToArray() : null;
@@ -164,7 +240,7 @@ namespace SmartGeoIot.Controllers
                     {
                         try
                         {    
-                            _log.Log($"SigfoxCallbackController/Post: Pacote {(int)Models.PackagesEnum.TQA_S} recebido, verificando mudança de alerta.");
+                            // _log.Log($"SigfoxCallbackController/Post: Pacote {(int)Models.PackagesEnum.TQA_S} recebido, verificando mudança de alerta.");
                             _sgiService.SendNotificationStateChangedTQA(deviceLocation);
                         }
                         catch (System.Exception ex)
@@ -175,7 +251,7 @@ namespace SmartGeoIot.Controllers
                 }
 
                 // pacote 23 projeto vazão de fluxo Resil
-                if (int.Parse(callBackDataAdvanced.TypePackage) == (int)Models.PackagesEnum.TRM)
+                if (callBackDataAdvanced.TypePackage == ((int)Models.PackagesEnum.TRM).ToString())
                 {
                     var projectDevicesB972_P = _sgiService.GetDevicesByProjectCode(Utils.EnumToAnnotationText(ProjectCode.B972_P));
                     var devicesB972_P = projectDevicesB972_P != null ? projectDevicesB972_P.Select(s => s.DeviceId).ToArray() : null;
@@ -183,7 +259,7 @@ namespace SmartGeoIot.Controllers
                     {
                         try
                         {    
-                            _log.Log($"SigfoxCallbackController/Post: Pacote {(int)Models.PackagesEnum.TRM}, verificando mudança de estado.");
+                            // _log.Log($"SigfoxCallbackController/Post: Pacote {(int)Models.PackagesEnum.TRM}, verificando mudança de estado.");
                             _sgiService.SendNotificationStateChangedTRM(deviceLocation);
                         }
                         catch (System.Exception ex)
@@ -208,7 +284,7 @@ namespace SmartGeoIot.Controllers
 
                 var projectDevices = _sgiService.GetDevicesByProjectCode(Utils.EnumToAnnotationText(ProjectCode.B982_S));
                 var devices = projectDevices != null ? projectDevices.Select(s => s.DeviceId).ToArray() : null;
-                if (devices != null && devices.Any(a => deviceLocation.DeviceId == a) && int.Parse(callBackDataAdvanced.TypePackage) == (int)Models.PackagesEnum.B972_84)
+                if (devices != null && devices.Any(a => deviceLocation.DeviceId == a) && callBackDataAdvanced.TypePackage == ((int)Models.PackagesEnum.B972_84).ToString())
                 {
                     try
                     {
@@ -217,7 +293,7 @@ namespace SmartGeoIot.Controllers
                         {
                             try
                             {     
-                                _log.Log("Pacote 84 recebido, convertendo.");
+                                // _log.Log("Pacote 84 recebido, convertendo.");
 
                                 // converter 84 e gerar 83´s
                                 var packs84 = _sgiService.GetVazaosPack84(deviceLocation.Data, deviceLocation.Time, deviceLocation.DeviceId);
@@ -256,9 +332,9 @@ namespace SmartGeoIot.Controllers
             //     _log.Log($"Erro ao atualizar dados do disposito {callBackDataAdvanced?.device} quando detectado bloqueio. Erro: {ex.Message}.");
             // }
 
-            _log.Log("Método POST de call-back da sigfox de localização do dispositivo retornou " +
-            $"id:{callBackDataAdvanced?.device}, time:{callBackDataAdvanced?.timestamp}, data: {callBackDataAdvanced?.data}, deviceTypeId:{deviceTypeId?.ToString()}, " +
-            $"latitude: {computedLocation?.lat}, longitude: {computedLocation?.lng}, radius: {computedLocation?.radius}.");
+            // _log.Log("Método POST de call-back da sigfox de localização do dispositivo retornou " +
+            // $"id:{callBackDataAdvanced?.device}, time:{callBackDataAdvanced?.timestamp}, data: {callBackDataAdvanced?.data}, deviceTypeId:{deviceTypeId?.ToString()}, " +
+            // $"latitude: {computedLocation?.lat}, longitude: {computedLocation?.lng}, radius: {computedLocation?.radius}.");
         }
 
     }

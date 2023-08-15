@@ -32,6 +32,8 @@ namespace SmartGeoIot.Services
                 clients = clients.Where(c =>
                     c.Name.ToLower().Contains(filter) ||
                     c.Document.ToLower().Contains(filter) ||
+                    c.Email.ToLower().Contains(filter) ||
+                    c.Cpf.ToLower().Contains(filter) ||
                     c.Address.ToLower().Contains(filter)
                     );
             }
@@ -105,6 +107,33 @@ namespace SmartGeoIot.Services
             return _context.Clients.Include(i => i.Users).SingleOrDefault(c => c.Users.Any(a => a.ApplicationUserId == userId));
         }
 
+        public string GenerateClientAPIKEY(string clientUId)
+        {
+            Client client = GetClient(clientUId);
+            if (client == null)
+            {
+                // _log.Log($"Cliente {clientUId} não existe.");
+                throw new Box.Common.BoxLogicException("Cliente não encontrado.");
+            }
+
+            client.ApiKey = Guid.NewGuid().ToString().Replace("-", "");
+            _context.Entry<Client>(client).State = EntityState.Modified;
+            _context.SaveChanges();
+            // _log.Log($"Chave de API do cliente {client.Name} foi criada.");
+
+            return client.ApiKey;
+        }
+
+        public bool CanAccessDeviceClient(string apiKey, string deviceUId)
+        {
+            return _context.Clients.Any(c => c.Active && c.ApiKey == apiKey && c.Devices.Any(d => d.Id == deviceUId));
+        }
+
+        public bool ExistAPIClient(string apiKey)
+        {
+            return _context.Clients.Any(c => c.Active && c.ApiKey == apiKey);
+        }
+
         public Client SaveClient(Client client, ClaimsPrincipal _user, bool isSubClient = false)
         {
             Client oldClient = GetClient(client.ClientUId);
@@ -173,7 +202,7 @@ namespace SmartGeoIot.Services
             }
 
             _context.SaveChanges(true);
-            _log.Log($"Cliente {client.Name} foi criado/alterado.");
+            // _log.Log($"Cliente {client.Name} foi criado/alterado.");
 
             return client;
         }
@@ -187,7 +216,7 @@ namespace SmartGeoIot.Services
             client.Active = false;
             _context.Entry<Client>(client).State = EntityState.Modified;
             _context.SaveChanges();
-            _log.Log($"Clientes {client.Name} foi desativado.");
+            // _log.Log($"Clientes {client.Name} foi desativado.");
         }
 
         public bool HasBillingCurrentMonth(string clientUId, int month)
@@ -220,7 +249,7 @@ namespace SmartGeoIot.Services
                 clientBilling.Sended = true;
                 _context.ClientsBillings.Add(clientBilling);
                 _context.SaveChanges();
-                _log.Log($"Faturamento do cliente {client.Name} com vencimento em {clientBilling.PaymentDueDate.Value.ToShortDateString()} foi criando.");
+                // _log.Log($"Faturamento do cliente {client.Name} com vencimento em {clientBilling.PaymentDueDate.Value.ToShortDateString()} foi criando.");
 
                 return clientBilling;
             }
@@ -252,14 +281,14 @@ namespace SmartGeoIot.Services
 
             _context.ClientsUsers.Add(clientUser);
             _context.SaveChanges(true);
-            _log.Log($"Usuário {user.Email} foi vinculado ao cliente.");
+            // _log.Log($"Usuário {user.Email} foi vinculado ao cliente.");
         }
 
         public void RemoveClientUser(ClientUser clientUser)
         {
             _context.ClientsUsers.Remove(clientUser);
             _context.SaveChanges();
-            _log.Log($"Usuário {clientUser.AppUser.Email} foi removido.");
+            // _log.Log($"Usuário {clientUser.AppUser.Email} foi removido.");
         }
 
         public (int clientsActived, int devicesActived) GetCliensAndDevicesActived()

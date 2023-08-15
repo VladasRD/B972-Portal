@@ -21,6 +21,8 @@ namespace SmartGeoIot.Services
                 filter = filter.ToLower();
                 devicesRegistrations = devicesRegistrations.Where(c =>
                     c.Name.ToLower().Contains(filter) ||
+                    c.SerialNumber.ToLower().Contains(filter) ||
+                    c.Model.ToLower().Contains(filter) ||
                     c.DeviceId.ToLower().Contains(filter) ||
                     c.NickName.ToLower().Contains(filter)
                     );
@@ -84,7 +86,7 @@ namespace SmartGeoIot.Services
             }
 
             _context.SaveChanges(true);
-            _log.Log($"Dispositivo {deviceRegistration.Name} foi criado/alterado.");
+            // _log.Log($"Dispositivo {deviceRegistration.Name} foi criado/alterado.");
 
             return deviceRegistration;
         }
@@ -97,7 +99,7 @@ namespace SmartGeoIot.Services
 
             _context.DevicesRegistration.Remove(deviceRegistration);
             _context.SaveChanges();
-            _log.Log($"Dispositivo {deviceRegistration.Name} foi removido.");
+            // _log.Log($"Dispositivo {deviceRegistration.Name} foi removido.");
         }
 
         public bool CanRegisterDevice(string deviceId)
@@ -114,7 +116,7 @@ namespace SmartGeoIot.Services
             deviceRegistration.SerialNumber = serialNumber;
             _context.Entry<DeviceRegistration>(deviceRegistration).State = EntityState.Modified;
             _context.SaveChanges(true);
-            _log.Log($"Serial Number do dispositivo {deviceRegistration.DeviceId} foi criado/alterado.");
+            // _log.Log($"Serial Number do dispositivo {deviceRegistration.DeviceId} foi criado/alterado.");
 
             return deviceRegistration;
         }
@@ -128,7 +130,7 @@ namespace SmartGeoIot.Services
             deviceRegistration.Model = model;
             _context.Entry<DeviceRegistration>(deviceRegistration).State = EntityState.Modified;
             _context.SaveChanges(true);
-            _log.Log($"Modelo do dispositivo {deviceRegistration.DeviceId} foi criado/alterado.");
+            // _log.Log($"Modelo do dispositivo {deviceRegistration.DeviceId} foi criado/alterado.");
 
             return deviceRegistration;
         }
@@ -143,7 +145,7 @@ namespace SmartGeoIot.Services
             deviceRegistration.NotesCreateDate = DateTime.Now;
             _context.Entry<DeviceRegistration>(deviceRegistration).State = EntityState.Modified;
             _context.SaveChanges(true);
-            _log.Log($"Anotações do dispositivo {deviceRegistration.DeviceId} foi criado/alterado.");
+            // _log.Log($"Anotações do dispositivo {deviceRegistration.DeviceId} foi criado/alterado.");
 
             return deviceRegistration;
         }
@@ -179,7 +181,7 @@ namespace SmartGeoIot.Services
             
             _context.Entry<DeviceRegistration>(deviceRegistration).State = EntityState.Modified;
             _context.SaveChanges(true);
-            _log.Log($"Anotações do dispositivo {deviceRegistration.DeviceId} foi criado/alterado.");
+            // _log.Log($"Anotações do dispositivo {deviceRegistration.DeviceId} foi criado/alterado.");
 
             return deviceRegistration;
         }

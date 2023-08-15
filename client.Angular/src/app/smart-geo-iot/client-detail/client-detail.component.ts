@@ -70,7 +70,8 @@ export class ClientDetailComponent implements OnInit {
       'type': new FormControl(''),
       'value': new FormControl(''),
       'birth': new FormControl(''),
-      'cpf': new FormControl('')
+      'cpf': new FormControl(''),
+      'apiKey': new FormControl({value: '', disabled: true})
     });
 
     this.buildDocumentTypeList();
@@ -121,6 +122,32 @@ export class ClientDetailComponent implements OnInit {
 
   get isNewClient(): boolean {
     return this._clientUId === 'new';
+  }
+
+
+  openConfirmDialogApiKey(): void {
+    const dialogRef = this.dialog.open(GenericYesNoDialogComponent, {
+      width: '80%',
+      data: { title: 'Criar chave API', message: 'Tem certeza que deseja criar uma chave de API para o cliente?', isWarn: true }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.addApiKey();
+      }
+    });
+  }
+  addApiKey() {
+    this.messageService.blockUI();
+    this.sgiService.createClientApiKey(this.client.clientUId)
+      .subscribe(() => {
+        // console.log(key)
+        this.router.navigate(['./radiodados/clientes']);
+        this.messageService.add('Chave de API criada.');
+      },
+        err => {
+          this.messageService.addError(err.message + ' (criando chave api)');
+        });
   }
 
   private getClient(): void {

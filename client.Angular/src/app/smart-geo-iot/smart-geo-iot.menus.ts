@@ -94,8 +94,12 @@ export class SmartGeoIotMenus extends ModuleMenus {
       {
         claimValue: 'SGI-SUBCLIENT.WRITE', claimName: 'Sub Client manager',
         claimDescription: 'Pode criar, alterar e remover sub clientes.'
-      }
+      },
       // Sub-Clientes
+      {
+        claimValue: 'SERVICE-DESK.WRITE', claimName: 'Service Desk manager',
+        claimDescription: 'Pode criar e alterar chamados.'
+      }
 
     ];
   }

@@ -52,41 +52,47 @@ export class DeviceRegistration {
 
     get getUrlRouterLinkProject(): string {
         if (this.project.code === ProjectEnum.B972) {
-            return ('radiodados/dashboard/clampon/' + this.deviceId);
+            return ('clampon/' + this.deviceId);
         }
         if (this.project.code === ProjectEnum.B978) {
-            return ('radiodados/dashboard/b978/' + this.deviceId);
+            return ('b978/' + this.deviceId);
+        }
+        if (this.project.code === ProjectEnum.B980) {
+            return ('b980/' + this.deviceId);
         }
         if (this.project.code === ProjectEnum.B982_S) {
-            return ('radiodados/dashboard/aguamon83/' + this.deviceId);
+            return ('aguamon83/' + this.deviceId);
         }
         if (this.project.code === ProjectEnum.B987) {
-            return ('radiodados/dashboard/b987/' + this.deviceId);
+            return ('b987/' + this.deviceId);
+        }
+        if (this.project.code === ProjectEnum.B975) {
+            return ('b975/' + this.deviceId);
         }
 
         if (this.package.type === '10') {
-            return ('radiodados/dashboard/aguamon/' + this.deviceId);
+            return ('aguamon/' + this.deviceId);
         }
         if (this.package.type === '12') {
-            return ('radiodados/dashboard/djrf/' + this.deviceId);
+            return ('djrf/' + this.deviceId);
         }
         if (this.package.type === '81') {
-            return ('radiodados/dashboard/aguamon81/' + this.deviceId);
+            return ('aguamon81/' + this.deviceId);
         }
         
         if (this.package.type === '21') {
-            return ('radiodados/dashboard/aguamon21/' + this.deviceId);
+            return ('aguamon21/' + this.deviceId);
         }
         if (this.project.code === ProjectEnum.B972_P) {
-            return ('radiodados/dashboard/trm23/' + this.deviceId);
+            return ('trm23/' + this.deviceId);
         }
         
-        return ('radiodados/dashboard/' + this.deviceId);
+        return ('' + this.deviceId);
     }
 
     get getGraphicUrlRouterLinkProject(): string {
         if (this.project.code === ProjectEnum.B972) {
-            // return ('radiodados/dashboard/trm23/' + this.deviceId);
+            // return ('trm23/' + this.deviceId);
             return '/';
         }
         // if (this.project.code === ProjectEnum.B978) {
@@ -95,8 +101,14 @@ export class DeviceRegistration {
         if (this.project.code === ProjectEnum.B978) {
             return ('trm/' + this.deviceId);
         }
+        if (this.project.code === ProjectEnum.B980) {
+            return ('trm/' + this.deviceId);
+        }
         if (this.project.code === ProjectEnum.B987) {
             return ('b987/' + this.deviceId);
+        }
+        if (this.project.code === ProjectEnum.B975) {
+            return ('b975/' + this.deviceId);
         }
         
         if (this.package.type === '10') {
@@ -129,4 +141,17 @@ export class DeviceLocation {
     radius: string;
     latitude: number;
     longitude: number;
+}
+
+export class B975DevicesDashboardViewModels {
+    deviceId: string;
+    name: string;
+    nickName: string;
+    date: Date;
+    statusDJ: string;
+    contadorCarencias: number;
+    contadorBloqueios: number;
+    locationCity: string;
+    hasServiceDeskOpened: boolean;
+    hasHistoryServiceDesk: boolean;
 }

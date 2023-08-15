@@ -1,4 +1,4 @@
-import { DeviceRegistration } from './../../device';
+import { DeviceRegistration } from './../../Device';
 import { SmartGeoIotService } from './../../smartgeoiot.service';
 import { Report } from '../../report';
 import { Component, OnInit } from '@angular/core';

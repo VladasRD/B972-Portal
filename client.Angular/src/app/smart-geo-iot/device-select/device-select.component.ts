@@ -17,6 +17,7 @@ export class DeviceSelectComponent implements OnInit {
   @Input() floatLabel = 'float';
   @Input() hasPlaceHolder = true;
   @Input() project = null;
+  @Input() fxFlex = '100%';
 
   constructor(private sgiService: SmartGeoIotService) {
   }

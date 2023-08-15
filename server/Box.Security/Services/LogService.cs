@@ -142,8 +142,8 @@ namespace Box.Security.Services
                 // DateTime yearAgo = when.AddYears(-years);
                 // _context.Database.ExecuteSqlCommand("DELETE FROM Logs WHERE Logs.[When] < {0}",  yearAgo);
 
-                // DateTime hoursAgo = when.AddHours(-12);
-                // _context.Database.ExecuteSqlCommand("DELETE FROM Logs WHERE Logs.[When] < {0}",  hoursAgo);
+                DateTime hoursAgo = when.AddHours(-24);
+                _context.Database.ExecuteSqlCommand("DELETE FROM Logs WHERE Logs.[When] < {0}",  hoursAgo);
                 
             }
             catch (Exception) { }

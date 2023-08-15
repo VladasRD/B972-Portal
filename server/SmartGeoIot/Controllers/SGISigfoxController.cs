@@ -58,7 +58,7 @@ namespace SmartGeoIot.Controllers
                     {
                         try
                         {    
-                            _log.Log($"Baixando dados do dispositivo {device.Id} - {device.Name}.");
+                            // _log.Log($"Baixando dados do dispositivo {device.Id} - {device.Name}.");
 
                             for (int i = 0; i < _sigfoxLogins.Length; i++)
                             {
@@ -90,7 +90,7 @@ namespace SmartGeoIot.Controllers
                 //     _log.Log("Erro na atualização da data de operação.", error.Message);
                 // }
 
-                _log.Log("Finalizado download dos dados dos dispositivos.");
+                // _log.Log("Finalizado download dos dados dos dispositivos.");
             }
             catch (System.Exception ex)
             {
@@ -102,7 +102,7 @@ namespace SmartGeoIot.Controllers
         {
             try
             {
-                _log.Log($"Baixando dados do dispositivo {id}.");
+                // _log.Log($"Baixando dados do dispositivo {id}.");
                 Models.SigfoxMessage messages = null;
 
                 for (int i = 0; i < _sigfoxLogins.Length; i++)
@@ -128,7 +128,7 @@ namespace SmartGeoIot.Controllers
                 //     _log.Log("Erro na atualização da data de operação.", error.Message);
                 // }
 
-                _log.Log($"Finalizado download de dados do dispositivo {id}.");
+                // _log.Log($"Finalizado download de dados do dispositivo {id}.");
             }
             catch (System.Exception ex)
             {
@@ -145,7 +145,7 @@ namespace SmartGeoIot.Controllers
                 {
                     foreach (var device in devices)
                     {
-                        _log.Log($"Baixando dados do dispositivo {device.Id} - {device.Name}.");
+                        // _log.Log($"Baixando dados do dispositivo {device.Id} - {device.Name}.");
                         Models.SigfoxMessage messages = await GetMessagesByDevice(device.Id);
 
                         bool continueUpdatingMessages = messages != null;
@@ -163,7 +163,7 @@ namespace SmartGeoIot.Controllers
 
                         // if (messages.data.Length > 0)
                         //     _sgiService.SigfoxSaveMessages(messages);
-                        _log.Log($"Finalizado download de dados do dispositivo {device.Id}.");
+                        // _log.Log($"Finalizado download de dados do dispositivo {device.Id}.");
                     }
                 }
             }
@@ -181,16 +181,16 @@ namespace SmartGeoIot.Controllers
             {
                 if (_sgiService.IsLastDayOfMonth())
                 {
-                    _log.Log("Iniciando verificação de clientes e licensas ativas.");
+                    // _log.Log("Iniciando verificação de clientes e licensas ativas.");
                     _sgiService.CalcClientsAndLicensesActived();
-                    _log.Log("Finalizando verificação de clientes e licensas ativas.");
+                    // _log.Log("Finalizando verificação de clientes e licensas ativas.");
                 }
             }
             catch (System.Exception) { }
 
             try
             {
-                _log.Log("Iniciando download dos dispositivos.");
+                // _log.Log("Iniciando download dos dispositivos.");
                 Models.SigfoxDevice devices = null;
 
                 for (int i = 0; i < _sigfoxLogins.Length; i++)
@@ -201,8 +201,7 @@ namespace SmartGeoIot.Controllers
                         _sgiService.SigfoxSaveDevices(devices);
                 }
 
-
-                _log.Log("Finalizado download dos dispositivos.");
+                // _log.Log("Finalizado download dos dispositivos.");
             }
             catch (System.Exception ex)
             {

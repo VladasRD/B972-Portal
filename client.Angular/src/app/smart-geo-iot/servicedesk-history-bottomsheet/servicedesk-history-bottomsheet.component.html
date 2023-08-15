@@ -1,0 +1,11 @@
+<div class="mat-typography container">
+  <h3>Histórico de Chamados</h3>
+
+  <div *ngFor="let r of records" class="records">          
+    <p>
+      <strong>{{r.createDateBrasilian | date: 'dd/MM/yyyy HH:mm:ss'}} - </strong>
+      {{r.description}}
+    </p>
+  </div>
+</div>
+

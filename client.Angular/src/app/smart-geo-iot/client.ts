@@ -33,6 +33,7 @@ export class Client {
     whatsAppNotification: boolean;
     pushNotification: boolean;
     clientFatherUId: string;
+    apiKey: string;
 
     get documentTypeName(): string {
         return DocumentType.enum[this.documentType];

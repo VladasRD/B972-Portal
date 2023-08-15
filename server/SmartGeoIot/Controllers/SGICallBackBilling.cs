@@ -42,7 +42,7 @@ namespace SmartGeoIot.Controllers
         public void UpdateBillingStatus(string id)
         {
             var token = Request.QueryString;
-            _log.Log($"Atualizando faturamento via call-back, token recebido {token}. Request: {Request.Path.ToString()}.", null, true);
+            // _log.Log($"Atualizando faturamento via call-back, token recebido {token}. Request: {Request.Path.ToString()}.", null, true);
         }
 
         [HttpPost]

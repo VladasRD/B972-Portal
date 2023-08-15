@@ -100,6 +100,19 @@ namespace SmartGeoIot.Api
             return this._sgiService.SaveClient(client, User, isSubClient);
         }
 
+        [HttpPost("api-key/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "SGI-CLIENT.WRITE, SGI-SUBCLIENT.WRITE")]
+        public void PostApiKey(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                throw new Box.Common.BoxLogicException("Id inválido.");
+
+            if(User.IsInRole("SGI-SUBCLIENT.READ") && !User.IsInRole("SGI-CLIENT.READ"))
+                throw new Box.Common.BoxLogicException("Usuário não tem permissão para acessar está funcionalidade.");
+
+            this._sgiService.GenerateClientAPIKEY(id);
+        }
+
         [HttpPost("addUserClient/{id}")]        
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "SGI-CLIENT.WRITE, SGI-SUBCLIENT.WRITE")]
         public async Task<ApplicationUser> addUserClient(string id, [FromBody] ApplicationUser user)

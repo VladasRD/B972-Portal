@@ -20,10 +20,15 @@ namespace SmartGeoIot.Models
         B972_86 = 86,
         B972_87 = 87,
         TQA = 81,
-        TQA_S = 82,
+        TQA_S = 82, 
         B978 = 21,
         B987 = 21,
-        B987_P = 21
+        B987_P = 21,
+        B980 = 31
+        // ,
+        // B975A = "1a",
+        // B975B = "1b",
+        // B975C = "1c"
     }
 
     public class Package

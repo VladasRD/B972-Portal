@@ -92,7 +92,11 @@ namespace SmartGeoIot.Services
 
         public IEnumerable<DeviceRegistration> GetDevicesFromDashboard(ClaimsPrincipal user, int skip = 0, int top = 0, string filter = null, OptionalOutTotalCount totalCount = null, bool isFullAcess = false)
         {
-            IQueryable<DeviceRegistration> devicesQuery = _context.DevicesRegistration.Include(i => i.Device).Include(i => i.Package).Include(i => i.Project).Where(w => w.Device.Activable);
+            IQueryable<DeviceRegistration> devicesQuery = _context.DevicesRegistration
+                .Include(i => i.Device)
+                .Include(i => i.Package)
+                .Include(i => i.Project)
+                .Where(w => w.Device.Activable && w.Project.Code != Utils.EnumToAnnotationText(ProjectCode.B975));
 
             if (!isFullAcess)
             {
@@ -132,6 +136,80 @@ namespace SmartGeoIot.Services
             //     }
             // }
             return devices;
+        }
+
+        public IEnumerable<ViewModels.B975DevicesDashboardViewModels> GetDevicesB975FromDashboard(ClaimsPrincipal user, int skip = 0, int top = 0, string filter = null, OptionalOutTotalCount totalCount = null, bool isFullAcess = false, bool filtrarBloqueios = false)
+        {
+            IQueryable<DeviceRegistration> devicesQuery = _context.DevicesRegistration
+                .Where(w => w.Device.Activable && w.Project.Code == Utils.EnumToAnnotationText(ProjectCode.B975));
+
+            if (!isFullAcess)
+            {
+                // filtrar apenas os dispositivos que tem acesso
+                var userDevices = GetUserDevices(user.GetId());
+                devicesQuery = devicesQuery.Where(c => userDevices.Any(a => a.Id == c.DeviceId));
+            }
+
+            if (!String.IsNullOrEmpty(filter))
+            {
+                filter = filter.ToLower();
+                devicesQuery = devicesQuery.Where(f => f.Name.ToLower().Contains(filter) || f.DeviceId.ToLower().Contains(filter));
+            }
+
+            // ordernação
+            devicesQuery = devicesQuery.OrderBy(o => o.DeviceId);
+            if (totalCount != null)
+                totalCount.Value = devicesQuery.Count();
+
+            if (skip != 0)
+                devicesQuery = devicesQuery.Skip(skip);
+
+            if (top != 0)
+                devicesQuery = devicesQuery.Take(top);
+
+            // var devices = devicesQuery.ToArray();
+            List<ViewModels.B975DevicesDashboardViewModels> query = new List<ViewModels.B975DevicesDashboardViewModels>();
+            if (devicesQuery != null)
+            {
+                ServiceDesk[] serviceDesks = _context.ServiceDesks.Where(c => devicesQuery.Any(a => a.DeviceId == c.DeviceId)).ToArray();
+                // B975[] b975s = _context
+                // fazer aqui a chamada para recuperar o ultimo dado de cada device
+
+                foreach (var d in devicesQuery)
+                {
+                    // adicionar dados da "message" para mostrar previamente nas telas de listagem algumas informações
+                    B975 lastB975 = GetLastB975ByDevice(d.DeviceId, filtrarBloqueios);
+                    if (filtrarBloqueios && lastB975 != null)
+                    {
+                        if (lastB975.StatusDJ == null)
+                            continue;
+
+                        if (!lastB975.StatusDJ.Equals(Utils.GetStatusDJName(4)))
+                            continue;
+                    }
+
+                    if (filtrarBloqueios && lastB975 == null)
+                        continue;
+                    query.Add(
+                        new ViewModels.B975DevicesDashboardViewModels()
+                        {
+                            DeviceId = d.DeviceId,
+                            Name = d.Name,
+                            NickName = d.NickName,
+                            Date = (lastB975 != null) ? lastB975?.DateGMTBrasilian : null,
+                            StatusDJ = (lastB975 != null) ? lastB975?.StatusDJ : null,
+                            ContadorCarencias = (lastB975 != null) ? lastB975?.ContadorCarencias : null,
+                            ContadorBloqueios = (lastB975 != null) ? lastB975?.ContadorBloqueios : null,
+                            LocationCity = (lastB975 != null) ? lastB975?.LocationCity : null,
+                            HasServiceDeskOpened = serviceDesks.Any(c => c.DeviceId == d.DeviceId && c.IsOpened),
+                            HasHistoryServiceDesk = serviceDesks.Any(c => c.DeviceId == d.DeviceId)
+                        }
+                    );
+                }
+            }
+            
+            var _result = query.OrderBy(c => c.NickName).OrderByDescending(c => c.Date).ToArray();
+            return _result;
         }
 
         public IEnumerable<DeviceRegistration> GetDevicesOfClient(ClaimsPrincipal user, bool isFullAcess = false, string project = null)

@@ -75,6 +75,9 @@ namespace SmartGeoIot.Models
         public bool PushNotification { get; set; }
         public string ClientFatherUId { get; set; }
         public DateTime Created { get; set; }
+
+        [MaxLength(36)]
+        public string ApiKey { get; set; }
     }
 
     public class ClientDevice

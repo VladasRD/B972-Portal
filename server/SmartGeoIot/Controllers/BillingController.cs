@@ -37,7 +37,7 @@ namespace SmartGeoIot.Controllers
 
         public void SendBilling()
         {
-            _log.Log("Início da rotina de faturamento.");
+            // _log.Log("Início da rotina de faturamento.");
             var clients = _context.Clients.Where(w => w.Active).ToArray();
 
             foreach (var client in clients)
@@ -63,7 +63,7 @@ namespace SmartGeoIot.Controllers
                     }
                 }
             }
-            _log.Log("Término da rotina de faturamento.");
+            // _log.Log("Término da rotina de faturamento.");
         }
 
         public void VerifyResendBilling()
@@ -73,7 +73,7 @@ namespace SmartGeoIot.Controllers
 
         public void VerifyBillingPayment()
         {
-            _log.Log("Início da rotina de verificação de faturamentos pagos.");
+            // _log.Log("Início da rotina de verificação de faturamentos pagos.");
             var clients = _context.Clients.Include(i => i.Billings).ToArray();
 
             // verificar status
@@ -97,7 +97,7 @@ namespace SmartGeoIot.Controllers
                 }
             }
 
-            _log.Log("Término da rotina de verificação de faturamentos pagos.");
+            // _log.Log("Término da rotina de verificação de faturamentos pagos.");
         }
 
         public void SaveLogs(string action, string error = null)

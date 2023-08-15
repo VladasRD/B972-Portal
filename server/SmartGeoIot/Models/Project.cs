@@ -35,7 +35,13 @@ namespace SmartGeoIot.Models
         B978,
 
         [EnumMember(Value = "B987")]
-        B987
+        B987,
+
+        [EnumMember(Value = "B980")]
+        B980,
+
+        [EnumMember(Value = "B975")]
+        B975
     }
 
     public class Project

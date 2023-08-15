@@ -73,7 +73,7 @@ namespace SmartGeoIot.Services
 
         internal MCond ProcessDataB987(List<Message> messages)
         {
-            _log.Log("Processando dados do projeto B987.", "ProcessDataB987", true);
+            // _log.Log("Processando dados do projeto B987.", "ProcessDataB987", true);
             MCond _result = null;
 
             foreach (var message in messages)
@@ -176,7 +176,7 @@ namespace SmartGeoIot.Services
                 }
             }
 
-            _log.Log("Finalizando dados do projeto B987.", "ProcessDataB987", true);
+            // _log.Log("Finalizando dados do projeto B987.", "ProcessDataB987", true);
             return _result;
         }
 

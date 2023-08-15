@@ -9,7 +9,7 @@ namespace SmartGeoIot.Services
     {
         public dynamic CreateBillet(Client client, ClientBilling clientBilling)
         {
-            _log.Log("Executando método CreateBillet para gerar boleto.");
+            // _log.Log("Executando método CreateBillet para gerar boleto.");
             dynamic endpoints = new GerenciaNetEndpoints(_sgiSettings.GERENCIA_NET_CLIENT_ID, _sgiSettings.GERENCIA_NET_CLIENT_SECRET, true);
             var _value = $"{((int)client.Value).ToString()}00";
 
@@ -92,7 +92,7 @@ namespace SmartGeoIot.Services
                 response = endpoints.OneStep(null, body);
             }
 
-            _log.Log("Finalizando método CreateBillet para gerar boleto.");
+            // _log.Log("Finalizando método CreateBillet para gerar boleto.");
             return JsonConvert.DeserializeObject<ChargeResponse>(response.ToString());
         }
 

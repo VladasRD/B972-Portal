@@ -60,10 +60,18 @@ import { ReportB978ListComponent } from './report/report-b978-list/report-b978-l
 import { DashboardB987DetailComponent } from './dashboard-b987-detail/dashboard-b987-detail.component';
 import { ReportMcondListComponent } from './report-mcond-list/report-mcond-list.component';
 import { GraphicB987DetailComponent } from './graphic-b987-detail/graphic-b987-detail.component';
+import { DashboardB980DetailComponent } from './dashboard-b980-detail/dashboard-b980-detail.component';
+import { ReportB980ListComponent } from './report/report-b980-list/report-b980-list.component';
+import { DashboardB975DetailComponent } from './dashboard-b975-detail/dashboard-b975-detail.component';
+import { HomeComponent } from '../home/home.component';
+import { DashboardB975Component } from './dashboard/dashboard-b975/dashboard-b975.component';
+import { ServicedeskHistoryBottomsheetComponent } from './servicedesk-history-bottomsheet/servicedesk-history-bottomsheet.component';
 
 @NgModule({
   imports: [
     RouterModule.forChild([
+      { path: 'radiodados/dashboard', component: HomeComponent },
+      { path: 'radiodados/dashboard-b975', component: DashboardB975Component },
       { path: 'radiodados/dashboard/:id', component: DashboardDetailComponent },
       { path: 'radiodados/dashboard/aguamon/:id', component: DashboardAguamonDetailComponent },
       { path: 'radiodados/dashboard/djrf/:id', component: DashboardDjrfDetailComponent },
@@ -97,7 +105,7 @@ import { GraphicB987DetailComponent } from './graphic-b987-detail/graphic-b987-d
       { path: 'radiodados/dados-firmware/:id', component: FirmwareDetailComponent },
       { path: 'radiodados/dados-atualizacao', component: DataUpdateComponent, data: { shouldReuse: false } },
       { path: 'redirect', component: RedirectionComponent },
-      { path: 'radiodados/maps/:id', component: MapsViewComponent },
+      { path: 'radiodados/maps/:id/:latitude/:longitude/:radius', component: MapsViewComponent },
       { path: 'radiodados/relatorio-comercial', component: CommercialReportListComponent, data: { shouldReuse: true } },
       { path: 'radiodados/relatorio-comercial/:id', component: CommercialReportDetailComponent },
       { path: 'radiodados/relatorio-comercial-show/:id', component: CommercialReportShowComponent },
@@ -108,13 +116,21 @@ import { GraphicB987DetailComponent } from './graphic-b987-detail/graphic-b987-d
       { path: 'radiodados/relatorio/tsp', component: ReportTspListComponent },
       { path: 'radiodados/dashboard/clampon/:id', component: DashboardClamponDetailComponent },
       { path: 'radiodados/dashboard/b978/:id', component: DashboardB978DetailComponent },
+      { path: 'radiodados/dashboard/b980/:id', component: DashboardB980DetailComponent },
       { path: 'radiodados/relatorio/tqa', component: ReportTqaListComponent },
       { path: 'radiodados/relatorio/b978', component: ReportB978ListComponent },
+      { path: 'radiodados/relatorio/b980', component: ReportB980ListComponent },
 
       // PROJETO B987 - MCOND
       { path: 'radiodados/dashboard/b987/:id', component: DashboardB987DetailComponent },
       { path: 'radiodados/relatorio/b987', component: ReportMcondListComponent },
-      { path: 'radiodados/grafico/b987/:id', component: GraphicB987DetailComponent }
+      { path: 'radiodados/grafico/b987/:id', component: GraphicB987DetailComponent },
+
+      // PROJETO B975 - NOVO DJRF
+      { path: 'radiodados/dashboard-b975/:id', component: DashboardB975DetailComponent }
+      // { path: 'radiodados/relatorio/b975', component: ReportB975ListComponent }
+
+
     ]),
     SharedModule,
     SecurityModule
@@ -178,11 +194,16 @@ import { GraphicB987DetailComponent } from './graphic-b987-detail/graphic-b987-d
     ReportB978ListComponent,
     DashboardB987DetailComponent,
     ReportMcondListComponent,
-    GraphicB987DetailComponent
+    GraphicB987DetailComponent,
+    DashboardB980DetailComponent,
+    ReportB980ListComponent,
+    DashboardB975DetailComponent,
+    HomeComponent,
+    DashboardB975Component,
+    ServicedeskHistoryBottomsheetComponent
   ],
-    // entryComponents: [
-    //   BottomsheetComponent,
-    //   BottomsheetComponent
-    // ]
+    entryComponents: [
+      ServicedeskHistoryBottomsheetComponent
+    ]
 })
 export class SmartGeoIotModule {}

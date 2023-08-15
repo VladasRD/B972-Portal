@@ -19,5 +19,7 @@ namespace SmartGeoIot
         public string SERVICE_WHATSAPP_NUMBER_FROM { get; set; }
         public string SERVICE_SMS_WHATSAPP_URL { get; set; }
         public string SERVER_URL { get; set; }
+        public string GOOGLE_MAPS_KEY { get; set; }
+        public string GOOGLE_MAPS_URL { get; set; }
     }
 }

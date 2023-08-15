@@ -12,7 +12,7 @@ namespace SmartGeoIot.Services
     {
         internal void ProcessDataB972(List<Message> messages)
         {
-            _log.Log("Processando dados do projeto B972.", "ProcessDataB972", true);
+            // _log.Log("Processando dados do projeto B972.", "ProcessDataB972", true);
 
             List<B972> listB972 = new List<B972>();
             int seconds = 60;
@@ -206,7 +206,7 @@ namespace SmartGeoIot.Services
                 }
             }
 
-            _log.Log("Finalizando dados do projeto B972.", "ProcessDataB972", true);
+            // _log.Log("Finalizando dados do projeto B972.", "ProcessDataB972", true);
         }
 
         internal void SaveB972(List<B972> b972)

@@ -35,7 +35,21 @@ export class Project {
         if (this.code === ProjectEnum.B987) {
             return ('b987');
         }
+        if (this.code === ProjectEnum.B980) {
+            return ('b980');
+        }
+        if (this.code === ProjectEnum.B975) {
+            return ('b975');
+        }
         return 'hidro';
+    }
+
+    get getURLDashboardLink(): string {
+        if (this.code === ProjectEnum.B975) {
+            return ('radiodados/dashboard-b975');
+        }
+
+        return 'radiodados/dashboard';
     }
 }
 
@@ -50,4 +64,6 @@ export class ProjectEnum {
     static readonly B981 = 'B981';
     static readonly B978 = 'B978';
     static readonly B987 = 'B987';
+    static readonly B980 = 'B980';
+    static readonly B975 = 'B975';
 }

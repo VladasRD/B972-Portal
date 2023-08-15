@@ -1,7 +1,7 @@
-<mat-form-field floatLabel="{{floatLabel}}" appearance="{{appearance}}" fxFlexAlign.xs="stretch">
+<mat-form-field floatLabel="{{floatLabel}}" appearance="{{appearance}}" fxFlexAlign.xs="stretch" fxFlex="{{fxFlex}}">
   <mat-label>Dispositivo</mat-label>
   <mat-select [formControl]="control">
-    <mat-option *ngFor="let y of listDevicesFilter" [value]="y.deviceId">{{y.nickName}}</mat-option>
+    <mat-option *ngFor="let y of listDevicesFilter" [value]="y.deviceId">Nível – {{y.nickName}}</mat-option>
   </mat-select>
   <mat-error *ngIf="control.invalid">Campo obrigatório</mat-error>
-</mat-form-field>
+</mat-form-field> 

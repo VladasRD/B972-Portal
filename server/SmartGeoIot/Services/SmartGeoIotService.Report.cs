@@ -44,7 +44,10 @@ namespace SmartGeoIot.Services
 
             // Projeto TRM-11
             if (int.Parse(typePackage) == (int)PackagesEnum.B978)
-                return GetReportDataB978(id, skip, top, de, ate, totalCount);
+                return GetReportDataB978(id, typePackage, skip, top, de, ate, totalCount);
+            
+            if (int.Parse(typePackage) == (int)PackagesEnum.B980)
+                return GetReportDataB978(id, typePackage, skip, top, de, ate, totalCount);
 
             return null;
         }
@@ -437,10 +440,10 @@ namespace SmartGeoIot.Services
             }
         }
 
-        public IEnumerable<DashboardViewModels> GetReportDataB978(string id, int skip = 0, int top = 0, string de = null, string ate = null, OptionalOutTotalCount totalCount = null)
+        public IEnumerable<DashboardViewModels> GetReportDataB978(string id, string typePackage, int skip = 0, int top = 0, string de = null, string ate = null, OptionalOutTotalCount totalCount = null)
         {
             List<DashboardViewModels> newData = new List<DashboardViewModels>();
-            IQueryable<Message> reportsQuery = _context.Messages.AsNoTracking().Include(i => i.Device).Where(w => w.DeviceId == id && (w.TypePackage.Equals("21"))).OrderByDescending(o => o.Id);
+            IQueryable<Message> reportsQuery = _context.Messages.AsNoTracking().Include(i => i.Device).Where(w => w.DeviceId == id && (w.TypePackage.Equals(typePackage))).OrderByDescending(o => o.OperationDate);
             DeviceRegistration deviceRegistration = _context.DevicesRegistration.Include(i => i.Package).Include(i => i.Project).SingleOrDefault(r => r.DeviceId == id);
 
             try
@@ -464,7 +467,7 @@ namespace SmartGeoIot.Services
 
                 if (top != 0)
                     reportsQuery = reportsQuery.Take(top);
-
+                
                 foreach (var report in reportsQuery)
                 {
                     DashboardViewModels newItem = new DashboardViewModels();
@@ -472,7 +475,7 @@ namespace SmartGeoIot.Services
                     newItem.Name = report.Device.Name;
                     newItem.Package = report.Data;
                     newItem.TypePackage = report.TypePackage;
-                    newItem.Date = report.Date;
+                    newItem.Date = report.OperationDate.Value.AddHours(-3);
                     newItem.Country = report.Country;
                     newItem.Lqi = report.Lqi;
                     newItem.Bits = report.Bits;
@@ -498,8 +501,8 @@ namespace SmartGeoIot.Services
 
                     var _entradaAnalogica = Utils.FromFloatSafe(report.EntradaAnalogica);
                     var _saidaAnalogica = Utils.FromFloatSafe(report.SaidaAnalogica);
-
-                    newItem.EntradaAnalogica = String.Format("{0:0.0}", _entradaAnalogica);
+                    
+                    newItem.EntradaAnalogica = (typePackage == "31") ? String.Format("{0:0.00}", _entradaAnalogica) : String.Format("{0:0.0}", _entradaAnalogica);
                     newItem.SaidaAnalogica = String.Format("{0:0.0}", _saidaAnalogica);
 
                     newData.Add(newItem);

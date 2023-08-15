@@ -215,8 +215,6 @@ namespace SmartGeoIot.Services
                 return CreateDashboard_Pack12ViewModel(deviceMessage12, deviceMessage13, deviceRegistration);
             }
 
-
-
             // Projeto MCond
             if (project.ToLower() == Utils.EnumToAnnotationText(ProjectCode.B987).ToLower())
             {
@@ -224,10 +222,6 @@ namespace SmartGeoIot.Services
 
                 return CreateDashboardMCond(deviceRegistration, nextNavigation, (int)time, date);
             }
-
-
-
-
 
 
             if (project.ToLower() == Utils.EnumToAnnotationText(ProjectCode.B978).ToLower()) // TRM-11
@@ -291,9 +285,6 @@ namespace SmartGeoIot.Services
 
                 return CreateDashboard_Pack21ViewModel(deviceMessage21, deviceRegistration);
             }
-
-
-
 
 
             if (project.ToLower() == Utils.EnumToAnnotationText(ProjectCode.B981).ToLower()) // PQA
@@ -453,6 +444,75 @@ namespace SmartGeoIot.Services
                 return CreateDashboard_Pack21ViewModel(deviceMessage21, deviceRegistration);
             }
 
+            if (project.ToLower() == Utils.EnumToAnnotationText(ProjectCode.B980).ToLower()) // TRM-10 (P965U1)
+            {
+                Models.Message deviceMessage31 = null;
+
+                if (time == 0)
+                {
+                    if (date == null)
+                    {
+                        deviceMessage31 = _context.Messages.AsNoTracking().Include(i => i.Device).OrderByDescending(o => o.OperationDate)
+                                    .FirstOrDefault(w => w.DeviceId == id && w.Data.StartsWith("31"));
+                    }
+                    else
+                    {
+                        date = date.Value.AddHours(3);
+                        deviceMessage31 = _context.Messages.AsNoTracking().Include(i => i.Device).OrderByDescending(o => o.OperationDate)
+                                    .FirstOrDefault(w => w.DeviceId == id && w.Data.StartsWith("31") &&
+                                    w.OperationDate.Value.Year == date.Value.Year &&
+                                    w.OperationDate.Value.Month == date.Value.Month &&
+                                    w.OperationDate.Value.Day == date.Value.Day &&
+                                    w.OperationDate.Value.Hour == date.Value.Hour &&
+                                    w.OperationDate.Value.Minute == date.Value.Minute);
+
+                        if (deviceMessage31 == null)
+                        {
+                            deviceMessage31 = _context.Messages.AsNoTracking().Include(i => i.Device).OrderByDescending(o => o.OperationDate)
+                                    .FirstOrDefault(w => w.DeviceId == id && w.Data.StartsWith("31") &&
+                                    w.OperationDate.Value < date.Value);
+                        }
+                    }
+                }
+                else
+                {
+                    bool nextNavigation = navigation.Equals("next");
+
+                    if (nextNavigation)
+                    {
+                        deviceMessage31 = _context.Messages.AsNoTracking()
+                            .Include(i => i.Device)
+                            .OrderBy(o => o.Id)
+                            .FirstOrDefault(w => w.DeviceId == id && w.Data.StartsWith("31") && w.Time > time);
+                    }
+                    else
+                    {
+                        deviceMessage31 = _context.Messages.AsNoTracking()
+                            .Include(i => i.Device)
+                            .OrderByDescending(o => o.OperationDate)
+                            .FirstOrDefault(w => w.DeviceId == id && w.Data.StartsWith("31") && w.Time < time);
+                    }
+                }
+
+                if (deviceMessage31 == null)
+                {
+                    deviceMessage31 = _context.Messages.AsNoTracking().Include(i => i.Device).OrderByDescending(o => o.OperationDate)
+                                    .FirstOrDefault(w => w.DeviceId == id && w.Data.StartsWith("31"));
+                }
+
+                if (deviceMessage31 == null)
+                    return null;
+
+                return CreateDashboard_Pack21ViewModel(deviceMessage31, deviceRegistration);
+            }
+
+            if (project.ToLower() == Utils.EnumToAnnotationText(ProjectCode.B975).ToLower()) // TRM-10 (P965U1)
+            {
+                bool nextNavigation = navigation.Equals("next");
+
+                return CreateDashboardB975(deviceRegistration, nextNavigation, (int)time, date);
+            }
+
             if (project.ToLower() == Utils.EnumToAnnotationText(ProjectCode.B972).ToLower())
             {
                 B972 b972 = null;
@@ -486,14 +546,6 @@ namespace SmartGeoIot.Services
                 return CreateDashboard_B972ViewModel(b972, deviceRegistration);
             }
 
-            
-            // }
-            // catch (System.Exception)
-            // {
-                
-            //     throw;
-            // }
-
             return null;
         }
 
@@ -516,7 +568,7 @@ namespace SmartGeoIot.Services
             }
 
             // set location on dashboard of device
-            DeviceLocation deviceLocation = GetDeviceLocationByDeviceId(dashboard.DeviceId);
+            DeviceLocation deviceLocation = GetLastDeviceLocationByDeviceId(dashboard.DeviceId);
             if (deviceLocation != null)
             {
                 dashboard.Latitude = deviceLocation.Latitude.ToString();
@@ -526,6 +578,8 @@ namespace SmartGeoIot.Services
                 dashboard.LatitudeConverted = LocationDecimalToDegrees((decimal)deviceLocation.Latitude, "S");
                 dashboard.LongitudeConverted = LocationDecimalToDegrees((decimal)deviceLocation.Longitude, "W");
                 dashboard.RadiusConverted = RadiusFormated(deviceLocation.Radius);
+
+                dashboard.LocationCity = GetCityByCoordinates(deviceLocation.Latitude, deviceLocation.Longitude);
             }
 
             // converter os bits deste
@@ -724,20 +778,100 @@ namespace SmartGeoIot.Services
             return dashboard;
         }
 
+        private DashboardViewModels CreateDashboardB975(DeviceRegistration deviceRegistration, bool nextNavigation, int time, DateTime? date)
+        {
+            DashboardViewModels dashboard = new DashboardViewModels();
+            B975 b975 = null;
+
+            if (time == 0)
+            {
+                if (!date.HasValue)
+                {
+                    b975 = _context.B975s.LastOrDefault(c => c.DeviceId == deviceRegistration.DeviceId);
+                }
+                else
+                {
+                    date = date.Value.AddHours(-3);
+
+                    // mCond = _context.MConds.LastOrDefault(c => c.DeviceId == deviceRegistration.DeviceId && c.PackPort != null && c.PackInf != null && c.PackSup != null);
+                    b975 = _context.B975s.FirstOrDefault(c => c.DeviceId == deviceRegistration.DeviceId &&
+                                    c.Date.Year == date.Value.Year &&
+                                    c.Date.Month == date.Value.Month &&
+                                    c.Date.Day == date.Value.Day &&
+                                    c.Date.Hour == date.Value.Hour &&
+                                    c.Date.Minute == date.Value.Minute);
+                    
+                    if (b975 == null)
+                    {
+                        b975 = _context.B975s.FirstOrDefault(c => c.DeviceId == deviceRegistration.DeviceId && c.Date >= date.Value);
+                    }
+
+                    if (b975 == null)
+                    {
+                        b975 = _context.B975s.FirstOrDefault(c => c.DeviceId == deviceRegistration.DeviceId && c.Date <= date.Value);
+                    }
+                }
+            }
+            else
+            {
+                if (nextNavigation)
+                {
+                    time++;
+                    b975 = _context.B975s.FirstOrDefault(c => c.DeviceId == deviceRegistration.DeviceId && c.Id >= time);
+                }
+                else
+                {
+                    time--;
+                    b975 = _context.B975s.LastOrDefault(c => c.DeviceId == deviceRegistration.DeviceId && c.Id <= time);
+                }
+            }
+
+            if (b975 == null)
+                b975 = _context.B975s.LastOrDefault(c => c.DeviceId == deviceRegistration.DeviceId);
+
+            if (b975 == null)
+                return null;
+            
+            dashboard.DeviceId = deviceRegistration.DeviceId;
+            dashboard.Name = deviceRegistration.Name;
+            dashboard.Package = $"{b975.PackA};{b975.PackB};{b975.PackC}";
+            dashboard.TypePackage = ((int)ProjectCode.B987).ToString();
+            dashboard.Date = b975.DateGMTBrasilian;
+            dashboard.Country = "BRA";
+            dashboard.Lqi = b975.Lqi;
+            // dashboard.SeqNumber = deviceRegistration.Device.SequenceNumber;
+            // dashboard.Time = mCond != null ? mCond.Time : 0;
+            dashboard.B975 = b975;
+
+            if (deviceRegistration != null)
+            {
+                dashboard.SerialNumber = deviceRegistration.SerialNumber;
+                dashboard.Model = deviceRegistration.Model;
+                dashboard.Notes = deviceRegistration.Notes;
+                dashboard.NotesCreateDate = deviceRegistration.NotesCreateDate.HasValue ? deviceRegistration.NotesCreateDate.Value.ToShortDateString() : null;
+            }
+
+            return dashboard;
+        }
+
 
         private DashboardViewModels CreateDashboard_Pack21ViewModel(Models.Message deviceMessage, DeviceRegistration deviceRegistration)
         {
+            DeviceLocation deviceLocation = GetDeviceLocationByTime(deviceMessage.DeviceId, deviceMessage.Time);
+
+            // pacotes 21 e 31 tem a mesma estrutura
             DashboardViewModels dashboard = new DashboardViewModels();
             dashboard.DeviceId = deviceMessage.DeviceId;
             dashboard.Name = deviceMessage.Device.Name;
             dashboard.Package = deviceMessage.Data;
             dashboard.TypePackage = deviceMessage.TypePackage;
-            dashboard.Date = deviceMessage.Date;
+            // dashboard.Date = deviceMessage.Date;
             dashboard.Country = deviceMessage.Country;
             dashboard.Lqi = deviceMessage.Lqi;
             dashboard.Bits = deviceMessage.Bits;
             dashboard.SeqNumber = deviceMessage.SeqNumber;
             dashboard.Time = deviceMessage.Time;
+            dashboard.Date = deviceMessage.OperationDate.Value.AddHours(-3);
             if (deviceRegistration != null)
             {
                 dashboard.SerialNumber = deviceRegistration.SerialNumber;
@@ -754,10 +888,21 @@ namespace SmartGeoIot.Services
                 dashboard.Sa3 = deviceRegistration.Sa3;
             }
 
+            if (deviceLocation != null)
+            {
+                dashboard.Latitude = deviceLocation.Latitude.ToString();
+                dashboard.Longitude = deviceLocation.Longitude.ToString();
+                dashboard.Radius = deviceLocation.Radius;
+                if (deviceLocation.City != null)
+                    dashboard.LocationCity = $"{deviceLocation.Neighborhood} - {deviceLocation.City}/{deviceLocation.State}";
+                else
+                    dashboard.LocationCity = "Não encontrado";
+            }
+
             var _entradaAnalogica = Utils.FromFloatSafe(deviceMessage.EntradaAnalogica);
             var _saidaAnalogica = Utils.FromFloatSafe(deviceMessage.SaidaAnalogica);
 
-            dashboard.EntradaAnalogica = String.Format("{0:0.0}", _entradaAnalogica);
+            dashboard.EntradaAnalogica = String.Format("{0:0.00}", _entradaAnalogica);
             dashboard.SaidaAnalogica = String.Format("{0:0.0}", _saidaAnalogica);
 
             return dashboard;
@@ -848,7 +993,7 @@ namespace SmartGeoIot.Services
             }
 
             // set location on dashboard of device
-            DeviceLocation deviceLocation = GetDeviceLocationByDeviceId(dashboard.DeviceId);
+            DeviceLocation deviceLocation = GetLastDeviceLocationByDeviceId(dashboard.DeviceId);
             if (deviceLocation != null)
             {
                 dashboard.Latitude = deviceLocation.Latitude.ToString();
@@ -908,7 +1053,7 @@ namespace SmartGeoIot.Services
             }
 
             // set location on dashboard of device
-            DeviceLocation deviceLocation = GetDeviceLocationByDeviceId(dashboard.DeviceId);
+            DeviceLocation deviceLocation = GetLastDeviceLocationByDeviceId(dashboard.DeviceId);
             if (deviceLocation != null)
             {
                 dashboard.Latitude = deviceLocation.Latitude.ToString();
@@ -985,7 +1130,7 @@ namespace SmartGeoIot.Services
             }
 
             // set location on dashboard of device
-            DeviceLocation deviceLocation = GetDeviceLocationByDeviceId(dashboard.DeviceId);
+            DeviceLocation deviceLocation = GetLastDeviceLocationByDeviceId(dashboard.DeviceId);
             if (deviceLocation != null)
             {
                 dashboard.Latitude = deviceLocation.Latitude.ToString();

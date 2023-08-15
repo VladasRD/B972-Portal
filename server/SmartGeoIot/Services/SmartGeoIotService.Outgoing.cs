@@ -88,7 +88,7 @@ namespace SmartGeoIot.Services
             }
 
             _context.SaveChanges(true);
-            _log.Log($"Configuração comercial do mês {outgoing.Month}, ano {outgoing.Year} foi criado/alterado.");
+            // _log.Log($"Configuração comercial do mês {outgoing.Month}, ano {outgoing.Year} foi criado/alterado.");
 
             return outgoing;
         }
@@ -112,7 +112,7 @@ namespace SmartGeoIot.Services
                 };
                 _context.Entry<Outgoing>(outgoing).State = EntityState.Added;
                 _context.SaveChanges(true);
-                _log.Log($"Configuração comercial do mês {outgoing.Month}, ano {outgoing.Year} foi criado.");
+                // _log.Log($"Configuração comercial do mês {outgoing.Month}, ano {outgoing.Year} foi criado.");
             }
             else
             {
@@ -121,7 +121,7 @@ namespace SmartGeoIot.Services
                 _context.Entry<Outgoing>(oldOutgoing).State = EntityState.Modified;
 
                 _context.SaveChanges(true);
-                _log.Log($"Configuração comercial do mês {oldOutgoing.Month}, ano {oldOutgoing.Year} foi atualizada, cliente ativos {clientsActived} e dispositivos ativos {devicesActived}.");
+                // _log.Log($"Configuração comercial do mês {oldOutgoing.Month}, ano {oldOutgoing.Year} foi atualizada, cliente ativos {clientsActived} e dispositivos ativos {devicesActived}.");
             }
         }
 
@@ -133,7 +133,7 @@ namespace SmartGeoIot.Services
 
             _context.Outgoings.Remove(outgoing);
             _context.SaveChanges();
-            _log.Log($"Configuração comercial do mês {outgoing.Month}, ano {outgoing.Year} foi removido.");
+            // _log.Log($"Configuração comercial do mês {outgoing.Month}, ano {outgoing.Year} foi removido.");
         }
     }
 }

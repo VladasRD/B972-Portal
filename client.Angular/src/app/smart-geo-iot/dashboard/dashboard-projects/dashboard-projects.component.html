@@ -1,0 +1,27 @@
+<div class="body-content">
+  <section class="body-wrapper" *ngIf="isVisible">
+
+    <div class="headline" fxLayout>
+      <div class="mat-h1">Projeto(s)</div>
+    </div>
+
+    <div class="headline" fxLayout>
+      <h3>Selecione um projeto para ir a tela do dashboard</h3>
+    </div>
+
+    <div class="container resultsContainer" fxLayout="row wrap" fxLayout.xs="column">
+      <mat-card *ngFor="let r of results" routerLink="{{r.getURLDashboardLink}}" class="tile1x">
+        <mat-card-header style="overflow: hidden" >
+          <div mat-card-avatar>
+            <mat-icon matSuffix>business</mat-icon>
+          </div>
+          <mat-card-title>{{r.name}}</mat-card-title>
+          <mat-card-subtitle>{{r.description}}</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+    </div>
+
+    <h2 *ngIf="results.length==0 && !firstSearch">Nenhum projeto encontrado. Tente alterar sua pesquisa.</h2>
+
+  </section>
+</div>

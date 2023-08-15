@@ -29,6 +29,4 @@ export class MCond {
 
     supLevelLitros: number;
     infLevelLitros: number;
-
-    
 }

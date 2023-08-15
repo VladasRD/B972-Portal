@@ -21,6 +21,7 @@ namespace SmartGeoIot.Services
                 filter = filter.ToLower();
                 projects = projects.Where(c =>
                     c.Name.ToLower().Contains(filter) ||
+                    c.Code.ToLower().Contains(filter) ||
                     c.Description.ToLower().Contains(filter));
             }
 
@@ -39,17 +40,31 @@ namespace SmartGeoIot.Services
             return projects.ToArray();
         }
 
+        public bool VerifyIsProject(string deviceId, string project)
+        {
+            var deviceRegistrations = _context.DevicesRegistration.Include(i => i.Project).Where(c => c.DeviceId == deviceId);
+            if (deviceRegistrations == null)
+                return false;
+            
+            if (!deviceRegistrations.Any(a => a.Project.Code == project))
+                return false;
+
+            return true;
+        }
+
         public IEnumerable<Project> GetMeProjects(ClaimsPrincipal user, bool isFullAcess = false)
         {
             if (isFullAcess)
                 return _context.Projects.ToArray();
 
+       
             var clients = _context.Clients.Where(c => c.Users.Any(a => a.ApplicationUserId == user.GetId()));
             var deviceRegistrations = _context.DevicesRegistration.Include(i => i.Project).Where(c => clients.Any(a => a.Devices.Any(b => b.Id == c.DeviceId)));
-            return deviceRegistrations.Select(s => s.Project).ToArray();
+
+            return _context.Projects.Where(c => deviceRegistrations.Any(a => a.Project.Code == c.Code)).ToArray();
         }
         
-        public Project GetProject(string id)
+        public Project GetProject(string id)    
         {
             return _context.Projects.Find(id);
         }
@@ -67,7 +82,7 @@ namespace SmartGeoIot.Services
             }
 
             _context.SaveChanges(true);
-            _log.Log($"Projeto {project.Name} foi criado/alterado.");
+            // _log.Log($"Projeto {project.Name} foi criado/alterado.");
 
             return project;
         }
@@ -80,7 +95,7 @@ namespace SmartGeoIot.Services
 
             _context.Projects.Remove(project);
             _context.SaveChanges();
-            _log.Log($"Projeto {project.Name} foi removido.");
+            // _log.Log($"Projeto {project.Name} foi removido.");
         }
         
     }

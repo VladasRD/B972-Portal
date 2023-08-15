@@ -310,6 +310,7 @@ namespace SmartGeoIot.Services
             }
 
         }
+
         private void AddReportTRMTableHeader(DashboardViewModels report)
         {
             //2º Linha
@@ -721,5 +722,90 @@ namespace SmartGeoIot.Services
 
             sheetData.AppendChild(row);
         }
+
+
+
+        /// <summary>
+        /// Exports a collection of results to Excel.
+        /// </summary>
+        /// <param name="reports">The calc reports</param>
+        /// <returns></returns>
+        public byte[] ExportReportsB980(DashboardViewModels[] reports, string id, string startDate, string endDate)
+        {
+            using (MemoryStream mem = new MemoryStream())
+            {
+                using (SpreadsheetDocument document = SpreadsheetDocument.Create(mem, SpreadsheetDocumentType.Workbook))
+                {
+                    workbookPart = document.AddWorkbookPart();
+                    workbookPart.Workbook = new Workbook();
+
+                    worksheetPart = workbookPart.AddNewPart<WorksheetPart>();
+                    worksheetPart.Worksheet = new Worksheet();
+
+                    // adds style
+                    AddStyle();
+
+                    // create columns
+                    Columns columns = new Columns();
+                    columns.Append(CreateColumnData(1, 10, 15));
+                    worksheetPart.Worksheet.Append(columns);
+
+                    Sheets sheets = workbookPart.Workbook.AppendChild(new Sheets());
+                    Sheet sheet = new Sheet() { Id = workbookPart.GetIdOfPart(worksheetPart), SheetId = 1, Name = "Relatório" };
+                    sheets.Append(sheet);
+
+                    sheetData = worksheetPart.Worksheet.AppendChild(new SheetData());
+
+                    // Title
+                    if (string.IsNullOrWhiteSpace(startDate) && startDate.Equals("null"))
+                        AddTitle($"Relatório do dispositivo {id}.");
+                    else
+                    {
+                        startDate = startDate.Equals("null") ? "ꝏ" : Convert.ToDateTime(startDate).ToShortDateString();
+                        endDate = endDate.Equals("null") ? "ꝏ" : Convert.ToDateTime(endDate).ToShortDateString();
+                        AddTitle($"Relatório do dispositivo {id}, período {startDate} - {endDate}");
+                    }
+                
+                    var _report = reports[0];
+                    // table headers
+                    AddReportTRMTableHeader(_report);
+
+                    // exports the reports
+                    foreach (var report in reports)
+                    {
+                        var row = new Row();
+
+                        AddCell(report.Date.ToString("dd/MM/yyyy"), row, style: SGICellStyles.Border);
+                        AddCell(report.Date.ToString("HH:mm"), row, style: SGICellStyles.Border);
+
+                        AddCell((bool)report.Bits?.N1 ? "Alto" : "Baixo", row, style: SGICellStyles.Border);
+                        AddCell((bool)report.Bits?.N2 ? "Alto" : "Baixo", row, style: SGICellStyles.Border);
+                        AddCell((bool)report.Bits?.N3 ? "Alto" : "Baixo", row, style: SGICellStyles.Border);
+                        AddCell((bool)report.Bits?.N4 ? "Alto" : "Baixo", row, style: SGICellStyles.Border);
+                        AddCell((bool)report.Bits?.Bsd1 ? "On" : "Off", row, style: SGICellStyles.Border);
+                        AddCell((bool)report.Bits?.Bsd2 ? "On" : "Off", row, style: SGICellStyles.Border);
+
+                        AddCell(report.EntradaAnalogica, row, style: SGICellStyles.Border);
+                        AddCell(report.SaidaAnalogica, row, style: SGICellStyles.Border);
+
+                        sheetData.AppendChild(row);
+                    }
+
+                    // adds the footer
+                    AddFooter();
+
+                    // create a MergeCells class to hold each MergeCell
+                    MergeCells mergeCells = new MergeCells();
+                    mergeCells.Append(new MergeCell() { Reference = new StringValue("A1:K1") });
+                    worksheetPart.Worksheet.InsertAfter(mergeCells, worksheetPart.Worksheet.Elements<SheetData>().First());
+                    workbookPart.Workbook.Save();
+                }
+                return mem.ToArray();
+            }
+
+        }
+
+
+
     }
 }

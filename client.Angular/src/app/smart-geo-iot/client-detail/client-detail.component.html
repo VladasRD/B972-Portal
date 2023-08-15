@@ -148,6 +148,27 @@
         </mat-tab>
 
 
+        <mat-tab label="Api">
+          <div fxLayout fxLayoutGap="24px">
+            <div fxLayout="column" fxLayoutGap="16px" fxFlex="1 1 100%">
+
+              <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="3.5%" fxLayoutAlign="left">
+                <mat-form-field appearance="outline" fxFlex="100%">
+                  <mat-label>Chave API Externa (chave para identificar o cliente)</mat-label>
+                  <input matInput disabled autocomplete="off" formControlName="apiKey">
+                </mat-form-field>
+
+                <div fxFlexAlign="center">
+                  <button type="button" class="secondary" mat-button (click)="openConfirmDialogApiKey()">Adicionar Chave API</button>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </mat-tab>
+
+
         <!-- DISPOSITIVOS -->
         <mat-tab label="Dispositivos">
 
